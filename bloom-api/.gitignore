@@ -1,0 +1,54 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.env.* 
+.venv/
+
+# Environment variable files
+*.env
+
+# Python cache
+*.pyc
+*.pyo
+*.pyd
+
+# macOS / Linux / Windows hidden files
+.DS_Store
+Thumbs.db
+
+# VS Code config
+.vscode/
+
+# mypy / pylint / coverage / pytest / tox
+.mypy_cache/
+.coverage
+.tox/
+.pytest_cache/
+coverage.xml
+htmlcov/
+
+# Test results
+junit.xml
+
+# Log files
+*.log
+
+# SQLite or local database files
+*.sqlite3
+*.db
+
+# Docker-related
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+docker-compose.override.yml
+
+
