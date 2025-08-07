@@ -1,6 +1,7 @@
+from api.v1 import check_status
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.v1 import check_status
+from infra.logger.logger import logger
 
 app = FastAPI(
     title="Bloom API",
@@ -25,9 +26,9 @@ app.include_router(
 
 @app.on_event("startup")
 async def startup_event():
-    print("Iniciando API Bloom...")
+    logger.info("Iniciando API Bloom...")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
-    print("Encerrando API Bloom...")
+    logger.info("Encerrando API Bloom...")
