@@ -6,7 +6,8 @@ __pycache__/
 # Virtual environments
 venv/
 .env/
-.env.* 
+.env.*
+!.env.example
 .venv/
 
 # Environment variable files
@@ -50,5 +51,3 @@ __pycache__/
 *.db
 *.sqlite3
 docker-compose.override.yml
-
-
