@@ -1,7 +1,9 @@
-from api.v1 import check_status
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+import infra.db.iniciar_db
 from infra.logger.logger import logger
+from api.v1 import check_status
 
 app = FastAPI(
     title="Bloom API",
@@ -20,7 +22,9 @@ app.add_middleware(
 
 
 app.include_router(
-    check_status.router, prefix="/api/connection", tags=["Check connection"]
+    check_status.router,
+    prefix="/api/connection",
+    tags=["Check connection"],
 )
 
 
