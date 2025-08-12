@@ -10,8 +10,7 @@ class PrimaryButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   // Construtor que exige o texto e a função.
-  const PrimaryButton({Key? key, required this.text, required this.onPressed})
-    : super(key: key);
+  const PrimaryButton({super.key, required this.text, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
