@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app/src/modules/auth/login_screen.dart'; // Importe sua tela de login
+import 'package:app/src/modules/auth/login_screen.dart';
+import 'package:app/src/core/theme/app_colors.dart'; // Importe sua tela de login
 
 class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({super.key});
@@ -10,38 +11,48 @@ class OnboardingScreen extends StatelessWidget {
   final List<Widget> _pages = [
     // Tela 1
     _OnboardingPage(
-      imagePath: 'assets/images/5.png',
-      title: 'Bem-vindo ao App!',
-      description: 'Descubra uma nova experiência.',
-      backgroundColor: Colors.blue,
+      imagePath: 'assets/images/onb1.png',
+      title: 'Bem-vinda ao Bloom!',
+      description:
+          'Bem vindo(a) à Bloom, seu parceiro na jornada da sua gravidez. ',
+      backgroundColor: AppColors.lightPink,
+      textColor: AppColors.mediumPink,
     ),
     // Tela 2
     _OnboardingPage(
-      imagePath: 'assets/images/5.png',
-      title: 'Compre o que quiser',
-      description: 'Explore nossas ofertas exclusivas.',
-      backgroundColor: Colors.purple,
+      imagePath: 'assets/images/onb2.png',
+      title: 'Acompanhamento por profissionais ',
+      description:
+          'Esse aplicativo vai proporcionar o apoio dos seus profssionais favoritos para te ajudar a monitorar o progresso da sua gravidez e pós parto, incluindo registro de consultas, vacinas e procedimentos realizados e não realizados.',
+      backgroundColor: AppColors.mediumPink,
+      textColor: AppColors.lightPink,
     ),
     // Tela 3
     _OnboardingPage(
-      imagePath: 'assets/images/5.png',
-      title: 'Descontos incríveis',
-      description: 'Aproveite promoções diárias.',
-      backgroundColor: Colors.orange,
+      imagePath: 'assets/images/onb3.png',
+      title: 'Recursos educacionais',
+      description:
+          'Esse app vai prover de recursos educacionais como forúns e artigos de profissionais para ajudar usuários a aprender sobre a saúde materna, incluindo artigos e forúns.',
+      backgroundColor: AppColors.lightPink,
+      textColor: AppColors.mediumPink,
     ),
     // Tela 4
     _OnboardingPage(
-      imagePath: 'assets/images/5.png',
-      title: 'Pagamento seguro',
-      description: 'Sua segurança é nossa prioridade.',
-      backgroundColor: Colors.green,
+      imagePath: 'assets/images/onb4.png',
+      title: 'Suporte da Comunidade',
+      description:
+          'Esse aplicativo possui um suporte da comunidade para ajudar usuários a conectar-se com profissionais da área da saúde a compartilhar informações, responder perguntas e receber suporte.',
+      backgroundColor: AppColors.mediumPink,
+      textColor: AppColors.lightPink,
     ),
     // Tela 5
     _OnboardingPage(
-      imagePath: 'assets/images/5.png',
-      title: 'Pronto para começar!',
-      description: 'Vamos fazer o seu login.',
-      backgroundColor: Colors.teal,
+      imagePath: 'assets/images/onb5.png',
+      title: 'Registro de saúde',
+      description:
+          'Esse aplicativo permite que usuários marquem consultas, salve informações sobre sua saúde e do seu beê, facilitando na hora da consulta sobre seu estado atual.',
+      backgroundColor: AppColors.lightPink,
+      textColor: AppColors.mediumPink,
     ),
   ];
 
@@ -86,12 +97,14 @@ class _OnboardingPage extends StatelessWidget {
   final String title;
   final String description;
   final Color backgroundColor;
+  final Color textColor;
 
   const _OnboardingPage({
     required this.imagePath,
     required this.title,
     required this.description,
     required this.backgroundColor,
+    required this.textColor,
   });
 
   @override
@@ -102,28 +115,36 @@ class _OnboardingPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              imagePath, // Usamos Image.asset com o caminho fornecido
-              width: 200, // Defina a largura desejada para a imagem
-              height: 200, // Defina a altura desejada para a imagem
-              fit: BoxFit.contain, // Ajuste como a imagem se encaixa no espaço
-            ),
             const SizedBox(height: 24),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            SizedBox(
+              width: 250, // Defina a largura máxima que o texto pode ter
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30.0),
+              child: Image.asset(
+                imagePath, // Usamos Image.asset com o caminho fornecido
+                width: 200, // Defina a largura desejada para a imagem
+                height: 200, // Defina a altura desejada para a imagem
+                fit:
+                    BoxFit.contain, // Ajuste como a imagem se encaixa no espaço
+              ),
+            ),
+
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Text(
                 description,
-                style: const TextStyle(fontSize: 18, color: Colors.white70),
+                style: TextStyle(fontSize: 18, color: textColor),
                 textAlign: TextAlign.center,
               ),
             ),
