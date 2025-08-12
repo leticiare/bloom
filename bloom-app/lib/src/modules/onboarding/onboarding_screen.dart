@@ -63,6 +63,7 @@ class OnboardingScreen extends StatelessWidget {
                   await prefs.setBool('onboarding_completed', true);
 
                   // Navega para a tela de login, substituindo a tela atual
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => const LoginScreen(),
@@ -87,7 +88,6 @@ class _OnboardingPage extends StatelessWidget {
   final Color backgroundColor;
 
   const _OnboardingPage({
-    super.key,
     required this.image,
     required this.title,
     required this.description,
