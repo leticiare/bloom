@@ -10,35 +10,35 @@ class OnboardingScreen extends StatelessWidget {
   final List<Widget> _pages = [
     // Tela 1
     _OnboardingPage(
-      image: Icons.star,
+      imagePath: 'assets/images/5.png',
       title: 'Bem-vindo ao App!',
       description: 'Descubra uma nova experiência.',
       backgroundColor: Colors.blue,
     ),
     // Tela 2
     _OnboardingPage(
-      image: Icons.shopping_cart,
+      imagePath: 'assets/images/5.png',
       title: 'Compre o que quiser',
       description: 'Explore nossas ofertas exclusivas.',
       backgroundColor: Colors.purple,
     ),
     // Tela 3
     _OnboardingPage(
-      image: Icons.local_offer,
+      imagePath: 'assets/images/5.png',
       title: 'Descontos incríveis',
       description: 'Aproveite promoções diárias.',
       backgroundColor: Colors.orange,
     ),
     // Tela 4
     _OnboardingPage(
-      image: Icons.credit_card,
+      imagePath: 'assets/images/5.png',
       title: 'Pagamento seguro',
       description: 'Sua segurança é nossa prioridade.',
       backgroundColor: Colors.green,
     ),
     // Tela 5
     _OnboardingPage(
-      image: Icons.check_circle,
+      imagePath: 'assets/images/5.png',
       title: 'Pronto para começar!',
       description: 'Vamos fazer o seu login.',
       backgroundColor: Colors.teal,
@@ -82,13 +82,13 @@ class OnboardingScreen extends StatelessWidget {
 
 // Widget auxiliar para cada página do carrossel
 class _OnboardingPage extends StatelessWidget {
-  final IconData image;
+  final String imagePath;
   final String title;
   final String description;
   final Color backgroundColor;
 
   const _OnboardingPage({
-    required this.image,
+    required this.imagePath,
     required this.title,
     required this.description,
     required this.backgroundColor,
@@ -102,7 +102,12 @@ class _OnboardingPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(image, size: 120, color: Colors.white),
+            Image.asset(
+              imagePath, // Usamos Image.asset com o caminho fornecido
+              width: 200, // Defina a largura desejada para a imagem
+              height: 200, // Defina a altura desejada para a imagem
+              fit: BoxFit.contain, // Ajuste como a imagem se encaixa no espaço
+            ),
             const SizedBox(height: 24),
             Text(
               title,
