@@ -1,6 +1,7 @@
 // primary_button.dart
 
 import 'package:flutter/material.dart';
+import 'package:app/src/core/theme/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
   // O texto que aparecerá no botão.
@@ -20,9 +21,9 @@ class PrimaryButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           // Define a cor de fundo do botão.
-          backgroundColor: Colors.pink.shade400,
+          backgroundColor: AppColors.depperPink,
           // Define a cor do texto do botão.
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.lightPink,
           // Define o padding interno do botão.
           padding: const EdgeInsets.symmetric(vertical: 16),
           // Borda arredondada do botão.
