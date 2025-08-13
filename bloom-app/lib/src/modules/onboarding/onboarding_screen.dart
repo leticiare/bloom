@@ -1,12 +1,11 @@
-// onboarding_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/src/modules/auth/login_screen.dart';
-import 'package:app/src/core/theme/app_colors.dart'; // Importe sua tela de login
+import 'package:app/src/core/theme/app_colors.dart';
+import 'package:app/src/shared/widgets/primary_button.dart'; // Importe sua tela de login
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -45,7 +44,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   Widget build(BuildContext context) {
     // A sua lista de telas de onboarding
-    final List<Widget> _pages = [
+    final List<Widget> pages = [
       // ... (suas 5 telas _OnboardingPage com imagePath, title, etc) ...
       // Exemplo:
       _OnboardingPage(
@@ -91,13 +90,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       // ... As outras 3 telas
     ];
 
-    final bool _isLastPage = _currentPageIndex == _pages.length - 1;
+    final bool isLastPage = _currentPageIndex == pages.length - 1;
 
     return Scaffold(
       body: Stack(
         children: [
           // O carrossel de páginas
-          PageView(controller: _pageController, children: _pages),
+          PageView(controller: _pageController, children: pages),
 
           // Animação de arrastar: aparece SOMENTE na primeira tela
           if (_currentPageIndex == 0)
@@ -130,12 +129,13 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             ),
 
           // O botão: aparece SOMENTE na última tela
-          if (_isLastPage)
+          if (isLastPage)
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 40.0),
-                child: ElevatedButton(
+                child: PrimaryButton(
+                  text: 'Começar',
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     await prefs.setBool('onboarding_completed', true);
@@ -146,7 +146,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                       ),
                     );
                   },
-                  child: const Text('Pular ou Começar'),
                 ),
               ),
             ),

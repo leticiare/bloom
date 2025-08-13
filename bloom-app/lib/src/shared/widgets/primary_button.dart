@@ -16,7 +16,6 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       // SizedBox garante que o botão tenha a largura máxima disponível.
-      width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           // Define a cor de fundo do botão.
@@ -24,7 +23,7 @@ class PrimaryButton extends StatelessWidget {
           // Define a cor do texto do botão.
           foregroundColor: AppColors.lightPink,
           // Define o padding interno do botão.
-          padding: const EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 30),
           // Borda arredondada do botão.
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
