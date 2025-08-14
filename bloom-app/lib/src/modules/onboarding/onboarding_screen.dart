@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/src/modules/auth/login/login_screen.dart';
 import 'package:app/src/core/theme/app_colors.dart';
-import 'package:app/src/shared/widgets/primary_button.dart'; // Importe sua tela de login
+import 'package:app/src/shared/widgets/primary_button.dart';
+import 'package:app/src/modules/auth/create_account/persona_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -90,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       // ... As outras 3 telas
     ];
 
-    final bool isLastPage = _currentPageIndex == pages.length - 1;
+    final bool _isLastPage = _currentPageIndex == pages.length - 1;
 
     return Scaffold(
       body: Stack(
@@ -129,23 +131,67 @@ class _OnboardingScreenState extends State<OnboardingScreen>
             ),
 
           // O botão: aparece SOMENTE na última tela
-          if (isLastPage)
-            Align(
-              alignment: Alignment.bottomCenter,
+          if (_isLastPage)
+            Positioned(
+              bottom: 40,
+              left: 0,
+              right: 0,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 40.0),
-                child: PrimaryButton(
-                  text: 'Começar',
-                  onPressed: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.setBool('onboarding_completed', true);
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Column(
+                  children: [
+                    // Botão para ir para a tela de Cadastro
+                    PrimaryButton(
+                      text: 'Começar',
+                      onPressed: () async {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('onboarding_completed', true);
 
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const PersonaScreen(),
+                          ), // Redireciona para o cadastro
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    // Texto com link clicável
+                    RichText(
+                      text: TextSpan(
+                        text: 'Já tem uma conta? ',
+                        style: TextStyle(
+                          color: AppColors.mediumPink,
+                          fontSize: 16,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Entrar',
+                            style: const TextStyle(
+                              color: AppColors.depperPink,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration
+                                  .underline, // Adiciona sublinhado
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                await prefs.setBool(
+                                  'onboarding_completed',
+                                  true,
+                                );
+
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginScreen(),
+                                  ),
+                                );
+                              },
+                          ),
+                        ],
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 ),
               ),
             ),
