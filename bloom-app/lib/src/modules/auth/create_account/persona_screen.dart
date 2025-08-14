@@ -1,27 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:app/src/modules/auth/create_account/new_doctor_screen.dart'; // Importe a tela de destino
+import 'package:app/src/modules/auth/create_account/new_pregnant_screen.dart'; // Importe a tela de destino
 import 'package:app/src/core/theme/app_colors.dart';
 
-// Enum para rastrear qual seção está ativa (expandida)
 enum Persona { pregnant, doctor, none }
-
-// Tela de formulário (apenas um placeholder)
-class FormScreen extends StatelessWidget {
-  final String persona;
-  const FormScreen({super.key, required this.persona});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Formulário de Cadastro')),
-      body: Center(
-        child: Text(
-          'Formulário para: $persona',
-          style: const TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
 
 class PersonaScreen extends StatefulWidget {
   const PersonaScreen({super.key});
@@ -32,34 +14,38 @@ class PersonaScreen extends StatefulWidget {
 
 class _PersonaScreenState extends State<PersonaScreen> {
   Persona _activePersona = Persona.none;
-  final double _titleHeight = 120.0; // Altura aproximada do título e padding
+  final double _titleHeight = 120.0;
 
-  void _handleTap(Persona persona) {
-    if (_activePersona == persona) {
-      String personaName = (persona == Persona.pregnant)
-          ? 'Gestante'
-          : 'Médico';
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => FormScreen(persona: personaName),
-        ),
-      );
-    } else {
+  void _handleSingleTap(Persona persona) {
+    // Altera o tamanho da seção apenas se não for a seção já ativa
+    if (_activePersona != persona) {
       setState(() {
         _activePersona = persona;
       });
     }
   }
 
+  void _handleDoubleTap(Persona persona) {
+    // Redireciona para a tela de destino com base na persona
+    if (persona == Persona.pregnant) {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const NewPregnantScreen()),
+      );
+    } else if (persona == Persona.doctor) {
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => const NewDoctorScreen()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          AppColors.lightPink, // Cor de fundo para um bom contraste
+      backgroundColor: AppColors.lightPink,
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            // Título no topo da tela com a cor do texto alterada
+            // Título
             SizedBox(
               height: _titleHeight,
               child: const Center(
@@ -70,7 +56,7 @@ class _PersonaScreenState extends State<PersonaScreen> {
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.boldPink, // Cor do texto alterada aqui
+                      color: AppColors.boldPink,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -78,7 +64,7 @@ class _PersonaScreenState extends State<PersonaScreen> {
               ),
             ),
 
-            // LayoutBuilder para calcular o espaço disponível para as seções
+            // LayoutBuilder para o cálculo de altura
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -87,7 +73,6 @@ class _PersonaScreenState extends State<PersonaScreen> {
                   double pregnantSectionHeight;
                   double doctorSectionHeight;
 
-                  // Lógica para determinar a altura de cada seção
                   if (_activePersona == Persona.pregnant) {
                     pregnantSectionHeight = availableHeight * 0.75;
                     doctorSectionHeight = availableHeight * 0.25;
@@ -95,30 +80,31 @@ class _PersonaScreenState extends State<PersonaScreen> {
                     pregnantSectionHeight = availableHeight * 0.25;
                     doctorSectionHeight = availableHeight * 0.75;
                   } else {
-                    // Estado inicial: 50/50
                     pregnantSectionHeight = availableHeight * 0.5;
                     doctorSectionHeight = availableHeight * 0.5;
                   }
 
                   return Column(
                     children: [
-                      // Seção da Gestante
                       _buildPersonaSection(
                         persona: Persona.pregnant,
                         title: 'Sou Gestante',
                         imagePath: 'assets/images/pregnant.png',
-                        defaultColor: AppColors.mediumPink,
-                        activeColor: AppColors.boldPink,
+                        defaultColor: AppColors.darkerPink,
+                        activeColor: AppColors.darkerPink,
                         height: pregnantSectionHeight,
+                        onTap: () => _handleSingleTap(Persona.pregnant),
+                        onDoubleTap: () => _handleDoubleTap(Persona.pregnant),
                       ),
-                      // Seção do Médico
                       _buildPersonaSection(
                         persona: Persona.doctor,
                         title: 'Sou Médico',
                         imagePath: 'assets/images/doctor.png',
-                        defaultColor: AppColors.darkerPink,
-                        activeColor: AppColors.depperPink,
+                        defaultColor: AppColors.mediumPink,
+                        activeColor: AppColors.boldPink,
                         height: doctorSectionHeight,
+                        onTap: () => _handleSingleTap(Persona.doctor),
+                        onDoubleTap: () => _handleDoubleTap(Persona.doctor),
                       ),
                     ],
                   );
@@ -131,7 +117,6 @@ class _PersonaScreenState extends State<PersonaScreen> {
     );
   }
 
-  // Widget auxiliar para construir cada seção com altura animada
   Widget _buildPersonaSection({
     required Persona persona,
     required String title,
@@ -139,17 +124,20 @@ class _PersonaScreenState extends State<PersonaScreen> {
     required Color defaultColor,
     required Color activeColor,
     required double height,
+    required VoidCallback onTap,
+    required VoidCallback onDoubleTap,
   }) {
     final bool isActive = _activePersona == persona;
     final color = isActive ? activeColor : defaultColor;
 
     return GestureDetector(
-      onTap: () => _handleTap(persona),
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
         width: double.infinity,
-        height: height, // Altura é animada aqui!
+        height: height,
         color: color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
