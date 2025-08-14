@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app/src/modules/auth/login_screen.dart';
+import 'package:app/src/modules/auth/login/login_screen.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 import 'package:app/src/shared/widgets/primary_button.dart'; // Importe sua tela de login
 
