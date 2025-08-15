@@ -23,12 +23,36 @@ class RequisicaoAgendarExame(BaseModel):
     )
 
 
+class RequisicaoRealizarExame(BaseModel):
+    id: str = Field(
+        ...,
+        description="UUID do exame a ser realizado na versão 4",
+        examples=["123e4567-e89b-12d3-a456-426614174000"],
+    )
+    data_realizacao: datetime | None = Field(
+        ...,
+        description="Data e hora da realização no formato ISO 8601",
+        examples=[datetime.now()],
+    )
+
+
 @router.put("/agendar", tags=["Exames"])
 def agendar_exame(requisicao: RequisicaoAgendarExame):
     """Agendar um exame da gestante."""
     return JSONResponse(
         content=controlador.agendar_exame(
             data_agendamento=requisicao.data_agendamento, exame_id=requisicao.id
+        ),
+        status_code=200,
+    )
+
+
+@router.put("/realizar", tags=["Exames"])
+def realizar_exame(requisicao: RequisicaoRealizarExame):
+    """Realizar um exame da gestante."""
+    return JSONResponse(
+        content=controlador.realizar_exame(
+            exame_id=requisicao.id, data_realizacao=requisicao.data_realizacao
         ),
         status_code=200,
     )
