@@ -105,3 +105,20 @@ class ControladorExame:
             mensagem = str(e).replace("Evento", "Exame")
 
             raise HTTPException(status_code=400, detail=mensagem)
+
+    def cancelar_exame(self, exame_id: str):
+        try:
+            exame = self._repositorio.obter_por_id(exame_id)
+
+            if exame is None:
+                raise HTTPException(status_code=404, detail="Exame não encontrado")
+
+            exame.cancelar()
+
+            self._repositorio.atualizar(exame)
+            dto = ExameDto.criar(exame)
+            return dto.para_dicionario()
+        except StatusEventoError as e:
+            mensagem = str(e).replace("Evento", "Exame")
+
+            raise HTTPException(status_code=400, detail=mensagem)

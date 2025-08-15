@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Path
 from pydantic import BaseModel, Field
 
 from controllers.ControladorExame import ControladorExame
@@ -36,9 +36,21 @@ class RequisicaoRealizarExame(BaseModel):
     )
 
 
+class RequisicaoCancelarExame(BaseModel):
+    id: str = Field(
+        ...,
+        description="UUID do exame a ser cancelado na versão 4",
+        examples=["123e4567-e89b-12d3-a456-426614174000"],
+    )
+
+
 @router.get("/{gestante_id}", tags=["Exames"])
 def listar_exames(
-    gestante_id: str = Query(..., description="UUID da gestante na versão 4"),
+    gestante_id: str = Path(
+        ...,
+        description="UUID da gestante na versão 4",
+        example="123e4567-e89b-12d3-a456-426614174000",
+    ),
     data_inicio: datetime | None = Query(
         None, description="Data início no formato ISO 8601"
     ),
@@ -57,7 +69,11 @@ def listar_exames(
 
 @router.get("/agendados/{gestante_id}", tags=["Exames"])
 def listar_exames_agendados(
-    gestante_id: str = Query(..., description="UUID da gestante na versão 4"),
+    gestante_id: str = Path(
+        ...,
+        description="UUID da gestante na versão 4",
+        example="123e4567-e89b-12d3-a456-426614174000",
+    ),
 ):
     """Listar todos os exames agendados da gestante."""
     return JSONResponse(
@@ -68,7 +84,11 @@ def listar_exames_agendados(
 
 @router.get("/nao-agendados/{gestante_id}", tags=["Exames"])
 def listar_exames_nao_agendados(
-    gestante_id: str = Query(..., description="UUID da gestante na versão 4"),
+    gestante_id: str = Path(
+        ...,
+        description="UUID da gestante na versão 4",
+        example="123e4567-e89b-12d3-a456-426614174000",
+    ),
 ):
     """Listar todos os exames não agendados da gestante."""
     return JSONResponse(
@@ -95,5 +115,14 @@ def realizar_exame(requisicao: RequisicaoRealizarExame):
         content=controlador.realizar_exame(
             exame_id=requisicao.id, data_realizacao=requisicao.data_realizacao
         ),
+        status_code=200,
+    )
+
+
+@router.put("/cancelar", tags=["Exames"])
+def cancelar_exame(requisicao: RequisicaoCancelarExame):
+    """Cancela um exame agendado da gestante."""
+    return JSONResponse(
+        content=controlador.cancelar_exame(exame_id=requisicao.id),
         status_code=200,
     )
