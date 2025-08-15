@@ -38,7 +38,7 @@ class RequisicaoRealizarExame(BaseModel):
 
 @router.get("/{gestante_id}", tags=["Exames"])
 def listar_exames(
-    gestante_id: str,
+    gestante_id: str = Query(..., description="UUID da gestante na versão 4"),
     data_inicio: datetime | None = Query(
         None, description="Data início no formato ISO 8601"
     ),
@@ -56,7 +56,9 @@ def listar_exames(
 
 
 @router.get("/agendados/{gestante_id}", tags=["Exames"])
-def listar_exames_agendados(gestante_id: str):
+def listar_exames_agendados(
+    gestante_id: str = Query(..., description="UUID da gestante na versão 4"),
+):
     """Listar todos os exames agendados da gestante."""
     return JSONResponse(
         content=controlador.obter_exames_agendados(gestante_id=gestante_id),
@@ -65,7 +67,9 @@ def listar_exames_agendados(gestante_id: str):
 
 
 @router.get("/nao-agendados/{gestante_id}", tags=["Exames"])
-def listar_exames_nao_agendados(gestante_id: str):
+def listar_exames_nao_agendados(
+    gestante_id: str = Query(..., description="UUID da gestante na versão 4"),
+):
     """Listar todos os exames não agendados da gestante."""
     return JSONResponse(
         content=controlador.obter_exames_nao_agendados(gestante_id=gestante_id),
