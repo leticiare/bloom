@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
 from controllers.ControladorExame import ControladorExame
@@ -36,11 +36,22 @@ class RequisicaoRealizarExame(BaseModel):
     )
 
 
-@router.get("/", tags=["Exames"])
-def listar_exames(gestante_id: str):
-    """Listar todos os exames da gestante."""
+@router.get("/{gestante_id}", tags=["Exames"])
+def listar_exames(
+    gestante_id: str,
+    data_inicio: datetime | None = Query(
+        None, description="Data início no formato ISO 8601"
+    ),
+    data_fim: datetime | None = Query(None, description="Data fim no formato ISO 8601"),
+):
+    """Listar os exames da gestante. É possível passar um intervalo de datas como parâmetros na url."""
     return JSONResponse(
-        content=controlador.obter_todos(gestante_id=gestante_id), status_code=200
+        content=controlador.obter_todos(
+            gestante_id=gestante_id,
+            data_inicio=data_inicio,
+            data_fim=data_fim,
+        ),
+        status_code=200,
     )
 
 
