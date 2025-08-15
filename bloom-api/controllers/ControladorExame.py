@@ -106,6 +106,23 @@ class ControladorExame:
 
             raise HTTPException(status_code=400, detail=mensagem)
 
+    def remarcar_exame(self, exame_id: str, data_remarcacao: datetime):
+        try:
+            exame = self._repositorio.obter_por_id(exame_id)
+
+            if exame is None:
+                raise HTTPException(status_code=404, detail="Exame não encontrado")
+
+            exame.remarcar(data_agendamento=data_remarcacao)
+
+            self._repositorio.atualizar(exame)
+            dto = ExameDto.criar(exame)
+            return dto.para_dicionario()
+        except StatusEventoError as e:
+            mensagem = str(e).replace("Evento", "Exame")
+
+            raise HTTPException(status_code=400, detail=mensagem)
+
     def cancelar_exame(self, exame_id: str):
         try:
             exame = self._repositorio.obter_por_id(exame_id)

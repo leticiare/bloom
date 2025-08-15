@@ -119,6 +119,17 @@ def realizar_exame(requisicao: RequisicaoRealizarExame):
     )
 
 
+@router.put("/remarcar", tags=["Exames"])
+def remarcar_exame(requisicao: RequisicaoAgendarExame):
+    """Remarca um exame agendado da gestante."""
+    return JSONResponse(
+        content=controlador.remarcar_exame(
+            exame_id=requisicao.id, data_remarcacao=requisicao.data_agendamento
+        ),
+        status_code=200,
+    )
+
+
 @router.put("/cancelar", tags=["Exames"])
 def cancelar_exame(requisicao: RequisicaoCancelarExame):
     """Cancela um exame agendado da gestante."""
