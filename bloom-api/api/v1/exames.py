@@ -36,6 +36,32 @@ class RequisicaoRealizarExame(BaseModel):
     )
 
 
+@router.get("/", tags=["Exames"])
+def listar_exames(gestante_id: str):
+    """Listar todos os exames da gestante."""
+    return JSONResponse(
+        content=controlador.obter_todos(gestante_id=gestante_id), status_code=200
+    )
+
+
+@router.get("/agendados/{gestante_id}", tags=["Exames"])
+def listar_exames_agendados(gestante_id: str):
+    """Listar todos os exames agendados da gestante."""
+    return JSONResponse(
+        content=controlador.obter_exames_agendados(gestante_id=gestante_id),
+        status_code=200,
+    )
+
+
+@router.get("/nao-agendados/{gestante_id}", tags=["Exames"])
+def listar_exames_nao_agendados(gestante_id: str):
+    """Listar todos os exames não agendados da gestante."""
+    return JSONResponse(
+        content=controlador.obter_exames_nao_agendados(gestante_id=gestante_id),
+        status_code=200,
+    )
+
+
 @router.put("/agendar", tags=["Exames"])
 def agendar_exame(requisicao: RequisicaoAgendarExame):
     """Agendar um exame da gestante."""

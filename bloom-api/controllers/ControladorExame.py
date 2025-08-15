@@ -1,5 +1,6 @@
 from datetime import datetime
 from controllers.dto.ExameDto import ExameDto
+from domain.entities.EventoAgenda import StatusEvento
 from domain.errors.evento_agenda import StatusEventoError
 from infra.repositories.RepositorioExame import RepositorioExame
 from fastapi import HTTPException
@@ -8,6 +9,29 @@ from fastapi import HTTPException
 class ControladorExame:
     def __init__(self):
         self._repositorio: RepositorioExame = RepositorioExame()
+
+    def obter_todos(self, gestante_id: str):
+        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        lista_exames = [ExameDto.criar(exame).para_dicionario() for exame in exames]
+        return lista_exames
+
+    def obter_exames_agendados(self, gestante_id: str):
+        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        lista_exames = [
+            ExameDto.criar(exame).para_dicionario()
+            for exame in exames
+            if exame.status == StatusEvento.AGENDADO
+        ]
+        return lista_exames
+
+    def obter_exames_nao_agendados(self, gestante_id: str):
+        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        lista_exames = [
+            ExameDto.criar(exame).para_dicionario()
+            for exame in exames
+            if exame.status != StatusEvento.AGENDADO
+        ]
+        return lista_exames
 
     def agendar_exame(self, exame_id: str, data_agendamento: datetime):
         try:
