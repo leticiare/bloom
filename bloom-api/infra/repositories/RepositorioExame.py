@@ -29,3 +29,26 @@ class RepositorioExame:
         except Exception as e:
             print(f"Erro ao inserir exame: {e}")
             raise e
+
+    def atualizar(self, exame: Exame):
+        try:
+            sql = SQL("""
+                UPDATE {tabela}
+                SET status = %s, data_agendamento = %s, data_realizacao = %s, item_plano_pre_natal_id = %s, tipo = %s
+                WHERE id = %s
+            """).format(tabela=Identifier(self._tabela))
+
+            self._conexao.executar_sql(
+                sql=sql,
+                parametros=(
+                    exame.status.value,
+                    exame.data_agendamento,
+                    exame.data_realizacao,
+                    exame.info_plano.id,
+                    exame.tipo,
+                    exame.id,
+                ),
+            )
+        except Exception as e:
+            print(f"Erro ao atualizar exame: {e}")
+            raise e
