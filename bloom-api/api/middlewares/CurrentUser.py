@@ -25,3 +25,15 @@ async def get_current_user(
             detail="Token inválido ou expirado",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+
+def perfil_autorizado(allowed_roles: list[str]):
+    def wrapper(current_user: dict = Depends(get_current_user)):
+        if current_user.get("perfil") not in allowed_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Você não tem permissão para acessar esta rota",
+            )
+        return current_user
+
+    return wrapper

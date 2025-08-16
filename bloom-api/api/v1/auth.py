@@ -4,7 +4,7 @@ from domain.entities.entidade_usuario import Usuario
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
-from ..middlewares.CurrentUser import get_current_user
+from ..middlewares.CurrentUser import get_current_user, perfil_autorizado
 
 router = APIRouter()
 
@@ -26,5 +26,5 @@ async def login(usuario_input: Usuario):
 
 
 @router.get("/perfil")
-async def perfil(current_user: dict = Depends(get_current_user)):
+async def perfil(current_user: dict = Depends(perfil_autorizado(["gestante"]))):
     return {"email": current_user.get("email"), "perfil": current_user.get("perfil")}
