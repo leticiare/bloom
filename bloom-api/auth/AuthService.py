@@ -49,5 +49,22 @@ class ServicoAutenticacao:
         await RepositorioUsuario().inserir_usuario(usuario)
         return {"msg": "Usuário criado com sucesso"}
 
+    @classmethod
+    async def login(cls, usuario: Usuario):
+        usuario_encontrado: Usuario = (
+            await RepositorioUsuario().buscar_usuario_por_email(usuario.email)
+        )
+        logger.debug(usuario.senha)
+
+        logger.debug(f"encontrado: {usuario_encontrado}")
+        if not usuario_encontrado or not cls._verificar_senha(
+            usuario.senha, usuario_encontrado.senha
+        ):
+            raise ValueError("Usuário ou senha incorretos")
+
+        dados_usuario = {"email": usuario.email, "perfil": usuario.perfil}
+        token = cls._gerar_token_acesso(dados_usuario, timedelta(minutes=30))
+        return {"jwt_token": token}
+
 
 autenticacao = ServicoAutenticacao()
