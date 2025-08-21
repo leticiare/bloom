@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Seu App',
+      title: 'Bloom',
       theme: ThemeData(primarySwatch: Colors.blue),
       // A tela inicial agora será sempre o OnboardingScreen
       home: onboardingCompleted ? const LoginScreen() : OnboardingScreen(),

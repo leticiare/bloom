@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:app/src/shared/widgets/primary_button.dart'; // Mantém seu botão primário
-import 'package:app/src/modules/home/homepage.dart'; // Importa a nova tela HomePage
+import 'package:app/main_screen.dart'; // Importa a nova tela HomePage
 
 // Importe suas cores personalizadas se necessário.
 // Ex: import 'package:app/src/core/theme/app_colors.dart';
@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _passwordController.text == testPassword) {
         // Login bem-sucedido: Navegar para a HomePage
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => MainScreen()),
         );
       } else {
         // Credenciais inválidas: Exibir mensagem de erro
