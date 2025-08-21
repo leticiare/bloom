@@ -1,54 +1,35 @@
-/app
-│
-├── /auth    
-├── /api                      # Controllers e rotas (View + Controller)
-│   ├── /v1
-│   │   ├── vacinas.py
-│   │   ├── consultas.py
-│   │   └── ...
-│   └── deps.py               # Dependências globais (ex: get_db, get_current_user)
-│
-├── /infra                   # Implementações técnicas (db, mensageria, etc.)
-│   ├── /db
-├   |── /schemas                 # Pydantic (Request/Response DTOs)
-|   │   ├── vacina.py
-|   │   ├── consulta.py
-|   │   └── ..
-│   │  
-│   ├── session.py
-│   └── repositories/
-│   │       └── vacina_repo_impl.py
-│   ├── /notifications       
-│   └── /logging             
-│
-├── /controllers          # Controladores MVC para cada serviço
-│   ├── VacinasController.py
-│   ├── ConsultasController.py
-│   ├── ExamesController.py
-│   ├── ForumController.py
-│   ├── ConteudoController.py
-│   └── RelatorioController.py
-│
-├── /models               # Modelos (ORM ou validações de dados)
-│   ├── Vacina.js
-│   ├── Consulta.js
-│   ├── Exame.js
-│   ├── PostForum.js
-│   ├── Conteudo.js
-│   └── Relatorio.js
-│
-├── /repositories         # Repositórios para acesso a dados (DAO ou ORM)
-│   ├── VacinasRepository.py
-│   ├── ConsultasRepository.py
-│   ├── ExamesRepository.py
-│   ├── ForumRepository.py
-│   ├── ConteudoRepository.py
-│   └── RelatorioRepository.py
-│
-├── /tests                   # Testes unitários e de integração
-│   ├── domain/
-│   ├── api/
-│   └── infra/
-│
-├── main.py                  # Entry point FastAPI
-└── requirements.txt
+### Pré-requisitos
+
+Certifique-se de que você tem as seguintes ferramentas instaladas na sua máquina:
+
+* [Flutter SDK](https://flutter.dev/docs/get-started/install) (versão 3.x.x ou superior recomendada)
+* Um editor de código, como o [VS Code](https://code.visualstudio.com/) ou [Android Studio](https://developer.android.com/studio)
+
+### Como Configurar
+
+1.  Clone este repositório para o seu computador:
+    ```bash
+    git clone [https://docs.github.com/articles/referencing-and-citing-content](https://docs.github.com/articles/referencing-and-citing-content)
+    ```
+2.  Navegue até a pasta do projeto:
+    ```bash
+    cd [nome-do-seu-projeto]
+    ```
+3.  Instale as dependências do projeto:
+    ```bash
+    flutter pub get
+    ```
+
+### Como Rodar o Projeto
+
+1.  Conecte um dispositivo físico ou inicie um emulador (iOS ou Android).
+2.  Execute o app a partir do terminal:
+    ```bash
+    flutter run
+    ```
+    Ou, se preferir, use as opções de "Run and Debug" da sua IDE.
+
+### Estrutura do Projeto
+
+* `lib/`: Contém todo o código-fonte Dart do aplicativo.
+* `assets/`: Contém os arquivos de imagem, fontes e outros recursos do projeto.
