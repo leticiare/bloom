@@ -1,6 +1,7 @@
 from typing import List, Tuple, Union
 import psycopg2
 from psycopg2.sql import SQL, Composable
+from infra.logger.logger import logger
 
 
 class ConexaoBancoDados:
@@ -37,7 +38,12 @@ class ConexaoBancoDados:
             options=f"-c search_path={schema}",
         )
 
-    def executar_sql(self, sql: Union[str, SQL, Composable], parametros: Union[Tuple, List, None] = None, possui_resultado: bool = False) -> list | None:
+    def executar_sql(
+        self,
+        sql: Union[str, SQL, Composable],
+        parametros: Union[Tuple, List, None] = None,
+        possui_resultado: bool = False,
+    ) -> list | None:
         resultado = None
 
         try:
@@ -48,7 +54,7 @@ class ConexaoBancoDados:
             cursor.close()
             self.conexao.commit()
         except Exception as e:
-            print(f"Erro ao executar query: {e}")
+            logger.error(f"Erro ao executar query: {e}")
             self.conexao.rollback()
             raise e
 
