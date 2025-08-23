@@ -9,6 +9,10 @@ from domain.errors.evento_agenda import (
 )
 
 
+class TipoEventoAgenda(Enum):
+    EXAME = "exame"
+
+
 class StatusEvento(Enum):
     PENDENTE = "pendente"
     AGENDADO = "agendado"
