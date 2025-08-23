@@ -1,4 +1,6 @@
+from typing import List, Tuple, Union
 import psycopg2
+from psycopg2.sql import SQL, Composable
 
 
 class ConexaoBancoDados:
@@ -35,12 +37,12 @@ class ConexaoBancoDados:
             options=f"-c search_path={schema}",
         )
 
-    def executar_sql(self, sql: str, possui_resultado: bool = False):
+    def executar_sql(self, sql: Union[str, SQL, Composable], parametros: Union[Tuple, List, None] = None, possui_resultado: bool = False) -> list | None:
         resultado = None
 
         try:
             cursor = self.conexao.cursor()
-            cursor.execute(sql)
+            cursor.execute(sql, parametros)
             if possui_resultado:
                 resultado = cursor.fetchall()
             cursor.close()
@@ -48,6 +50,6 @@ class ConexaoBancoDados:
         except Exception as e:
             print(f"Erro ao executar query: {e}")
             self.conexao.rollback()
-            return None
+            raise e
 
         return resultado
