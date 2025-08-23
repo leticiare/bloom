@@ -1,7 +1,6 @@
+from api.v1 import auth, check_status
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-import infra.db.iniciar_db
 from infra.logger.logger import logger
 from api.v1 import check_status, exames
 from api.v1.middlewares import FormatadorRespostaHttpMiddleware
@@ -29,6 +28,8 @@ app.include_router(
     tags=["Check connection"],
 )
 app.include_router(exames.router, prefix="/api/exames", tags=["Exames"])
+
+app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 
 
 @app.on_event("startup")

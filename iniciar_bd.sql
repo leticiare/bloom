@@ -23,7 +23,7 @@ CREATE TABLE plano_pre_natal (
 -- Tabela: usuario
 CREATE TABLE usuario (
     email VARCHAR(100) PRIMARY KEY,
-    senha VARCHAR(32) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
     criado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     perfil usuario_perfil NOT NULL
