@@ -2,43 +2,14 @@ from datetime import datetime
 from controllers.dto.ExameDto import ExameDto
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
 from domain.errors.evento_agenda import StatusEventoError
+from domain.FiltroEventoAgenda import FiltroEventoAgenda
 from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
 from fastapi import HTTPException
-from typing import List
 
 
 class ControladorExame:
     def __init__(self):
         self._repositorio: RepositorioEventoAgenda = RepositorioEventoAgenda()
-
-    def _filtrar_exames_por_intervalo(
-        self,
-        exames: List[ExameDto],
-        data_inicio: datetime | None,
-        data_fim: datetime | None,
-    ):
-        if data_inicio is None and data_fim is None:
-            return exames
-
-        def filtro(exame: ExameDto):
-            """Realiza a filtragem com base em qualquer uma das datas"""
-            datas = [exame.data_agendamento, exame.data_realizacao]
-            for data in datas:
-                if data is not None:
-                    # Filtra se está entre o intervalo
-                    if data_inicio and data_fim:
-                        return data_inicio <= data <= data_fim
-
-                    # Filtra apenas se for maior que a data de início
-                    if data_inicio:
-                        return data >= data_inicio
-
-                    # Filtra apenas se for menor que a data de fim
-                    if data_fim:
-                        return data <= data_fim
-            return False
-
-        return filter(filtro, exames)
 
     def obter_todos(
         self, gestante_id: str, data_inicio: datetime | None, data_fim: datetime | None
@@ -46,36 +17,35 @@ class ControladorExame:
         exames = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
         )
-        lista_exames = [ExameDto.criar(exame) for exame in exames]
 
         if data_inicio or data_fim:
-            lista_exames = self._filtrar_exames_por_intervalo(
-                exames=lista_exames, data_inicio=data_inicio, data_fim=data_fim
+            exames = FiltroEventoAgenda.filtar_por_intervalo_data(
+                eventos=exames, data_inicio=data_inicio, data_fim=data_fim
             )
 
-        return [exame.para_dicionario() for exame in lista_exames]
+        return [ExameDto.criar(exame).para_dicionario() for exame in exames]
 
     def obter_exames_agendados(self, gestante_id: str):
         exames = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
         )
-        lista_exames = [
-            ExameDto.criar(exame).para_dicionario()
-            for exame in exames
-            if exame.status == StatusEvento.AGENDADO
-        ]
-        return lista_exames
+
+        lista_exames = FiltroEventoAgenda.filtrar_por_status(
+            eventos=exames, status=StatusEvento.AGENDADO
+        )
+
+        return [ExameDto.criar(exame).para_dicionario() for exame in lista_exames]
 
     def obter_exames_nao_agendados(self, gestante_id: str):
         exames = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
         )
-        lista_exames = [
-            ExameDto.criar(exame).para_dicionario()
-            for exame in exames
-            if exame.status != StatusEvento.AGENDADO
-        ]
-        return lista_exames
+
+        lista_exames = FiltroEventoAgenda.filtrar_por_status(
+            eventos=exames, status=StatusEvento.AGENDADO, comparacao="diferente"
+        )
+
+        return [ExameDto.criar(exame).para_dicionario() for exame in lista_exames]
 
     def agendar_exame(self, exame_id: str, data_agendamento: datetime):
         try:
