@@ -33,7 +33,6 @@ class RepositorioEventoAgenda:
         }
 
         entidade = FabricaEventoAgenda.criar_evento_agenda(dados=dados_entidade)
-        print("entidade mapeada: ", entidade)
         return entidade
 
     def _obter_sql_busca(self) -> str:

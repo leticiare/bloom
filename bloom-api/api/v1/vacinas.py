@@ -1,19 +1,19 @@
 from fastapi import APIRouter, Query, Path
 from pydantic import BaseModel, Field
 
-from controllers.ControladorExame import ControladorExame
+from controllers.ControladorVacina import ControladorVacina
 from datetime import datetime
 from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-controlador: ControladorExame = ControladorExame()
+controlador: ControladorVacina = ControladorVacina()
 
 
-class RequisicaoAgendarExame(BaseModel):
+class RequisicaoAgendarVacina(BaseModel):
     id: str = Field(
         ...,
-        description="UUID do exame a ser agendado na versão 4",
+        description="UUID do vacina a ser agendado na versão 4",
         examples=["123e4567-e89b-12d3-a456-426614174000"],
     )
     data_agendamento: datetime = Field(
@@ -23,10 +23,10 @@ class RequisicaoAgendarExame(BaseModel):
     )
 
 
-class RequisicaoRealizarExame(BaseModel):
+class RequisicaoAplicarVacina(BaseModel):
     id: str = Field(
         ...,
-        description="UUID do exame a ser realizado na versão 4",
+        description="UUID do vacina a ser aplicada na versão 4",
         examples=["123e4567-e89b-12d3-a456-426614174000"],
     )
     data_realizacao: datetime | None = Field(
@@ -36,16 +36,16 @@ class RequisicaoRealizarExame(BaseModel):
     )
 
 
-class RequisicaoCancelarExame(BaseModel):
+class RequisicaoCancelarVacina(BaseModel):
     id: str = Field(
         ...,
-        description="UUID do exame a ser cancelado na versão 4",
+        description="UUID do vacina a ser cancelada na versão 4",
         examples=["123e4567-e89b-12d3-a456-426614174000"],
     )
 
 
-@router.get("/{gestante_id}", tags=["Exames"])
-def listar_exames(
+@router.get("/{gestante_id}", tags=["Vacinas"])
+def listar_vacinas(
     gestante_id: str = Path(
         ...,
         description="UUID da gestante na versão 4",
@@ -56,7 +56,7 @@ def listar_exames(
     ),
     data_fim: datetime | None = Query(None, description="Data fim no formato ISO 8601"),
 ):
-    """Listar os exames da gestante. É possível passar um intervalo de datas como parâmetros na url."""
+    """Listar as vacinas da gestante. É possível passar um intervalo de datas como parâmetros na url."""
     return JSONResponse(
         content=controlador.obter_todos(
             gestante_id=gestante_id,
@@ -67,73 +67,73 @@ def listar_exames(
     )
 
 
-@router.get("/agendados/{gestante_id}", tags=["Exames"])
-def listar_exames_agendados(
+@router.get("/agendadas/{gestante_id}", tags=["Vacinas"])
+def listar_vacinas_agendadas(
     gestante_id: str = Path(
         ...,
         description="UUID da gestante na versão 4",
         example="123e4567-e89b-12d3-a456-426614174000",
     ),
 ):
-    """Listar todos os exames agendados da gestante."""
+    """Listar todas as vacinas agendadas da gestante."""
     return JSONResponse(
-        content=controlador.obter_exames_agendados(gestante_id=gestante_id),
+        content=controlador.obter_vacinas_agendadas(gestante_id=gestante_id),
         status_code=200,
     )
 
 
-@router.get("/pendentes/{gestante_id}", tags=["Exames"])
-def listar_exames_pendentes(
+@router.get("/pendentes/{gestante_id}", tags=["Vacinas"])
+def listar_vacinas_pendentes(
     gestante_id: str = Path(
         ...,
         description="UUID da gestante na versão 4",
         example="123e4567-e89b-12d3-a456-426614174000",
     ),
 ):
-    """Listar todos os exames pendentes da gestante."""
+    """Listar todas as vacinas pendentes da gestante."""
     return JSONResponse(
-        content=controlador.obter_exames_pendentes(gestante_id=gestante_id),
+        content=controlador.obter_vacinas_pendentes(gestante_id=gestante_id),
         status_code=200,
     )
 
 
-@router.put("/agendar", tags=["Exames"])
-def agendar_exame(requisicao: RequisicaoAgendarExame):
-    """Agendar um exame da gestante."""
+@router.put("/agendar", tags=["Vacinas"])
+def agendar_vacina(requisicao: RequisicaoAgendarVacina):
+    """Agendar uma vacina da gestante."""
     return JSONResponse(
-        content=controlador.agendar_exame(
-            data_agendamento=requisicao.data_agendamento, exame_id=requisicao.id
+        content=controlador.agendar_vacina(
+            data_agendamento=requisicao.data_agendamento, vacina_id=requisicao.id
         ),
         status_code=200,
     )
 
 
-@router.put("/realizar", tags=["Exames"])
-def realizar_exame(requisicao: RequisicaoRealizarExame):
-    """Realizar um exame da gestante."""
+@router.put("/aplicar", tags=["Vacinas"])
+def aplicar_vacina(requisicao: RequisicaoAplicarVacina):
+    """Aplicar uma vacina da gestante."""
     return JSONResponse(
-        content=controlador.realizar_exame(
-            exame_id=requisicao.id, data_realizacao=requisicao.data_realizacao
+        content=controlador.aplicar_vacina(
+            vacina_id=requisicao.id, data_realizacao=requisicao.data_realizacao
         ),
         status_code=200,
     )
 
 
-@router.put("/remarcar", tags=["Exames"])
-def remarcar_exame(requisicao: RequisicaoAgendarExame):
-    """Remarca um exame agendado da gestante."""
+@router.put("/remarcar", tags=["Vacinas"])
+def remarcar_vacina(requisicao: RequisicaoAgendarVacina):
+    """Remarca uma vacina agendada da gestante."""
     return JSONResponse(
-        content=controlador.remarcar_exame(
-            exame_id=requisicao.id, data_remarcacao=requisicao.data_agendamento
+        content=controlador.remarcar_vacina(
+            vacina_id=requisicao.id, data_remarcacao=requisicao.data_agendamento
         ),
         status_code=200,
     )
 
 
-@router.put("/cancelar", tags=["Exames"])
-def cancelar_exame(requisicao: RequisicaoCancelarExame):
-    """Cancela um exame agendado da gestante."""
+@router.put("/cancelar", tags=["Vacinas"])
+def cancelar_vacina(requisicao: RequisicaoCancelarVacina):
+    """Cancela uma vacina agendada da gestante."""
     return JSONResponse(
-        content=controlador.cancelar_exame(exame_id=requisicao.id),
+        content=controlador.cancelar_vacina(vacina_id=requisicao.id),
         status_code=200,
     )

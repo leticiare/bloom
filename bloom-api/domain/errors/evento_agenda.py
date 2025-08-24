@@ -4,24 +4,24 @@ class StatusEventoError(Exception):
 
 class EventoNaoEncontradoError(StatusEventoError):
     def __init__(self, id: str):
-        super().__init__(f"Exame não encontrado: {id}")
+        super().__init__(f"Evento não encontrado: {id}")
 
 
 class EventoJaRealizadoError(StatusEventoError):
     def __init__(self, id: str):
-        super().__init__(f"Exame já realizado: {id}")
+        super().__init__(f"Evento já realizado: {id}")
 
 
 class EventoJaAgendadoError(StatusEventoError):
     def __init__(self, id: str):
-        super().__init__(f"Exame já agendado: {id}")
+        super().__init__(f"Evento já agendado: {id}")
 
 
 class EventoJaCanceladoError(StatusEventoError):
     def __init__(self, id: str):
-        super().__init__(f"Exame já cancelado: {id}")
+        super().__init__(f"Evento já cancelado: {id}")
 
 
 class EventoSemDataAgendamentoError(StatusEventoError):
     def __init__(self, id: str):
-        super().__init__(f"Exame sem data de agendamento: {id}")
+        super().__init__(f"Evento sem data de agendamento: {id}")
