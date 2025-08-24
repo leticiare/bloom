@@ -1,15 +1,15 @@
 from datetime import datetime
 from controllers.dto.ExameDto import ExameDto
-from domain.entities.EventoAgenda import StatusEvento
+from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
 from domain.errors.evento_agenda import StatusEventoError
-from infra.repositories.RepositorioExame import RepositorioExame
+from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
 from fastapi import HTTPException
 from typing import List
 
 
 class ControladorExame:
     def __init__(self):
-        self._repositorio: RepositorioExame = RepositorioExame()
+        self._repositorio: RepositorioEventoAgenda = RepositorioEventoAgenda()
 
     def _filtrar_exames_por_intervalo(
         self,
@@ -43,7 +43,9 @@ class ControladorExame:
     def obter_todos(
         self, gestante_id: str, data_inicio: datetime | None, data_fim: datetime | None
     ):
-        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        exames = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
+        )
         lista_exames = [ExameDto.criar(exame) for exame in exames]
 
         if data_inicio or data_fim:
@@ -54,7 +56,9 @@ class ControladorExame:
         return [exame.para_dicionario() for exame in lista_exames]
 
     def obter_exames_agendados(self, gestante_id: str):
-        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        exames = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
+        )
         lista_exames = [
             ExameDto.criar(exame).para_dicionario()
             for exame in exames
@@ -63,7 +67,9 @@ class ControladorExame:
         return lista_exames
 
     def obter_exames_nao_agendados(self, gestante_id: str):
-        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        exames = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
+        )
         lista_exames = [
             ExameDto.criar(exame).para_dicionario()
             for exame in exames
