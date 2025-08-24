@@ -36,13 +36,13 @@ class FiltroEventoAgenda:
     @staticmethod
     def filtrar_por_status(
         eventos: List[EventoAgenda],
-        status: StatusEvento,
+        status: List[StatusEvento],
         comparacao: Literal["igual", "diferente"] = "igual",
     ):
-        if status is None:
+        if len(status) == 0:
             return eventos
 
         if comparacao == "diferente":
-            return [evento for evento in eventos if evento.status != status]
+            return [evento for evento in eventos if evento.status not in status]
 
-        return [evento for evento in eventos if evento.status == status]
+        return [evento for evento in eventos if evento.status in status]
