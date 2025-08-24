@@ -56,7 +56,9 @@ class ControladorExame:
         return [exame.para_dicionario() for exame in lista_exames]
 
     def obter_exames_agendados(self, gestante_id: str):
-        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        exames = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
+        )
         lista_exames = [
             ExameDto.criar(exame).para_dicionario()
             for exame in exames
@@ -65,7 +67,9 @@ class ControladorExame:
         return lista_exames
 
     def obter_exames_nao_agendados(self, gestante_id: str):
-        exames = self._repositorio.obter_todos_por_gestante(gestante_id=gestante_id)
+        exames = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
+        )
         lista_exames = [
             ExameDto.criar(exame).para_dicionario()
             for exame in exames
