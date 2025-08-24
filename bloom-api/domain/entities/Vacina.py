@@ -4,7 +4,7 @@ from domain.entities.EventoAgenda import EventoAgenda, StatusEvento, TipoEventoA
 from domain.entities.PlanoPreNatal import ItemPlanoPreNatal
 
 
-class Exame(EventoAgenda):
+class Vacina(EventoAgenda):
     def __init__(
         self,
         id: str,
@@ -18,6 +18,9 @@ class Exame(EventoAgenda):
             data_agendamento=data_agendamento,
             data_realizacao=data_realizacao,
             status=status,
-            tipo=TipoEventoAgenda.EXAME,
+            tipo=TipoEventoAgenda.VACINA,
         )
         self.info_plano = info_plano
+
+    def aplicar(self, data_realizacao: datetime | None = None):
+        return super().realizar(data_realizacao)

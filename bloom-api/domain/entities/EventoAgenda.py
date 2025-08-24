@@ -11,6 +11,7 @@ from domain.errors.evento_agenda import (
 
 class TipoEventoAgenda(Enum):
     EXAME = "exame"
+    VACINA = "vacina"
 
 
 class StatusEvento(Enum):
@@ -27,7 +28,7 @@ class EventoAgenda:
         status: StatusEvento,
         data_agendamento: datetime | None,
         data_realizacao: datetime | None,
-        tipo: str,
+        tipo: TipoEventoAgenda,
     ):
         self.id = id
         self.status = StatusEvento(status)
