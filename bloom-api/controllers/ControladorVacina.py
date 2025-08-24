@@ -36,13 +36,13 @@ class ControladorVacina:
 
         return [VacinaDto.criar(vacina).para_dicionario() for vacina in lista_vacinas]
 
-    def obter_vacinas_nao_agendadas(self, gestante_id: str):
+    def obter_vacinas_pendentes(self, gestante_id: str):
         vacinas = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.VACINA
         )
 
         lista_vacinas = FiltroEventoAgenda.filtrar_por_status(
-            eventos=vacinas, status=StatusEvento.AGENDADO, comparacao="diferente"
+            eventos=vacinas, status=[StatusEvento.PENDENTE, StatusEvento.CANCELADO]
         )
 
         return [VacinaDto.criar(vacina).para_dicionario() for vacina in lista_vacinas]

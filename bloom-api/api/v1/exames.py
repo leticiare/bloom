@@ -82,17 +82,17 @@ def listar_exames_agendados(
     )
 
 
-@router.get("/nao-agendados/{gestante_id}", tags=["Exames"])
-def listar_exames_nao_agendados(
+@router.get("/pendentes/{gestante_id}", tags=["Exames"])
+def listar_exames_pendentes(
     gestante_id: str = Path(
         ...,
         description="UUID da gestante na versão 4",
         example="123e4567-e89b-12d3-a456-426614174000",
     ),
 ):
-    """Listar todos os exames não agendados da gestante."""
+    """Listar todos os exames pendentes da gestante."""
     return JSONResponse(
-        content=controlador.obter_exames_nao_agendados(gestante_id=gestante_id),
+        content=controlador.obter_exames_pendentes(gestante_id=gestante_id),
         status_code=200,
     )
 

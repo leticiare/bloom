@@ -82,17 +82,17 @@ def listar_vacinas_agendadas(
     )
 
 
-@router.get("/nao-agendadas/{gestante_id}", tags=["Vacinas"])
-def listar_vacinas_nao_agendadas(
+@router.get("/pendentes/{gestante_id}", tags=["Vacinas"])
+def listar_vacinas_pendentes(
     gestante_id: str = Path(
         ...,
         description="UUID da gestante na versão 4",
         example="123e4567-e89b-12d3-a456-426614174000",
     ),
 ):
-    """Listar todas as vacinas não agendadas da gestante."""
+    """Listar todas as vacinas pendentes da gestante."""
     return JSONResponse(
-        content=controlador.obter_vacinas_nao_agendadas(gestante_id=gestante_id),
+        content=controlador.obter_vacinas_pendentes(gestante_id=gestante_id),
         status_code=200,
     )
 
