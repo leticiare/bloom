@@ -1,25 +1,33 @@
 from auth.AuthService import autenticacao
-from controllers.dto.UsuarioDTO import UsuarioDTO
-from domain.entities.entidade_usuario import Usuario
+from controllers.dto.GestanteDto import GestanteDTO
+from controllers.dto.ProfissionalDto import ProfissionalDTO
+from controllers.dto.UsuarioDto import UsuarioDTO
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
 
-from ..middlewares.CurrentUser import get_current_user, perfil_autorizado
+from ..middlewares.CurrentUser import perfil_autorizado
 
 router = APIRouter()
 
 
-@router.post("/registro")
-async def registrar(usuario: UsuarioDTO):
-    usuario = Usuario(email=usuario.email, senha=usuario.senha, perfil=usuario.perfil)
-    resposta = await autenticacao.registrar_usuario(usuario)
+@router.post("/registro/gestante")
+async def registrar_gestante(gestante_dto: GestanteDTO):
+    gestante = gestante_dto.para_entidade()
+    resposta = await autenticacao.registrar_usuario(gestante)
+    return JSONResponse(status_code=200, content={"Response": resposta})
+
+
+@router.post("/registro/profissional")
+async def registrar_profissional(profissional_dto: ProfissionalDTO):
+    profissional = profissional_dto.para_entidade()
+    resposta = await autenticacao.registrar_usuario(profissional)
     return JSONResponse(status_code=200, content={"Response": resposta})
 
 
 @router.post("/login")
-async def login(usuario_input: Usuario):
+async def login(usuario: UsuarioDTO):
     try:
-        resultado = await autenticacao.login(usuario_input)
+        resultado = await autenticacao.login(usuario)
         return resultado
     except ValueError as e:
         raise HTTPException(status_code=401, detail=str(e))
