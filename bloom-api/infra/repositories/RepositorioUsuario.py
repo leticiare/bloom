@@ -1,11 +1,10 @@
 from domain.entities.entidade_usuario import Usuario
 from dotenv import load_dotenv
+from psycopg2.sql import SQL, Identifier
 
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
 from infra.logger.logger import logger
-
-from psycopg2.sql import SQL, Identifier
 
 load_dotenv()
 
