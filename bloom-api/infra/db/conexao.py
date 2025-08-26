@@ -1,7 +1,10 @@
+import asyncio
+from contextlib import asynccontextmanager
 from typing import List, Tuple, Union
+
 import psycopg2
-from psycopg2.sql import SQL, Composable
 from infra.logger.logger import logger
+from psycopg2.sql import SQL, Composable
 
 
 class ConexaoBancoDados:
@@ -36,6 +39,7 @@ class ConexaoBancoDados:
             password=senha,
             host=host,
             options=f"-c search_path={schema}",
+            port=5431,
         )
 
     def executar_sql(
@@ -59,3 +63,15 @@ class ConexaoBancoDados:
             raise e
 
         return resultado
+
+    @asynccontextmanager
+    async def transacao(self):
+        try:
+            yield
+            await asyncio.to_thread(self.conexao.commit)
+        except Exception as e:
+            await asyncio.to_thread(self.conexao.rollback)
+            logger.error(f"Transação revertida: {e}")
+            raise
+        finally:
+            self._in_transaction = False
