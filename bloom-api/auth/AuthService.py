@@ -5,9 +5,10 @@ from typing import Optional
 from domain.entities.entidade_usuario import Usuario
 from fastapi.security import OAuth2PasswordBearer
 from infra.logger.logger import logger
-from infra.repositories.repositorio_usuario import RepositorioUsuario
+from infra.repositories.RepositorioUsuario import RepositorioUsuario
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from controllers.ControladorUsuario import ControladorUsuario
 
 
 class ServicoAutenticacao:
@@ -51,7 +52,7 @@ class ServicoAutenticacao:
     async def registrar_usuario(cls, usuario: Usuario):
         hash_senha = cls._obter_hash_senha(usuario.senha)
         usuario.senha = hash_senha
-        await RepositorioUsuario().inserir_usuario(usuario)
+        await ControladorUsuario().salvar(usuario)
         return {"msg": "Usuário criado com sucesso"}
 
     @classmethod
