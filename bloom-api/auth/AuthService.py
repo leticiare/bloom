@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 from typing import Optional
 
-from domain.entities.entidade_usuario import Usuario
+from domain.entities.Usuario import Usuario
 from fastapi.security import OAuth2PasswordBearer
 from infra.logger.logger import logger
 from infra.repositories.RepositorioUsuario import RepositorioUsuario
