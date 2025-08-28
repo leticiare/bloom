@@ -1,13 +1,18 @@
 from auth.AuthService import autenticacao
 from controllers.dto.GestanteDto import GestanteDTO
 from controllers.dto.ProfissionalDto import ProfissionalDTO
-from controllers.dto.UsuarioDto import UsuarioDTO
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel, EmailStr
 
 from ..middlewares.CurrentUser import perfil_autorizado
 
 router = APIRouter()
+
+
+class RequisicaoLogin(BaseModel):
+    email: EmailStr
+    senha: str
 
 
 @router.post("/registro/gestante")
@@ -25,7 +30,7 @@ async def registrar_profissional(profissional_dto: ProfissionalDTO):
 
 
 @router.post("/login")
-async def login(usuario: UsuarioDTO):
+async def login(usuario: RequisicaoLogin):
     try:
         resultado = await autenticacao.login(usuario)
         return resultado
