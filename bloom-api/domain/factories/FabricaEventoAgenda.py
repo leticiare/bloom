@@ -26,6 +26,11 @@ class DadosEventoAgenda(TypedDict):
 class FabricaEventoAgenda:
     @staticmethod
     def criar_evento_agenda(dados: DadosEventoAgenda) -> EventoAgenda:
+        mapa_tipo_classe = {
+            TipoEventoAgenda.EXAME.value: Exame,
+            TipoEventoAgenda.VACINA.value: Vacina,
+        }
+
         info_plano = None
 
         if (dados.get("info_plano")) is not None:
@@ -37,22 +42,12 @@ class FabricaEventoAgenda:
                 semana_fim=dados.get("info_plano").get("semana_fim"),
             )
 
-        tipo = dados.get("tipo")
+        ClasseEventoAgenda = mapa_tipo_classe.get(dados.get("tipo"))
 
-        if tipo == TipoEventoAgenda.EXAME.value:
-            return Exame(
-                id=dados.get("id"),
-                status=dados.get("status"),
-                data_agendamento=dados.get("data_agendamento"),
-                data_realizacao=dados.get("data_realizacao"),
-                info_plano=info_plano,
-            )
-
-        if tipo == TipoEventoAgenda.VACINA.value:
-            return Vacina(
-                id=dados.get("id"),
-                status=dados.get("status"),
-                data_agendamento=dados.get("data_agendamento"),
-                data_realizacao=dados.get("data_realizacao"),
-                info_plano=info_plano,
-            )
+        return ClasseEventoAgenda(
+            id=dados.get("id"),
+            status=dados.get("status"),
+            data_agendamento=dados.get("data_agendamento"),
+            data_realizacao=dados.get("data_realizacao"),
+            info_plano=info_plano,
+        )
