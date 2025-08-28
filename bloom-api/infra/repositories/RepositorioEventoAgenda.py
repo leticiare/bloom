@@ -93,7 +93,7 @@ class RepositorioEventoAgenda:
                     evento.data_agendamento,
                     evento.data_realizacao,
                     evento.info_plano.id,
-                    evento.tipo,
+                    evento.tipo.value,
                     evento.id,
                 ),
             )
