@@ -39,7 +39,6 @@ class ConexaoBancoDados:
             password=senha,
             host=host,
             options=f"-c search_path={schema}",
-            port=5431,
         )
 
     def executar_sql(
