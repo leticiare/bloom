@@ -1,4 +1,4 @@
-from domain.entities.entidade_usuario import Usuario
+from domain.entities.Usuario import Usuario
 from dotenv import load_dotenv
 from psycopg2.sql import SQL, Identifier
 
