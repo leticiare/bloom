@@ -2,7 +2,7 @@ from domain.entities.Profissional import Profissional
 from domain.enums.EspecialidadesMedicas import EspecialidadesMedicas
 from domain.enums.UsuarioPerfil import UsuarioPerfil
 
-from .UsuarioDto import UsuarioDTO
+from .UsuarioDTO import UsuarioDTO
 
 
 class ProfissionalDTO(UsuarioDTO):

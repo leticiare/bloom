@@ -4,7 +4,7 @@ from typing import Optional
 from domain.entities.Gestante import Gestante
 from domain.enums.UsuarioPerfil import UsuarioPerfil
 
-from .UsuarioDto import UsuarioDTO
+from .UsuarioDTO import UsuarioDTO
 
 
 class GestanteDTO(UsuarioDTO):
