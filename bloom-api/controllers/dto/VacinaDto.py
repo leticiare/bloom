@@ -3,12 +3,12 @@ from typing import Optional
 from datetime import datetime
 
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
-from domain.entities.Exame import Exame
+from domain.entities.Vacina import Vacina
 
 
 @dataclass
-class ExameDto:
-    """DTO para transferência de dados de Exame"""
+class VacinaDto:
+    """DTO para transferência de dados de Vacina"""
 
     id: str
     status: StatusEvento
@@ -21,17 +21,17 @@ class ExameDto:
     tipo: TipoEventoAgenda
 
     @classmethod
-    def criar(cls, exame: Exame) -> "ExameDto":
+    def criar(cls, vacina: Vacina) -> "VacinaDto":
         return cls(
-            id=exame.id,
-            status=exame.status,
-            data_agendamento=exame.data_agendamento,
-            data_realizacao=exame.data_realizacao,
-            nome=exame.info_plano.nome,
-            descricao=exame.info_plano.descricao,
-            semana_inicio=exame.info_plano.semana_inicio,
-            semana_fim=exame.info_plano.semana_fim,
-            tipo=exame.tipo,
+            id=vacina.id,
+            status=vacina.status,
+            data_agendamento=vacina.data_agendamento,
+            data_realizacao=vacina.data_realizacao,
+            nome=vacina.info_plano.nome,
+            descricao=vacina.info_plano.descricao,
+            semana_inicio=vacina.info_plano.semana_inicio,
+            semana_fim=vacina.info_plano.semana_fim,
+            tipo=vacina.tipo,
         )
 
     def para_dicionario(self):
