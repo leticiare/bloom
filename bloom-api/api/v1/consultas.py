@@ -47,6 +47,19 @@ class RequisicaoCancelarConsulta(BaseModel):
     )
 
 
+class RequisicaoAnotarObservacaoConsulta(BaseModel):
+    id: str = Field(
+        ...,
+        description="UUID do consulta a ser anotada na versão 4",
+        examples=["123e4567-e89b-12d3-a456-426614174000"],
+    )
+    observacoes: str = Field(
+        ...,
+        description="Observações a serem anotadas na consulta",
+        examples=["Paciente apresenta sintomas leves"],
+    )
+
+
 @router.get(
     "/{gestante_id}",
     tags=["Consultas"],
@@ -150,5 +163,16 @@ def cancelar_consulta(requisicao: RequisicaoCancelarConsulta):
     """Cancela uma consulta agendada da gestante."""
     return JSONResponse(
         content=controlador.cancelar_consulta(consulta_id=requisicao.id),
+        status_code=200,
+    )
+
+
+@router.put("/anotar", tags=["Consultas"], response_model=RespostaPadrao[ConsultaDto])
+def anotar_observacao_consulta(requisicao: RequisicaoAnotarObservacaoConsulta):
+    """Anota uma observação em uma consulta da gestante."""
+    return JSONResponse(
+        content=controlador.anotar_observacao_consulta(
+            consulta_id=requisicao.id, observacoes=requisicao.observacoes
+        ),
         status_code=200,
     )

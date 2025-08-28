@@ -20,6 +20,9 @@ class Consulta(EventoAgenda):
             data_realizacao=data_realizacao,
             status=status,
             tipo=TipoEventoAgenda.CONSULTA,
+            observacoes=observacoes,
         )
-        self.observacoes = observacoes
         self.info_plano = info_plano
+
+    def anotar_observacoes(self, observacoes: str):
+        self.observacoes = observacoes

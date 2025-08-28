@@ -121,3 +121,20 @@ class ControladorConsulta:
             mensagem = str(e).replace("Evento", "Consulta")
 
             raise HTTPException(status_code=400, detail=mensagem)
+
+    def anotar_observacao_consulta(self, consulta_id: str, observacoes: str):
+        try:
+            consulta = self._repositorio.obter_por_id(consulta_id)
+
+            if consulta is None:
+                raise HTTPException(status_code=404, detail="Consulta não encontrada")
+
+            consulta.anotar_observacoes(observacoes)
+
+            self._repositorio.atualizar(consulta)
+            dto = ConsultaDto.criar(consulta)
+            return dto.para_dicionario()
+        except StatusEventoError as e:
+            mensagem = str(e).replace("Evento", "Consulta")
+
+            raise HTTPException(status_code=400, detail=mensagem)

@@ -30,12 +30,14 @@ class EventoAgenda:
         data_agendamento: datetime | None,
         data_realizacao: datetime | None,
         tipo: TipoEventoAgenda,
+        observacoes: str | None = None,
     ):
         self.id = id
         self.status = StatusEvento(status)
         self.data_agendamento = data_agendamento
         self.data_realizacao = data_realizacao
         self.tipo = tipo
+        self.observacoes = observacoes
 
     def _validar_status(self, lista_status: List[StatusEvento]):
         mapa_excecoes = {
