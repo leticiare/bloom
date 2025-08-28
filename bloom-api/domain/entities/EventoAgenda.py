@@ -12,6 +12,7 @@ from domain.errors.evento_agenda import (
 class TipoEventoAgenda(Enum):
     EXAME = "exame"
     VACINA = "vacina"
+    CONSULTA = "consulta"
 
 
 class StatusEvento(Enum):
