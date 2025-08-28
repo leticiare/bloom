@@ -31,7 +31,7 @@ class ControladorVacina:
         )
 
         lista_vacinas = FiltroEventoAgenda.filtrar_por_status(
-            eventos=vacinas, status=StatusEvento.AGENDADO
+            eventos=vacinas, status=[StatusEvento.AGENDADO]
         )
 
         return [VacinaDto.criar(vacina).para_dicionario() for vacina in lista_vacinas]

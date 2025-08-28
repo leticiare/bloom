@@ -31,7 +31,7 @@ class ControladorExame:
         )
 
         lista_exames = FiltroEventoAgenda.filtrar_por_status(
-            eventos=exames, status=StatusEvento.AGENDADO
+            eventos=exames, status=[StatusEvento.AGENDADO]
         )
 
         return [ExameDto.criar(exame).para_dicionario() for exame in lista_exames]
