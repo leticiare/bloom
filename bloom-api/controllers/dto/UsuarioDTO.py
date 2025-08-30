@@ -1,12 +1,18 @@
-from pydantic import BaseModel, EmailStr, validator
-from typing import Literal
 import re
+from datetime import datetime
+
+from domain.enums.TiposDocumento import TiposDocumento
+from domain.enums.UsuarioPerfil import UsuarioPerfil
+from pydantic import BaseModel, EmailStr, validator
 
 
 class UsuarioDTO(BaseModel):
     email: EmailStr
     senha: str
-    perfil: Literal["gestante", "profissional"]
+    perfil: UsuarioPerfil
+    data_nascimento: datetime
+    documento: str
+    tipo_documento: TiposDocumento
 
     @validator("senha")
     def senha_segura(cls, v: str) -> str:

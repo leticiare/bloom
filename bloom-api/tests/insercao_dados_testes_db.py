@@ -7,9 +7,9 @@ conexao = ConexaoBancoDados.obter_instancia()
 
 # Inserir usuários
 conexao.executar_sql("""
-    INSERT INTO usuario (email, senha, perfil) VALUES
-    ('ana.silva@email.com', 'senha123', 'gestante'),
-    ('maria.souza@email.com', 'senha456', 'gestante')
+    INSERT INTO usuario (email, senha, perfil, documento, tipo_documento, data_nascimento) VALUES
+    ('ana.silva@email.com', 'senha123', 'gestante', '37827824021', 'cpf', '2005-05-01T08:00:00Z'),
+    ('maria.souza@email.com', 'senha456', 'gestante', '37827824021', 'cpf', '2025-05-01T08:00:00Z' )
     ON CONFLICT (email) DO NOTHING;
 """)
 

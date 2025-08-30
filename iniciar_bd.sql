@@ -9,7 +9,7 @@ CREATE TYPE agenda_status AS ENUM ('pendente', 'agendado', 'cancelado', 'realiza
 CREATE TYPE notificacao_tipo AS ENUM ('lembrete', 'alerta', 'sistema');
 CREATE TYPE notificacao_status AS ENUM ('lida', 'nao_lida');
 CREATE TYPE usuario_perfil AS ENUM ('gestante', 'profissional');
-
+CREATE TYPE documento AS ENUM ('cpf', 'cnpj');
 -- Tabela: plano_pre_natal
 CREATE TABLE plano_pre_natal (
     id UUID PRIMARY KEY,
@@ -24,6 +24,9 @@ CREATE TABLE plano_pre_natal (
 CREATE TABLE usuario (
     email VARCHAR(100) PRIMARY KEY,
     senha VARCHAR(255) NOT NULL,
+    documento VARCHAR(14) NOT NULL,
+    tipo_documento documento NOT NULL,
+    data_nascimento DATE NOT NULL,
     criado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     perfil usuario_perfil NOT NULL
@@ -82,6 +85,7 @@ CREATE TABLE profissional_saude (
     codigo UUID PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     especialidade VARCHAR(36) NOT NULL,
+    registro VARCHAR(10) NOT NULL,
     usuario_email VARCHAR(100) NOT NULL,
     CONSTRAINT fk_profissional_saude_usuario
         FOREIGN KEY (usuario_email)
