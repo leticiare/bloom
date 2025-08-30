@@ -48,7 +48,7 @@ class EventoAgenda:
 
         for status in lista_status:
             if self.status == status:
-                raise mapa_excecoes[status](self.id)
+                raise mapa_excecoes[status]()
 
     def agendar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.AGENDADO, StatusEvento.REALIZADO])
@@ -61,7 +61,7 @@ class EventoAgenda:
         self._validar_status([StatusEvento.REALIZADO, StatusEvento.CANCELADO])
 
         if data_realizacao is None and self.data_agendamento is not None:
-            raise EventoSemDataAgendamentoError(self.id)
+            raise EventoSemDataAgendamentoError()
 
         self.status = StatusEvento.REALIZADO
         self.data_realizacao = data_realizacao or self.data_agendamento

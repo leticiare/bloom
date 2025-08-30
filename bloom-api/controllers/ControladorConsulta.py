@@ -1,7 +1,8 @@
 from datetime import datetime
 from controllers.dto.ConsultaDto import ConsultaDto
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
-from domain.errors.evento_agenda import StatusEventoError
+from domain.errors.evento_agenda import EventoAgendaError
+from domain.errors.FabricaErroEventoAgenda import FabricaErroEventoAgenda
 from domain.FiltroEventoAgenda import FiltroEventoAgenda
 from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
 from fastapi import HTTPException
@@ -61,15 +62,18 @@ class ControladorConsulta:
                 raise HTTPException(status_code=404, detail="Consulta não encontrada")
 
             consulta.agendar(data_agendamento)
+            print("consulta agendada!")
 
             self._repositorio.atualizar(consulta)
 
             dto = ConsultaDto.criar(consulta)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Consulta")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.CONSULTA)(
+                consulta_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def realizar_consulta(self, consulta_id: str, data_realizacao: datetime):
         try:
@@ -83,27 +87,31 @@ class ControladorConsulta:
             self._repositorio.atualizar(consulta)
             dto = ConsultaDto.criar(consulta)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Consulta")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.CONSULTA)(
+                consulta_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def remarcar_consulta(self, consulta_id: str, data_remarcacao: datetime):
         try:
             consulta = self._repositorio.obter_por_id(consulta_id)
 
             if consulta is None:
-                raise HTTPException(status_code=404, detail="Consulta não encontrado")
+                raise HTTPException(status_code=404, detail="Consulta não encontrada")
 
             consulta.remarcar(data_agendamento=data_remarcacao)
 
             self._repositorio.atualizar(consulta)
             dto = ConsultaDto.criar(consulta)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Consulta")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.CONSULTA)(
+                consulta_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def cancelar_consulta(self, consulta_id: str):
         try:
@@ -117,10 +125,12 @@ class ControladorConsulta:
             self._repositorio.atualizar(consulta)
             dto = ConsultaDto.criar(consulta)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Consulta")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.CONSULTA)(
+                consulta_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def anotar_observacao_consulta(self, consulta_id: str, observacoes: str):
         try:
@@ -134,7 +144,9 @@ class ControladorConsulta:
             self._repositorio.atualizar(consulta)
             dto = ConsultaDto.criar(consulta)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Consulta")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.CONSULTA)(
+                consulta_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
