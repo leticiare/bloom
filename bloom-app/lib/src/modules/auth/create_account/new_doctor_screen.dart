@@ -1,9 +1,17 @@
-// lib/professional_register_screen.dart
+// lib/modules/auth/create_account/new_doctor_screen.dart
 
 import 'package:flutter/material.dart';
-import 'email_confirmation_screen.dart'; // Sua tela de confirmação de email
-import 'package:app/src/core/theme/app_colors.dart';
-import 'package:app/src/modules/auth/login/login_screen.dart'; // Sua tela de login
+import 'package:app/src/modules/auth/login/login_screen.dart';
+import 'email_confirmation_screen.dart';
+import 'new_pregnant_screen.dart'; // Importa a tela de gestante para a navegação.
+
+// --- CONSTANTES DE CORES ---
+const Color K_MAIN_PINK = Color(0xFFE91E63);
+const Color K_TEXT_GRAY = Color(0xFF616161);
+const Color K_FIELD_BACKGROUND = Color(0xFFF5F5F5);
+
+// Enum para rastrear o perfil selecionado no Switch.
+enum ProfileRole { pregnant, professional }
 
 class NewDoctorScreen extends StatefulWidget {
   const NewDoctorScreen({super.key});
@@ -13,35 +21,42 @@ class NewDoctorScreen extends StatefulWidget {
 }
 
 class _NewDoctorScreenState extends State<NewDoctorScreen> {
+  // --- VARIÁVEIS DE ESTADO ---
   int _currentStep = 0;
+  ProfileRole _selectedRole =
+      ProfileRole.professional; // Começa como Profissional.
+  bool _termsAccepted = false;
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
-  // Controladores de texto para a persona profissional
+  // Controladores para os campos de texto.
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _nameController = TextEditingController();
-  final _crmCpfController = TextEditingController();
+  final _crmController = TextEditingController();
   final _documentController = TextEditingController();
 
+  // Chaves para validar os formulários de cada etapa.
   final _formKeyStep1 = GlobalKey<FormState>();
   final _formKeyStep2 = GlobalKey<FormState>();
 
-  bool _termsAccepted = false;
-
+  // Libera a memória dos controladores.
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _nameController.dispose();
-    _crmCpfController.dispose();
+    _crmController.dispose();
     _documentController.dispose();
     super.dispose();
   }
 
-  // --- Funções de Navegação e Validação ---
+  // --- MÉTODOS DE LÓGICA E NAVEGAÇÃO ---
+
   void _nextStep() {
-    if (_currentStep == 0 && _formKeyStep1.currentState!.validate()) {
+    if (_formKeyStep1.currentState!.validate()) {
       setState(() {
         _currentStep = 1;
       });
@@ -57,7 +72,6 @@ class _NewDoctorScreenState extends State<NewDoctorScreen> {
   void _submitForm() {
     if (_formKeyStep2.currentState!.validate() && _termsAccepted) {
       final email = _emailController.text;
-      // Aqui você faria a chamada para a sua API ou serviço de cadastro
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) => EmailConfirmationScreen(email: email),
@@ -67,143 +81,198 @@ class _NewDoctorScreenState extends State<NewDoctorScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Por favor, aceite os termos e condições.'),
+          backgroundColor: Colors.red,
         ),
       );
     }
   }
 
-  // --- Funções Auxiliares ---
+  // Simula a ação de selecionar um documento.
   void _selectDocument() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Simulando a seleção de um documento...')),
     );
+    // Em um app real, aqui você usaria um pacote como 'file_picker'.
+    setState(() {
+      _documentController.text = "documento_anexado.pdf";
+    });
   }
 
-  // --- Estilos para os Campos de Texto (InputDecoration) ---
-  InputDecoration _customInputDecoration({
-    required String labelText,
-    String? hintText,
-    IconData? suffixIcon,
-    bool filledBackground = false,
-  }) {
-    return InputDecoration(
-      labelText: labelText,
-      hintText: hintText,
-      floatingLabelStyle: const TextStyle(color: AppColors.mediumPink),
-      suffixIcon: suffixIcon != null
-          ? Icon(suffixIcon, color: AppColors.depperPink)
-          : null,
-      contentPadding: const EdgeInsets.symmetric(
-        vertical: 16.0,
-        horizontal: 12.0,
+  // --- CONSTRUÇÃO DA INTERFACE (UI) ---
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          _currentStep == 0
+              ? 'Criar Conta de Profisional'
+              : 'Complete seu Perfil',
+          style: const TextStyle(color: Colors.black, fontSize: 18),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: _currentStep == 1
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                onPressed: _previousStep,
+              )
+            : null,
       ),
-      filled: filledBackground,
-      fillColor: filledBackground ? AppColors.lightPink : Colors.transparent,
-      border: filledBackground
-          ? OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide.none,
-            )
-          : const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.depperPink),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          children: [
+            Image.asset('assets/images/bloom_logo.png', height: 85),
+            const SizedBox(height: 32),
+            _buildRoleSelector(),
+            const SizedBox(height: 32),
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: _currentStep == 0
+                  ? _buildStep1Content()
+                  : _buildStep2Content(),
             ),
-      focusedBorder: filledBackground
-          ? OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: const BorderSide(
-                color: AppColors.mediumPink,
-                width: 2.0,
+            const SizedBox(height: 32),
+            SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton(
+                onPressed: _currentStep == 0
+                    ? _nextStep
+                    : (_termsAccepted ? _submitForm : null),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: K_MAIN_PINK,
+                  disabledBackgroundColor: Colors.grey.shade300,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                ),
+                child: Text(
+                  _currentStep == 0 ? 'Próximo' : 'Criar conta',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
-            )
-          : const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.mediumPink, width: 2.0),
             ),
-      errorBorder: filledBackground
-          ? OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: const BorderSide(color: Colors.red, width: 2.0),
-            )
-          : const UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.red, width: 2.0),
-            ),
-      enabledBorder: filledBackground
-          ? OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide.none,
-            )
-          : const UnderlineInputBorder(
-              borderSide: BorderSide(color: AppColors.depperPink),
-            ),
+            const SizedBox(height: 24),
+            _buildFooter(),
+          ],
+        ),
+      ),
     );
   }
 
-  // --- Widgets das Etapas (Conteúdo Dinâmico) ---
+  // --- WIDGETS AUXILIARES (COMPONENTES) ---
+
+  Widget _buildRoleSelector() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Gestante',
+          style: TextStyle(
+            color: _selectedRole == ProfileRole.pregnant
+                ? K_MAIN_PINK
+                : K_TEXT_GRAY,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Switch(
+          value: _selectedRole == ProfileRole.professional,
+          onChanged: (value) {
+            // Se o usuário desativar o switch, navega para a tela de gestante.
+            if (!value) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const NewPregnantScreen(),
+                ),
+              );
+            }
+          },
+          activeColor: K_MAIN_PINK,
+          inactiveThumbColor: K_MAIN_PINK,
+          inactiveTrackColor: K_MAIN_PINK.withOpacity(0.3),
+        ),
+        Text(
+          'Profissional',
+          style: TextStyle(
+            color: _selectedRole == ProfileRole.professional
+                ? K_MAIN_PINK
+                : K_TEXT_GRAY,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildStep1Content() {
     return Form(
       key: _formKeyStep1,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        key: const ValueKey('step1'),
         children: [
-          const Text(
-            'Insira seu melhor email',
-            style: TextStyle(fontSize: 16, color: AppColors.depperPink),
-          ),
-          TextFormField(
+          _buildTextField(
             controller: _emailController,
-            decoration: _customInputDecoration(
-              labelText: 'email@gmail.com',
-              suffixIcon: Icons.email_outlined,
-            ),
+            label: 'Insira seu melhor email',
+            hint: 'seuemail@gmail.com',
+            suffixIcon: const Icon(Icons.email_outlined, color: Colors.grey),
             keyboardType: TextInputType.emailAddress,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Por favor, insira um email.';
-              }
-              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+              if (value == null || value.isEmpty) return 'Email obrigatório.';
+              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value))
                 return 'Email inválido.';
-              }
               return null;
             },
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Crie sua senha',
-            style: TextStyle(fontSize: 16, color: AppColors.depperPink),
-          ),
-          TextFormField(
+          _buildTextField(
             controller: _passwordController,
-            decoration: _customInputDecoration(
-              labelText: '**********',
-              suffixIcon: Icons.visibility_off_outlined,
+            label: 'Crie sua senha',
+            hint: '**********',
+            obscureText: !_isPasswordVisible,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                setState(() => _isPasswordVisible = !_isPasswordVisible);
+              },
             ),
-            obscureText: true,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Por favor, insira uma senha.';
-              }
-              if (value.length < 6) {
-                return 'A senha deve ter pelo menos 6 caracteres.';
-              }
+              if (value == null || value.isEmpty) return 'Senha obrigatória.';
+              if (value.length < 6) return 'Mínimo de 6 caracteres.';
               return null;
             },
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Confirme sua senha',
-            style: TextStyle(fontSize: 16, color: AppColors.depperPink),
-          ),
-          TextFormField(
+          _buildTextField(
             controller: _confirmPasswordController,
-            decoration: _customInputDecoration(
-              labelText: '**********',
-              suffixIcon: Icons.visibility_off_outlined,
-              filledBackground: true,
+            label: 'Confirme sua senha',
+            hint: '**********',
+            obscureText: !_isConfirmPasswordVisible,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isConfirmPasswordVisible
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                setState(
+                  () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible,
+                );
+              },
             ),
-            obscureText: true,
             validator: (value) {
-              if (value != _passwordController.text) {
+              if (value != _passwordController.text)
                 return 'As senhas não coincidem.';
-              }
               return null;
             },
           ),
@@ -216,58 +285,49 @@ class _NewDoctorScreenState extends State<NewDoctorScreen> {
     return Form(
       key: _formKeyStep2,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        key: const ValueKey('step2'),
         children: [
-          const Text(
-            'Nome completo',
-            style: TextStyle(fontSize: 16, color: AppColors.depperPink),
-          ),
-          TextFormField(
+          _buildTextField(
             controller: _nameController,
-            decoration: _customInputDecoration(
-              labelText: 'Seu nome...',
-              suffixIcon: Icons.person_outline,
-            ),
+            label: 'Nome completo',
+            hint: 'Seu nome...',
+            suffixIcon: const Icon(Icons.person_outline, color: Colors.grey),
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Por favor, insira seu nome completo.';
-              }
+              if (value == null || value.isEmpty) return 'Nome obrigatório.';
               return null;
             },
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Número de Registro Profissional + UF',
-            style: TextStyle(fontSize: 16, color: AppColors.depperPink),
-          ),
-          TextFormField(
-            controller: _crmCpfController,
-            decoration: _customInputDecoration(
-              labelText: 'CRM, COREN, ...',
-              suffixIcon: Icons.credit_card_outlined,
+          _buildTextField(
+            controller: _crmController,
+            label: 'Número de Registro Profissional + UF',
+            hint: 'CRM, COREN, etc.',
+            suffixIcon: const Icon(
+              Icons.credit_card_outlined,
+              color: Colors.grey,
             ),
-            keyboardType: TextInputType.text,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Por favor, insira o número de registro.';
-              }
+              if (value == null || value.isEmpty)
+                return 'Registro obrigatório.';
               return null;
             },
           ),
           const SizedBox(height: 24),
-          const Text(
-            'Fazer upload de documento para validação',
-            style: TextStyle(fontSize: 16, color: AppColors.depperPink),
-          ),
-          TextFormField(
+          _buildTextField(
             controller: _documentController,
-            decoration: _customInputDecoration(
-              labelText: '...',
-              suffixIcon: Icons.upload_file,
-              filledBackground: true,
+            label: 'Fazer upload de documento para validação',
+            hint: 'Clique para selecionar...',
+            suffixIcon: const Icon(
+              Icons.upload_file_outlined,
+              color: Colors.grey,
             ),
-            readOnly: true,
+            isReadOnly: true,
             onTap: _selectDocument,
+            validator: (value) {
+              if (value == null || value.isEmpty)
+                return 'Documento obrigatório.';
+              return null;
+            },
           ),
           const SizedBox(height: 24),
           Row(
@@ -275,22 +335,20 @@ class _NewDoctorScreenState extends State<NewDoctorScreen> {
               Checkbox(
                 value: _termsAccepted,
                 onChanged: (bool? newValue) {
-                  setState(() {
-                    _termsAccepted = newValue!;
-                  });
+                  setState(() => _termsAccepted = newValue!);
                 },
-                activeColor: AppColors.mediumPink,
+                activeColor: K_MAIN_PINK,
               ),
               Expanded(
                 child: RichText(
-                  text: TextSpan(
+                  text: const TextSpan(
                     text: 'Eu aceito os ',
-                    style: TextStyle(fontSize: 14, color: AppColors.depperPink),
+                    style: TextStyle(fontSize: 14, color: K_TEXT_GRAY),
                     children: [
                       TextSpan(
                         text: 'Termos de Uso e Política de Privacidade',
                         style: TextStyle(
-                          color: AppColors.mediumPink,
+                          color: K_MAIN_PINK,
                           decoration: TextDecoration.underline,
                         ),
                       ),
@@ -305,127 +363,90 @@ class _NewDoctorScreenState extends State<NewDoctorScreen> {
     );
   }
 
-  // --- Layout da Tela Principal ---
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('doc register'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: Colors.black,
-        leading: _currentStep == 1
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: _previousStep,
-              )
-            : null,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    Widget? suffixIcon,
+    bool obscureText = false,
+    bool isReadOnly = false,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+    VoidCallback? onTap,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: const TextStyle(color: K_TEXT_GRAY, fontSize: 14)),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller,
+          obscureText: obscureText,
+          readOnly: isReadOnly,
+          keyboardType: keyboardType,
+          validator: validator,
+          onTap: onTap,
+          decoration: InputDecoration(
+            hintText: hint,
+            suffixIcon: suffixIcon,
+            filled: true,
+            fillColor: K_FIELD_BACKGROUND,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.0),
+              borderSide: const BorderSide(color: K_MAIN_PINK, width: 2.0),
+            ),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 16,
+              horizontal: 12,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter() {
+    return Column(
+      children: [
+        const Row(
           children: [
-            const Text(
-              'Bloom',
-              style: TextStyle(
-                fontFamily: 'Avenir',
-                fontSize: 40,
-                color: AppColors.mediumPink,
-                fontWeight: FontWeight.bold,
-              ),
+            Expanded(child: Divider()),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text('OU', style: TextStyle(color: K_TEXT_GRAY)),
             ),
-            const SizedBox(height: 48),
-            // O conteúdo principal que muda de acordo com a etapa
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-              child: _currentStep == 0
-                  ? _buildStep1Content()
-                  : _buildStep2Content(),
-            ),
-            const SizedBox(height: 48),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: _currentStep == 0 ? _nextStep : _submitForm,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.mediumPink,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  _currentStep == 0 ? 'Próximo' : 'Criar conta',
-                  style: const TextStyle(
-                    fontSize: 18,
+            Expanded(child: Divider()),
+          ],
+        ),
+        const SizedBox(height: 24),
+        GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          },
+          child: RichText(
+            text: TextSpan(
+              text: 'Já possui uma conta? ',
+              style: TextStyle(color: K_TEXT_GRAY, fontSize: 16),
+              children: [
+                TextSpan(
+                  text: 'Entrar',
+                  style: TextStyle(
+                    color: K_MAIN_PINK,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 24),
-            Text(
-              'OU',
-              style: TextStyle(color: AppColors.depperPink, fontSize: 16),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: OutlinedButton.icon(
-                icon: Image.asset(
-                  'assets/images/google_icon.png',
-                  height: 24.0,
-                  width: 24.0,
-                ),
-                label: Text(
-                  'Criar conta com Google',
-                  style: TextStyle(color: AppColors.depperPink, fontSize: 18),
-                ),
-                onPressed: () {
-                  print('Login com Google!');
-                },
-                style: OutlinedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  side: const BorderSide(color: Colors.grey, width: 1.0),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
-              },
-              child: RichText(
-                text: TextSpan(
-                  text: 'Já possui uma conta? ',
-                  style: TextStyle(color: AppColors.depperPink, fontSize: 16),
-                  children: [
-                    TextSpan(
-                      text: 'Entrar',
-                      style: TextStyle(
-                        color: AppColors.mediumPink,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        const SizedBox(height: 24),
+      ],
     );
   }
 }
