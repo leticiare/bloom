@@ -42,11 +42,19 @@ class RepositorioUsuario:
     async def inserir_usuario(self, usuario: Usuario):
         try:
             sql = SQL("""
-                  INSERT INTO {tabela} (email, senha, perfil) VALUES (%s, %s, %s)
+                  INSERT INTO {tabela} (email, senha, perfil, documento, tipo_documento, data_nascimento) VALUES (%s, %s, %s,%s,%s,%s)
                 """).format(tabela=Identifier(self._tabela))
 
             self._conexao.executar_sql(
-                sql=sql, parametros=(usuario.email, usuario.senha, usuario.perfil)
+                sql=sql,
+                parametros=(
+                    usuario.email,
+                    usuario.senha,
+                    usuario.perfil,
+                    usuario.documento,
+                    usuario.tipo_documento,
+                    usuario.data_nascimento,
+                ),
             )
         except Exception as e:
             logger.error(f"Erro ao cadastrar usuario: {e}")
