@@ -1,5 +1,3 @@
-// lib/modules/auth/create_account/persona_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:app/src/modules/auth/create_account/new_doctor_screen.dart';
 import 'package:app/src/modules/auth/create_account/new_pregnant_screen.dart';
@@ -38,9 +36,9 @@ class _PersonaScreenState extends State<PersonaScreen> {
         MaterialPageRoute(builder: (context) => const NewPregnantScreen()),
       );
     } else if (_selectedPersona == Persona.doctor) {
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const NewDoctorScreen()),
-      );
+      Navigator.of(
+        context,
+      ).push(MaterialPageRoute(builder: (context) => const NewDoctorScreen()));
     }
   }
 
@@ -169,12 +167,7 @@ class _PersonaScreenState extends State<PersonaScreen> {
         ),
         child: Row(
           children: [
-            Image.asset(
-              imagePath,
-              width: 80,
-              height: 80,
-              fit: BoxFit.contain,
-            ),
+            Image.asset(imagePath, width: 80, height: 80, fit: BoxFit.contain),
             const SizedBox(width: 20),
             Text(
               title,

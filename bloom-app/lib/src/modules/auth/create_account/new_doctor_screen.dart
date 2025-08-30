@@ -1,5 +1,3 @@
-// lib/modules/auth/create_account/new_doctor_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:app/src/modules/auth/login/login_screen.dart';
 import 'email_confirmation_screen.dart';

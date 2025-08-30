@@ -1,5 +1,3 @@
-// lib/modules/auth/create_account/new_pregnant_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:app/src/modules/auth/login/login_screen.dart';
