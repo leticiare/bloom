@@ -22,12 +22,17 @@ class RepositorioUsuario:
             resultado = conexao.executar_sql(
                 sql=sql, parametros=(email,), possui_resultado=True
             )[0]
-            logger.debug(f"BUSCA: {resultado}")
+
             if not resultado:
                 return None
 
             usuario = Usuario(
-                email=resultado[0], senha=resultado[1], perfil=resultado[4]
+                email=resultado[0],
+                senha=resultado[1],
+                perfil=resultado[4],
+                data_nascimento=resultado[4],
+                tipo_documento=resultado[5],
+                documento=resultado[6],
             )
             return usuario
         except Exception as e:
