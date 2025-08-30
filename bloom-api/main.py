@@ -1,9 +1,8 @@
-from api.v1 import auth, check_status
+from api.v1 import auth, check_status, artigos, exames
+from api.v1.middlewares import FormatadorRespostaHttpMiddleware
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infra.logger.logger import logger
-from api.v1 import check_status, exames
-from api.v1.middlewares import FormatadorRespostaHttpMiddleware
 
 app = FastAPI(
     title="Bloom API",
@@ -30,6 +29,13 @@ app.include_router(
 app.include_router(exames.router, prefix="/api/exames", tags=["Exames"])
 
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
+
+
+app.include_router(
+    artigos.router,
+    prefix="/api/artigos",
+    tags=["Artigos Informativos"],
+)
 
 
 @app.on_event("startup")
