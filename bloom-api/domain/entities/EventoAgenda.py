@@ -70,6 +70,8 @@ class EventoAgenda:
         self._validar_status([StatusEvento.CANCELADO, StatusEvento.REALIZADO])
 
         self.status = StatusEvento.CANCELADO
+        self.data_agendamento = None
+        self.data_realizacao = None
 
     def remarcar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.CANCELADO, StatusEvento.REALIZADO])
