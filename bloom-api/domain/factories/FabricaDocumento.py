@@ -1,5 +1,6 @@
 from domain.contracts.Documento import Documento
-from domain.entities.Documentos import CNPJ, CPF
+from domain.entities.Documentos.CNPJ import CNPJ
+from domain.entities.Documentos.CPF import CPF
 from domain.enums.TiposDocumento import TiposDocumento
 
 
