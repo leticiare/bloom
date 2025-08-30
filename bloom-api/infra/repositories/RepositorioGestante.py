@@ -2,6 +2,8 @@ import uuid
 
 from domain.entities.Gestante import Gestante
 from domain.entities.Profissional import Profissional
+from domain.enums.TiposDocumento import TiposDocumento
+from domain.factories.FabricaDocumento import FabricaDocumento
 from dotenv import load_dotenv
 from psycopg2.sql import SQL, Identifier
 
@@ -16,25 +18,44 @@ class RepositorioGestante:
     def __init__(self):
         self._conexao: ConexaoBancoDados = ConexaoBancoDados.obter_instancia()
         self._tabela: str = "gestante"
+        self._tabela_usuario: str = "usuario"
 
     async def buscar_gestante_por_email(self, email: str) -> Gestante:
         sql = SQL("""
-                    SELECT * FROM {tabela} WHERE email = %s
-                """).format(tabela=Identifier(self._tabela))
+        SELECT
+            g.id, g.nome, u.email, u.senha, u.perfil, u.data_nascimento,
+            u.documento, u.tipo_documento, g.dum, g.dpp, g.antecedentes_familiares,
+            g.antecedentes_ginecologicos, g.antecedentes_obstetricos
+        FROM {tabela_gestante} g
+        INNER JOIN {tabela_usuario} u ON g.usuario_email = u.email
+        WHERE u.email = %s
+    """).format(
+            tabela_gestante=Identifier(self._tabela),
+            tabela_usuario=Identifier(self._tabela_usuario),
+        )
         resultado = conexao.executar_sql(
             sql=sql, parametros=(email,), possui_resultado=True
         )[0]
-        logger.debug(f"BUSCA: {resultado}")
+
         if not resultado:
             return None
 
-        profissional = Profissional(
-            email=resultado[0],
-            senha=resultado[1],
-            documento=resultado[4],
-            data_nascimento=[],
+        gestante = Gestante(
+            id=resultado[0],
+            nome=resultado[1],
+            email=resultado[2],
+            senha=resultado[3],
+            perfil=resultado[4],
+            data_nascimento=resultado[5],
+            documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
+            tipo_documento=TiposDocumento(resultado[7]),
+            dum=resultado[8],
+            dpp=resultado[9],
+            antecedentes_familiares=resultado[10],
+            antecedentes_ginecologicos=resultado[11],
+            antecedentes_obstetricos=resultado[12],
         )
-        return profissional
+        return gestante
 
     async def criar_gestante(
         self,
