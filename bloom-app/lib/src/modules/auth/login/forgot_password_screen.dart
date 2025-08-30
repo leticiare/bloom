@@ -74,7 +74,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 20),
 
               // --- LOGO E CABEÇALHO ---
-              Image.asset('assets/images/bloom_logo.png', height: 60),
+              Image.asset('assets/images/bloom_logo.png', height: 85),
               const SizedBox(height: 32),
               const Icon(Icons.lock_outline, color: K_MAIN_PINK, size: 40),
               const SizedBox(height: 16),
