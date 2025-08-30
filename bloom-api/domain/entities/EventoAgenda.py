@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Optional
 from datetime import datetime
 from domain.errors.evento_agenda import (
     EventoJaAgendadoError,
@@ -27,10 +27,10 @@ class EventoAgenda:
         self,
         id: str,
         status: StatusEvento,
-        data_agendamento: datetime | None,
-        data_realizacao: datetime | None,
+        data_agendamento: Optional[datetime],
+        data_realizacao: Optional[datetime],
         tipo: TipoEventoAgenda,
-        observacoes: str | None = None,
+        observacoes: Optional[str] = None,
     ):
         self.id = id
         self.status = StatusEvento(status)

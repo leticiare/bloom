@@ -1,3 +1,4 @@
+from typing import Optional
 from datetime import datetime
 
 from domain.entities.EventoAgenda import EventoAgenda, StatusEvento, TipoEventoAgenda
@@ -8,9 +9,9 @@ class Consulta(EventoAgenda):
     def __init__(
         self,
         id: str,
-        data_agendamento: datetime,
-        data_realizacao: datetime,
-        observacoes: str,
+        data_agendamento: Optional[datetime],
+        data_realizacao: Optional[datetime],
+        observacoes: Optional[str],
         status: StatusEvento,
         info_plano: ItemPlanoPreNatal,
     ):

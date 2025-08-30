@@ -1,3 +1,4 @@
+from typing import Optional
 from datetime import datetime
 
 from domain.entities.EventoAgenda import EventoAgenda, StatusEvento, TipoEventoAgenda
@@ -8,8 +9,8 @@ class Exame(EventoAgenda):
     def __init__(
         self,
         id: str,
-        data_agendamento: datetime,
-        data_realizacao: datetime,
+        data_agendamento: Optional[datetime],
+        data_realizacao: Optional[datetime],
         status: StatusEvento,
         info_plano: ItemPlanoPreNatal,
     ):
