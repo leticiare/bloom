@@ -82,7 +82,7 @@ class RepositorioEventoAgenda:
         try:
             sql = SQL("""
                 UPDATE {tabela}
-                SET status = %s, data_agendamento = %s, data_realizacao = %s, item_plano_pre_natal_id = %s, tipo = %s
+                SET status = %s, data_agendamento = %s, data_realizacao = %s, item_plano_pre_natal_id = %s, tipo = %s, observacoes = %s
                 WHERE id = %s
             """).format(tabela=Identifier(self._tabela))
 
@@ -94,6 +94,7 @@ class RepositorioEventoAgenda:
                     evento.data_realizacao,
                     evento.info_plano.id,
                     evento.tipo.value,
+                    evento.observacoes,
                     evento.id,
                 ),
             )

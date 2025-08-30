@@ -5,12 +5,13 @@ from domain.entities.EventoAgenda import EventoAgenda, StatusEvento, TipoEventoA
 from domain.entities.PlanoPreNatal import ItemPlanoPreNatal
 
 
-class Exame(EventoAgenda):
+class Consulta(EventoAgenda):
     def __init__(
         self,
         id: str,
         data_agendamento: Optional[datetime],
         data_realizacao: Optional[datetime],
+        observacoes: Optional[str],
         status: StatusEvento,
         info_plano: ItemPlanoPreNatal,
     ):
@@ -19,6 +20,10 @@ class Exame(EventoAgenda):
             data_agendamento=data_agendamento,
             data_realizacao=data_realizacao,
             status=status,
-            tipo=TipoEventoAgenda.EXAME,
+            tipo=TipoEventoAgenda.CONSULTA,
+            observacoes=observacoes,
         )
         self.info_plano = info_plano
+
+    def anotar_observacoes(self, observacoes: str):
+        self.observacoes = observacoes

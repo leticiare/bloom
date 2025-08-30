@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Query, Path
 from pydantic import BaseModel, Field
+from typing import List
 
 from controllers.ControladorVacina import ControladorVacina
 from datetime import datetime
 from fastapi.responses import JSONResponse
+from controllers.dto.VacinaDto import VacinaDto
+from api.resposta_padrao import RespostaPadrao
 
 router = APIRouter()
 
@@ -44,7 +47,9 @@ class RequisicaoCancelarVacina(BaseModel):
     )
 
 
-@router.get("/{gestante_id}", tags=["Vacinas"])
+@router.get(
+    "/{gestante_id}", tags=["Vacinas"], response_model=RespostaPadrao[List[VacinaDto]]
+)
 def listar_vacinas(
     gestante_id: str = Path(
         ...,
@@ -67,7 +72,11 @@ def listar_vacinas(
     )
 
 
-@router.get("/agendadas/{gestante_id}", tags=["Vacinas"])
+@router.get(
+    "/agendadas/{gestante_id}",
+    tags=["Vacinas"],
+    response_model=RespostaPadrao[List[VacinaDto]],
+)
 def listar_vacinas_agendadas(
     gestante_id: str = Path(
         ...,
@@ -82,7 +91,11 @@ def listar_vacinas_agendadas(
     )
 
 
-@router.get("/pendentes/{gestante_id}", tags=["Vacinas"])
+@router.get(
+    "/pendentes/{gestante_id}",
+    tags=["Vacinas"],
+    response_model=RespostaPadrao[List[VacinaDto]],
+)
 def listar_vacinas_pendentes(
     gestante_id: str = Path(
         ...,
@@ -97,7 +110,7 @@ def listar_vacinas_pendentes(
     )
 
 
-@router.put("/agendar", tags=["Vacinas"])
+@router.put("/agendar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
 def agendar_vacina(requisicao: RequisicaoAgendarVacina):
     """Agendar uma vacina da gestante."""
     return JSONResponse(
@@ -108,7 +121,7 @@ def agendar_vacina(requisicao: RequisicaoAgendarVacina):
     )
 
 
-@router.put("/aplicar", tags=["Vacinas"])
+@router.put("/aplicar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
 def aplicar_vacina(requisicao: RequisicaoAplicarVacina):
     """Aplicar uma vacina da gestante."""
     return JSONResponse(
@@ -119,7 +132,7 @@ def aplicar_vacina(requisicao: RequisicaoAplicarVacina):
     )
 
 
-@router.put("/remarcar", tags=["Vacinas"])
+@router.put("/remarcar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
 def remarcar_vacina(requisicao: RequisicaoAgendarVacina):
     """Remarca uma vacina agendada da gestante."""
     return JSONResponse(
@@ -130,7 +143,7 @@ def remarcar_vacina(requisicao: RequisicaoAgendarVacina):
     )
 
 
-@router.put("/cancelar", tags=["Vacinas"])
+@router.put("/cancelar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
 def cancelar_vacina(requisicao: RequisicaoCancelarVacina):
     """Cancela uma vacina agendada da gestante."""
     return JSONResponse(

@@ -1,7 +1,8 @@
 from datetime import datetime
 from controllers.dto.ExameDto import ExameDto
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
-from domain.errors.evento_agenda import StatusEventoError
+from domain.errors.evento_agenda import EventoAgendaError
+from domain.errors.FabricaErroEventoAgenda import FabricaErroEventoAgenda
 from domain.FiltroEventoAgenda import FiltroEventoAgenda
 from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
 from fastapi import HTTPException
@@ -60,10 +61,12 @@ class ControladorExame:
 
             dto = ExameDto.criar(exame)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Exame")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.EXAME)(
+                exame_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def realizar_exame(self, exame_id: str, data_realizacao: datetime):
         try:
@@ -77,10 +80,12 @@ class ControladorExame:
             self._repositorio.atualizar(exame)
             dto = ExameDto.criar(exame)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Exame")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.EXAME)(
+                exame_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def remarcar_exame(self, exame_id: str, data_remarcacao: datetime):
         try:
@@ -94,10 +99,12 @@ class ControladorExame:
             self._repositorio.atualizar(exame)
             dto = ExameDto.criar(exame)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Exame")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.EXAME)(
+                exame_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def cancelar_exame(self, exame_id: str):
         try:
@@ -111,7 +118,9 @@ class ControladorExame:
             self._repositorio.atualizar(exame)
             dto = ExameDto.criar(exame)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Exame")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.EXAME)(
+                exame_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
