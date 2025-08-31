@@ -8,7 +8,7 @@ from psycopg2.sql import SQL, Identifier
 
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
-from infra.logger.logger import logger
+from infra.repositories.RepositorioPlanoPreNatal import RepositorioPlanoPreNatal
 
 load_dotenv()
 
@@ -16,6 +16,9 @@ load_dotenv()
 class RepositorioGestante:
     def __init__(self):
         self._conexao: ConexaoBancoDados = ConexaoBancoDados.obter_instancia()
+        self._repositorio_pre_natal: RepositorioPlanoPreNatal = (
+            RepositorioPlanoPreNatal()
+        )
         self._tabela: str = "gestante"
         self._tabela_usuario: str = "usuario"
 
@@ -83,5 +86,7 @@ class RepositorioGestante:
                 gestante.email,
             ),
         )
+
+        self._repositorio_pre_natal.criar_plano_para_gestante(gestante.id)
 
         return gestante
