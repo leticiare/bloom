@@ -34,8 +34,9 @@ class Gestante(Usuario):
             perfil=perfil,
             tipo_documento=tipo_documento,
             data_nascimento=data_nascimento,
+            id_entidade_perfil=id or uuid.uuid4(),
         )
-        self.id = id
+        self.id = self.id_entidade_perfil
         self.nome = nome
         self.dum = dum
         self.dpp = dpp

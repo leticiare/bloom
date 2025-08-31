@@ -1,7 +1,6 @@
 import uuid
 
 from domain.entities.Gestante import Gestante
-from domain.entities.Profissional import Profissional
 from domain.enums.TiposDocumento import TiposDocumento
 from domain.factories.FabricaDocumento import FabricaDocumento
 from dotenv import load_dotenv
@@ -61,9 +60,6 @@ class RepositorioGestante:
         self,
         gestante: Gestante,
     ) -> Gestante:
-        if not gestante.id:
-            gestante.id = str(uuid.uuid4())
-
         sql = SQL("""
                 INSERT INTO {tabela} (
                     id, nome, dum, dpp,
@@ -77,7 +73,7 @@ class RepositorioGestante:
         self._conexao.executar_sql(
             sql=sql,
             parametros=(
-                gestante.id,
+                str(gestante.id),
                 gestante.nome,
                 gestante.dum,
                 gestante.dpp,

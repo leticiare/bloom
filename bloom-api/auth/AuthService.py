@@ -68,7 +68,11 @@ class ServicoAutenticacao:
         ):
             raise ValueError("Usuário ou senha incorretos")
 
-        dados_usuario = {"email": usuario.email, "perfil": usuario_encontrado.perfil}
+        dados_usuario = {
+            "email": usuario.email,
+            "perfil": usuario_encontrado.perfil,
+            "id_entidade_perfil": usuario_encontrado.id_entidade_perfil,
+        }
         token = cls._gerar_token_acesso(dados_usuario)
         return {"jwt_token": token}
 
