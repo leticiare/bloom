@@ -1,15 +1,22 @@
 import base64
 from io import BytesIO
 from pathlib import Path
+from typing import Literal
 
 from fastapi import APIRouter, Response
 from xhtml2pdf import pisa
 
 router = APIRouter()
+from pydantic import BaseModel
+
+
+class RequisicaoAgendarExame(BaseModel):
+    id_gestante: str
+    tipo: Literal["mensal", "completo"]
 
 
 @router.get("/relatorio-alternativo")
-def exportar_pdf_alternativo():
+def exportar_pdf_alternativo(requisicao: RequisicaoAgendarExame):
     try:
         caminho_template = (
             Path(__file__).resolve().parent.parent.parent
