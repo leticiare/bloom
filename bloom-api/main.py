@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infra.logger.logger import logger
-from api.v1 import check_status, auth, exames, vacinas
+from api.v1 import check_status, auth, exames, vacinas, relatorio
 from api.v1.middlewares import FormatadorRespostaHttpMiddleware
 
 app = FastAPI(
@@ -29,6 +29,7 @@ app.include_router(
 app.include_router(exames.router, prefix="/api/exames", tags=["Exames"])
 app.include_router(vacinas.router, prefix="/api/vacinas", tags=["Vacinas"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
+app.include_router(relatorio.router, prefix="/api/relatorio", tags=["Relatório"])
 
 
 @app.on_event("startup")
