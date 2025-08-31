@@ -6,7 +6,7 @@ import 'package:http/http.dart'
     as http; // Necessário para fazer as chamadas à API
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/src/modules/auth/login/login_screen.dart';
-import 'package:app/src/modules/dashboard/homepage.dart';
+import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
 import 'new_pregnant_screen.dart'; // Para navegação no Switch
 import 'package:app/src/core/constants/constants.dart';
 

@@ -1,8 +1,7 @@
 // main.dart
 
+import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
 import 'package:flutter/material.dart';
-import 'package:app/src/modules/auth/login/login_screen.dart';
-import 'package:app/src/modules/onboarding/onboarding_screen.dart'; // Corrigido o caminho do onboarding
 
 // Variável para forçar o onboarding a ser sempre falso
 bool onboardingCompleted = false;
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Bloom',
       theme: ThemeData(primarySwatch: Colors.blue),
       // A tela inicial agora será sempre o OnboardingScreen
-      home: onboardingCompleted ? const LoginScreen() : OnboardingScreen(),
+      home: HomePage(),
     );
   }
 }

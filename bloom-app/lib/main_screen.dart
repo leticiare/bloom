@@ -1,9 +1,8 @@
 // main_screen.dart
 import 'package:flutter/material.dart';
-import 'package:app/src/modules/dashboard/homepage.dart'; // Adapte o caminho
-import 'package:app/src/modules/dashboard/calendarpage.dart'; // Adapte o caminho
-import 'package:app/src/modules/dashboard/historypage.dart'; // Adapte o caminho
-import 'package:app/src/modules/dashboard/profilepage.dart'; // Adapte o caminho
+import 'package:app/src/modules/dashboard-pregnant/homepage.dart'; // Adapte o caminho
+import 'package:app/src/modules/dashboard-pregnant/calendar_page.dart'; // Adapte o caminho
+import 'package:app/src/modules/dashboard-pregnant/profilepage.dart'; // Adapte o caminho
 
 // Certifique-se de que o seu arquivo de cores está disponível
 import 'package:app/src/core/theme/app_colors.dart';
@@ -19,12 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
 
   // Lista de telas que serão mostradas na BottomNavigationBar
-  final List<Widget> _screens = [
-    HomePage(),
-    CalendarPage(),
-    HistoryPage(),
-    ReportPage(),
-  ];
+  final List<Widget> _screens = [HomePage(), CalendarPage(), ReportPage()];
 
   void _onItemTapped(int index) {
     setState(() {
