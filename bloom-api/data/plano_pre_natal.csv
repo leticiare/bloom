@@ -1,0 +1,38 @@
+nome,descricao,semana_inicio,semana_fim,tipo,nivel_de_importância
+Consulta de Reconhecimento,"Primeiro contato, cálculo da DUM e DPP, histórico clínico, fatores de risco e exame físico inicial",0,12,consulta,alta
+Hemograma completo,Avaliar anemia e alterações hematológicas,0,12,exame,alta
+Tipagem sanguínea e fator Rh + Coombs indireto,Identificar risco de incompatibilidade materno-fetal,0,12,exame,alta
+Glicemia de jejum,Avaliar risco de diabetes pré-gestacional,0,12,exame,alta
+TSH e T4 livre,Avaliar função tireoidiana (quando indicado),0,12,exame,média
+Urina tipo I + urocultura,Detectar infecção urinária assintomática,0,12,exame,alta
+Exame parasitológico de fezes,Rastreio de parasitoses,0,12,exame,baixa
+Sorologias iniciais,"HIV, Sífilis (VDRL), Hepatite B, Hepatite C, Toxoplasmose, Rubéola, CMV",0,12,exame,alta
+Ultrassom obstétrico precoce,"Confirmar viabilidade, número de embriões e idade gestacional",6,9,exame,alta
+Ultrassom morfológico de 1º trimestre,Avaliar translucência nucal e risco de aneuploidias,11,14,exame,alta
+Consulta de rotina,Acompanhamento clínico inicial,12,12,consulta,alta
+Consulta de rotina,Acompanhamento clínico,16,16,consulta,alta
+Consulta de rotina,Acompanhamento clínico + avaliação ultrassom morfológico,20,20,consulta,alta
+Ultrassom morfológico de 2º trimestre,Avaliação detalhada da anatomia fetal,20,24,exame,alta
+Consulta de rotina,Solicitação de TOTG e exames do 2º trimestre,24,24,consulta,alta
+Teste Oral de Tolerância à Glicose,Diagnóstico de diabetes gestacional,24,28,exame,alta
+Urina tipo I + urocultura,Controle de infecção urinária,24,28,exame,alta
+Repetição de sorologias,"HIV, Sífilis, Hepatite B, Toxoplasmose se suscetível",24,28,exame,alta
+Consulta de rotina,Revisão exames e início de vacinas,28,28,consulta,alta
+Hemograma,Avaliar risco de anemia,28,28,exame,alta
+Sorologias de controle,Repetição de infecções transmissíveis,28,28,exame,alta
+Coombs indireto,Monitorar isoimunização em gestante Rh-,28,28,exame,alta
+Vacina dTpa,Protege contra coqueluche neonatal,27,36,vacina,alta
+Vacina Influenza,Protege contra gripe,0,40,vacina,alta
+Consulta de rotina,Acompanhamento clínico,30,30,consulta,alta
+Consulta de rotina,Acompanhamento clínico + avaliação ultrassonográfica,32,32,consulta,alta
+Ultrassonografia de crescimento,Avaliar crescimento fetal e líquido amniótico (se indicado),32,32,exame,média
+Consulta de rotina,Acompanhamento clínico,34,34,consulta,alta
+Coleta para Streptococcus do grupo B,Exame para definir antibiótico no parto,35,37,exame,alta
+Consulta de rotina,Início da fase semanal de acompanhamento,36,36,consulta,alta
+Consulta de rotina,Monitoramento clínico,37,37,consulta,alta
+Cardiotocografia basal,Monitorar vitalidade fetal próximo ao parto,37,40,exame,média
+Consulta de rotina,Monitoramento clínico,38,38,consulta,alta
+Consulta de rotina,Monitoramento clínico,39,39,consulta,alta
+Consulta de rotina,Planejamento da conduta para o parto,40,40,consulta,alta
+Vacina Hepatite B,"Esquema de 3 doses (0, 1 e 6 meses), pode ser iniciada em qualquer trimestre",0,40,vacina,alta
+Vacina COVID-19,Proteção materna e neonatal,0,40,vacina,alta
