@@ -49,6 +49,11 @@ app.include_router(
     consultas.router, prefix="/api/gestante/consultas", tags=["Consultas"]
 )
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
+app.include_router(
+    plano_pre_natal.router,
+    prefix="/api/gestante/plano_pre_natal",
+    tags=["Plano Pré-Natal"],
+)
 
 
 @app.on_event("startup")
