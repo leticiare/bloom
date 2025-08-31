@@ -1,4 +1,10 @@
+import asyncio
+from contextlib import asynccontextmanager
+from typing import List, Tuple, Union
+
 import psycopg2
+from infra.logger.logger import logger
+from psycopg2.sql import SQL, Composable
 
 
 class ConexaoBancoDados:
@@ -35,19 +41,36 @@ class ConexaoBancoDados:
             options=f"-c search_path={schema}",
         )
 
-    def executar_sql(self, sql: str, possui_resultado: bool = False):
+    def executar_sql(
+        self,
+        sql: Union[str, SQL, Composable],
+        parametros: Union[Tuple, List, None] = None,
+        possui_resultado: bool = False,
+    ) -> list | None:
         resultado = None
 
         try:
             cursor = self.conexao.cursor()
-            cursor.execute(sql)
+            cursor.execute(sql, parametros)
             if possui_resultado:
                 resultado = cursor.fetchall()
             cursor.close()
             self.conexao.commit()
         except Exception as e:
-            print(f"Erro ao executar query: {e}")
+            logger.error(f"Erro ao executar query: {e}")
             self.conexao.rollback()
-            return None
+            raise e
 
         return resultado
+
+    @asynccontextmanager
+    async def transacao(self):
+        try:
+            yield
+            await asyncio.to_thread(self.conexao.commit)
+        except Exception as e:
+            await asyncio.to_thread(self.conexao.rollback)
+            logger.error(f"Transação revertida: {e}")
+            raise
+        finally:
+            self._in_transaction = False

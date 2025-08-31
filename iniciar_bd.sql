@@ -1,14 +1,15 @@
+
 -- Criação do schema
 CREATE SCHEMA IF NOT EXISTS bloom_db;
 SET search_path TO bloom_db;
 
 -- Criação de tipos ENUM
 CREATE TYPE plano_pre_natal_tipo AS ENUM ('consulta', 'exame', 'vacina');
-CREATE TYPE agenda_status AS ENUM ('pendente', 'agendada', 'cancelada', 'realizada');
+CREATE TYPE agenda_status AS ENUM ('pendente', 'agendado', 'cancelado', 'realizado');
 CREATE TYPE notificacao_tipo AS ENUM ('lembrete', 'alerta', 'sistema');
 CREATE TYPE notificacao_status AS ENUM ('lida', 'nao_lida');
 CREATE TYPE usuario_perfil AS ENUM ('gestante', 'profissional');
-
+CREATE TYPE documento AS ENUM ('cpf', 'cnpj');
 -- Tabela: plano_pre_natal
 CREATE TABLE plano_pre_natal (
     id UUID PRIMARY KEY,
@@ -19,24 +20,13 @@ CREATE TABLE plano_pre_natal (
     tipo plano_pre_natal_tipo NOT NULL
 );
 
--- Tabela: agenda
-CREATE TABLE agenda (
-    id UUID PRIMARY KEY,
-    status agenda_status NOT NULL DEFAULT 'pendente',
-    data_agendamento TIMESTAMP WITH TIME ZONE,
-    data_realizacao TIMESTAMP WITH TIME ZONE,
-    item_plano_pre_natal_id UUID,
-    observacoes TEXT,
-    tipo plano_pre_natal_tipo NOT NULL,
-    CONSTRAINT fk_agenda_plano_pre_natal
-        FOREIGN KEY (item_plano_pre_natal_id)
-        REFERENCES plano_pre_natal(id)
-);
-
 -- Tabela: usuario
 CREATE TABLE usuario (
     email VARCHAR(100) PRIMARY KEY,
-    senha VARCHAR(32) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    documento VARCHAR(14) NOT NULL,
+    tipo_documento documento NOT NULL,
+    data_nascimento DATE NOT NULL,
     criado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     perfil usuario_perfil NOT NULL
@@ -62,18 +52,32 @@ CREATE TABLE gestante (
     id UUID PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     dum TIMESTAMP WITH TIME ZONE NOT NULL,
-    dpp TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    dpp TIMESTAMP WITH TIME ZONE NOT NULL,
     antecedentes_familiares TEXT,
     antecedentes_ginecologicos TEXT,
     antecedentes_obstetricos TEXT,
     usuario_email VARCHAR(100) NOT NULL,
-    agenda_id UUID NOT NULL,
     CONSTRAINT fk_gestante_usuario
         FOREIGN KEY (usuario_email)
-        REFERENCES usuario(email),
-    CONSTRAINT fk_gestante_agenda
-        FOREIGN KEY (agenda_id)
-        REFERENCES agenda(id)
+        REFERENCES usuario(email)
+);
+
+-- Tabela: agenda
+CREATE TABLE agenda (
+    id UUID PRIMARY KEY,
+    status agenda_status NOT NULL DEFAULT 'pendente',
+    data_agendamento TIMESTAMP WITH TIME ZONE,
+    data_realizacao TIMESTAMP WITH TIME ZONE,
+    item_plano_pre_natal_id UUID,
+    observacoes TEXT,
+    tipo plano_pre_natal_tipo NOT NULL,
+    gestante_id UUID NOT NULL,
+    CONSTRAINT fk_agenda_plano_pre_natal
+        FOREIGN KEY (item_plano_pre_natal_id)
+        REFERENCES plano_pre_natal(id),
+    CONSTRAINT fk_agenda_gestante
+        FOREIGN KEY (gestante_id)
+        REFERENCES gestante(id)
 );
 
 -- Tabela: profissional_saude
@@ -81,6 +85,7 @@ CREATE TABLE profissional_saude (
     codigo UUID PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     especialidade VARCHAR(36) NOT NULL,
+    registro VARCHAR(10) NOT NULL,
     usuario_email VARCHAR(100) NOT NULL,
     CONSTRAINT fk_profissional_saude_usuario
         FOREIGN KEY (usuario_email)

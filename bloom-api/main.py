@@ -1,9 +1,12 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+from api.v1 import auth, check_status
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-import infra.db.iniciar_db
 from infra.logger.logger import logger
-from api.v1 import check_status
+from api.v1 import check_status, exames
+from api.v1.middlewares import FormatadorRespostaHttpMiddleware
 
 app = FastAPI(
     title="Bloom API",
@@ -19,6 +22,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(FormatadorRespostaHttpMiddleware)
 
 
 app.include_router(
@@ -26,6 +30,9 @@ app.include_router(
     prefix="/api/connection",
     tags=["Check connection"],
 )
+app.include_router(exames.router, prefix="/api/exames", tags=["Exames"])
+
+app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 
 
 @app.on_event("startup")
