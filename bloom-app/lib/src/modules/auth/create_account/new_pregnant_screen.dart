@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/src/modules/auth/login/login_screen.dart';
 import 'package:app/src/modules/home/homepage.dart';
 import 'new_doctor_screen.dart';
+import 'package:app/src/core/constants/constants.dart';
 
 // --- CONSTANTES DE CORES ---
 const Color K_MAIN_PINK = Color(0xFFE91E63);
@@ -78,114 +79,108 @@ class _NewPregnantScreenState extends State<NewPregnantScreen> {
   }
 
   void _submitForm() async {
-    if (_formKeyStep2.currentState!.validate() && _termsAccepted) {
-      // Exibe um diálogo de "a carregar".
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(child: CircularProgressIndicator()),
-      );
-
-      String formatarDataParaApi(String dataUI) {
-        if (dataUI.isEmpty) return '';
-        try {
-          final formatoEntrada = DateFormat('dd/MM/yyyy');
-          final data = formatoEntrada.parse(dataUI);
-          final formatoSaida = DateFormat('yyyy-MM-dd');
-          return formatoSaida.format(data);
-        } catch (e) {
-          return '';
-        }
-      }
-
-      final dadosCadastro = {
-        "email": _emailController.text,
-        "senha": _passwordController.text,
-        "perfil": "GESTANTE",
-        "nome": _nameController.text,
-        "documento": _documentoController.text,
-        "tipo_documento": "cpf",
-        "data_nascimento": formatarDataParaApi(_birthDateController.text),
-        "dum": formatarDataParaApi(_lastMenstruationDateController.text),
-        "dpp": formatarDataParaApi(_dppController.text),
-        "antecedentes_familiares": _antecedentesFamiliaresController.text,
-        "antecedentes_ginecologicos": _antecedentesGinecologicosController.text,
-        "antecedentes_obstetricos": _antecedentesObstetricosController.text,
-      };
-
-      // NOVO: Imprime os dados para depuração
-      print("--- ENVIANDO DADOS PARA A API ---");
-      print("URL: http://10.0.2.2:8000/api/auth/registro");
-      print("DADOS: ${jsonEncode(dadosCadastro)}");
-      print("---------------------------------");
-
-      try {
-        final response = await http
-            .post(
-              Uri.parse('http://10.0.2.2:8000/api/auth/registro'),
-              headers: {'Content-Type': 'application/json'},
-              body: jsonEncode(dadosCadastro),
-            )
-            .timeout(const Duration(seconds: 15));
-
-        if (!mounted) return;
-        Navigator.of(context).pop();
-
-        if (response.statusCode == 200 || response.statusCode == 201) {
-          final responseBody = jsonDecode(response.body);
-          if (responseBody['token'] != null) {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('token', responseBody['token']);
-          }
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Cadastro realizado com sucesso! Bem-vinda!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const HomePage()),
-            (Route<dynamic> route) => false,
-          );
-        } else {
-          final responseBody = jsonDecode(response.body);
-          final errorMessage =
-              responseBody['detail'] ?? 'Ocorreu um erro no registo.';
-          print("ERRO DA API: ${response.statusCode} - ${response.body}");
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
-          );
-        }
-      } on TimeoutException catch (_) {
-        if (!mounted) return;
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'O servidor demorou muito para responder. Tente novamente.',
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      } catch (e) {
-        if (!mounted) return;
-        Navigator.of(context).pop();
-        print("ERRO DE CONEXÃO DETALHADO: ${e.toString()}");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Erro de conexão: Verifique sua rede e se o servidor está online.',
-            ),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } else if (!_termsAccepted) {
+    if (!_termsAccepted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Por favor, aceite os termos e condições.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (!_formKeyStep2.currentState!.validate()) return;
+
+    // Exibe um diálogo de carregamento
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(child: CircularProgressIndicator()),
+    );
+
+    String formatarDataParaApi(String dataUI) {
+      if (dataUI.isEmpty) return '';
+      try {
+        final formatoEntrada = DateFormat('dd/MM/yyyy');
+        final data = formatoEntrada.parse(dataUI);
+        final formatoSaida = DateFormat('yyyy-MM-dd');
+        return formatoSaida.format(data);
+      } catch (_) {
+        return '';
+      }
+    }
+
+    final dadosCadastro = {
+      "email": _emailController.text,
+      "senha": _passwordController.text,
+      "perfil": "GESTANTE",
+      "nome": _nameController.text,
+      "documento": _documentoController.text,
+      "tipo_documento": "cpf",
+      "data_nascimento": formatarDataParaApi(_birthDateController.text),
+      "dum": formatarDataParaApi(_lastMenstruationDateController.text),
+      "dpp": formatarDataParaApi(_dppController.text),
+      "antecedentes_familiares": _antecedentesFamiliaresController.text,
+      "antecedentes_ginecologicos": _antecedentesGinecologicosController.text,
+      "antecedentes_obstetricos": _antecedentesObstetricosController.text,
+    };
+
+    try {
+      final response = await http.post(
+        Uri.parse('$kApiBaseUrl/api/auth/registro/gestante'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(dadosCadastro),
+      );
+
+      print('Status code: ${response.statusCode}');
+      print('Body: ${response.body}');
+
+      if (!mounted) return;
+      Navigator.of(context).pop(); // Fecha o diálogo de carregamento
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseBody = jsonDecode(response.body);
+        if (responseBody['token'] != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', responseBody['token']);
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Cadastro realizado com sucesso! Bem-vinda!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HomePage()),
+          (route) => false,
+        );
+      } else {
+        final responseBody = jsonDecode(response.body);
+        final errorMessage =
+            responseBody['detail'] ?? 'Ocorreu um erro no cadastro.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(errorMessage), backgroundColor: Colors.red),
+        );
+      }
+    } on TimeoutException {
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('O servidor demorou muito para responder.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Erro de conexão: verifique sua rede e se o servidor está online.',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -215,7 +210,7 @@ class _NewPregnantScreenState extends State<NewPregnantScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
           children: [
-            Image.asset('assets/images/bloom_logo.png', height: 60),
+            Image.asset('assets/images/bloom_logo.png', height: 85),
             const SizedBox(height: 24),
             _buildRoleSelector(),
             const SizedBox(height: 24),
