@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório da Gestante</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 2.5cm 2cm 2.5cm 2cm;
+            @frame header {
+                -pdf-frame-content: header_content; 
+                position: fixed;
+                top: 0.5cm;
+                left: 2cm;
+                right: 2cm;
+                height: 2cm;
+            }
+            @frame footer {
+                -pdf-frame-content: footer_content; 
+                position: fixed;
+                bottom: 0.5cm;
+                left: 2cm;
+                right: 2cm;
+                height: 1.5cm;
+            }
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            font-weight: 300;
+            color: #FF3C7D; 
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        #header_content {
+            margin-top: 20px;
+        }
+        #footer_content {
+            text-align: right;
+            font-size: 10px;
+            color: #888;
+        }
+        #footer_content .page-number:before {
+            content: "Página " counter(page) " de " counter(pages);
+        }
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #FF3C7D;
+            padding-bottom: 10px;
+            font-size: 20px;
+        }
+        .card h3 {
+            margin: 8px 0 4px 0;
+            font-size: 16px;
+            color: #333;
+        }
+        .card div {
+            margin: 2px 0;
+            line-height: 1.3;
+        }
+        .info-grid {
+            width: 100%;
+            overflow: hidden;
+        }
+        .info-col {
+            float: left;
+            width: 48%;
+            margin-right: 2%;
+        }
+        .info-col:last-child {
+            margin-right: 0;
+        }
+        .logo {
+            width: 70px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header_content">
+        <img src="{{logo}}" class="logo">
+        <h1>Relatório da Gestante</h1>
+    </header>
+    
+    <div id="footer_content">
+        <hr>
+        Bloom &copy; 2025
+        <span class="page-number" style="float: left;"></span>
+    </div>
+
+    <div class="card">
+        <h2>Dados da Gestante</h2>
+        <div class="info-grid">
+            <div class="info-col">
+                <p><strong>Nome:</strong> {{ gestante.nome }}</p>
+                <p><strong>Idade:</strong> {{ gestante.idade }} anos</p>
+                <p><strong>Data de Nascimento:</strong> {{ gestante.data_nascimento }}</p>
+            </div>
+            <div class="info-col">
+                <p><strong>Semanas de Gestação:</strong> {{ gestante.semanas_gestacao }}</p>
+                <p><strong>Data da Última Menstruação (DUM):</strong> {{ gestante.dum }}</p>
+                <p><strong>Data Provável do Parto (DPP):</strong> {{ gestante.dpp }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Histórico</h2>
+        <h3>Exames</h3>
+        <div>{relatorio.exames}</div>
+        <h3>Vacinas</h3>
+        <div>{relatorio.vacinas}</div>
+        <h3>Consultas</h3>
+        <div>{relatorio.consultas}</div>
+    </div>
+    
+
+</body>
+</html>
