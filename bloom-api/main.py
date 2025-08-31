@@ -1,13 +1,30 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infra.logger.logger import logger
-from api.v1 import check_status, auth, exames, vacinas, consultas
+from api.v1 import check_status, auth, exames, vacinas, consultas, plano_pre_natal
 from api.v1.middlewares import FormatadorRespostaHttpMiddleware
+
+tags_metadata = [
+    {
+        "name": "Consultas",
+        "description": "Operações relacionadas às consultas da gestante, como agendamento, realização, cancelamento e anotações de observações. Para todas as rotas protegidas, use o token de autenticação no cabeçalho no padrão Bearer {token}.",
+    },
+    {
+        "name": "Vacinas",
+        "description": "Operações para gerenciamento das vacinas da gestante. Para todas as rotas protegidas, use o token de autenticação no cabeçalho no padrão Bearer {token}.",
+    },
+    {
+        "name": "Exames",
+        "description": "Operações para gerenciamento dos exames da gestante. Para todas as rotas protegidas, use o token de autenticação no cabeçalho no padrão Bearer {token}.",
+    },
+]
+
 
 app = FastAPI(
     title="Bloom API",
     description="API dos serviços do sistema Bloom",
     version="1.0.0",
+    openapi_tags=tags_metadata,
 )
 
 
@@ -26,9 +43,11 @@ app.include_router(
     prefix="/api/connection",
     tags=["Check connection"],
 )
-app.include_router(exames.router, prefix="/api/exames", tags=["Exames"])
-app.include_router(vacinas.router, prefix="/api/vacinas", tags=["Vacinas"])
-app.include_router(consultas.router, prefix="/api/consultas", tags=["Consultas"])
+app.include_router(exames.router, prefix="/api/gestante/exames", tags=["Exames"])
+app.include_router(vacinas.router, prefix="/api/gestante/vacinas", tags=["Vacinas"])
+app.include_router(
+    consultas.router, prefix="/api/gestante/consultas", tags=["Consultas"]
+)
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])
 
 
