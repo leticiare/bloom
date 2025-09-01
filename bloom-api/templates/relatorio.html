@@ -109,21 +109,9 @@
         <span class="page-number" style="float: left;"></span>
     </div>
 
-    <div class="card">
-        <h2>Dados da Gestante</h2>
-        <div class="info-grid">
-            <div class="info-col">
-                <p><strong>Nome:</strong> {{ gestante.nome }}</p>
-                <p><strong>Idade:</strong> {{ gestante.idade }} anos</p>
-                <p><strong>Data de Nascimento:</strong> {{ gestante.data_nascimento }}</p>
-            </div>
-            <div class="info-col">
-                <p><strong>Semanas de Gestação:</strong> {{ gestante.semanas_gestacao }}</p>
-                <p><strong>Data da Última Menstruação (DUM):</strong> {{ gestante.dum }}</p>
-                <p><strong>Data Provável do Parto (DPP):</strong> {{ gestante.dpp }}</p>
-            </div>
-        </div>
-    </div>
+
+        
+        {relatorio.gestante}
 
     <div class="card">
         <h2>Histórico</h2>
