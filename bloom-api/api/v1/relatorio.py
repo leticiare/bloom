@@ -1,61 +1,40 @@
-import base64
-from io import BytesIO
-from pathlib import Path
 from typing import Literal
 
+from controllers.ControladorConsulta import ControladorConsulta
+from controllers.ControladorExame import ControladorExame
+from controllers.ControladorGestante import ControladorGestante
+from controllers.ControladorRelatorio import ControladorRelatorio
+from controllers.ControladorVacina import ControladorVacina
 from fastapi import APIRouter, Response
-from xhtml2pdf import pisa
 
 router = APIRouter()
 from pydantic import BaseModel
 
 
-class RequisicaoAgendarExame(BaseModel):
+class RequisicaoRelatorio(BaseModel):
     id_gestante: str
     tipo: Literal["mensal", "completo"]
 
 
-@router.get("/relatorio-alternativo")
-def exportar_pdf_alternativo(requisicao: RequisicaoAgendarExame):
+@router.post("/")
+async def exportar_pdf_alternativo(requisicao: RequisicaoRelatorio):
     try:
-        caminho_template = (
-            Path(__file__).resolve().parent.parent.parent
-            / "templates"
-            / "relatorio.html"
-        )
-        caminho_logo = (
-            Path(__file__).resolve().parent.parent.parent
-            / "templates"
-            / "assets"
-            / "logo-bloom.png"
+        gestante = ControladorGestante().obter_gestante_por_id(requisicao.id_gestante)
+        exames = ControladorExame().obter_exames_realizados(requisicao.id_gestante)
+        vacinas = ControladorVacina().obter_vacinas_realizadas(requisicao.id_gestante)
+        consultas = ControladorConsulta().obter_consultas_realizadas(
+            requisicao.id_gestante
         )
 
-        html_content = caminho_template.read_text(encoding="utf-8")
-
-        with open(caminho_logo, "rb") as f:
-            logo_base64 = base64.b64encode(f.read()).decode("utf-8")
-
-        logo_tag = f"data:image/png;base64,{logo_base64}"
-        html_content = html_content.replace("{{logo}}", logo_tag)
-
-        # Gera o PDF em memória
-        result_file = BytesIO()
-        pisa_status = pisa.CreatePDF(
-            BytesIO(html_content.encode("UTF-8")),
-            dest=result_file,
-            encoding="UTF-8",
+        pdf_bytes = ControladorRelatorio().gerar_pdf(
+            template_name="relatorio.html",
+            logo_name="logo-bloom.png",
+            vacinas=vacinas,
+            consultas=consultas,
+            exames=exames,
+            gestante=gestante,
         )
-
-        if pisa_status.err:
-            return Response("Ocorreu um erro ao gerar o PDF.", status_code=500)
-
-        result_file.seek(0)
-        pdf_bytes = result_file.read()
-
-        headers = {
-            "Content-Disposition": 'attachment; filename="relatorio_xhtml2pdf.pdf"'
-        }
-
+        headers = {"Content-Disposition": 'attachment; filename="relatorio.pdf"'}
         return Response(
             content=pdf_bytes, media_type="application/pdf", headers=headers
         )
