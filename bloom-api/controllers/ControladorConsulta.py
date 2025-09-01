@@ -40,6 +40,20 @@ class ControladorConsulta:
             for consulta in lista_consultas
         ]
 
+    def obter_consultas_realizadas(self, gestante_id: str):
+        consultas = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.CONSULTA
+        )
+
+        lista_consultas = FiltroEventoAgenda.filtrar_por_status(
+            eventos=consultas, status=[StatusEvento.REALIZADO]
+        )
+
+        return [
+            ConsultaDto.criar(consulta).para_dicionario()
+            for consulta in lista_consultas
+        ]
+
     def obter_consultas_pendentes(self, gestante_id: str):
         consultas = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.CONSULTA
