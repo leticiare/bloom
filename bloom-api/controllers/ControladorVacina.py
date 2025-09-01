@@ -1,7 +1,8 @@
 from datetime import datetime
 from controllers.dto.VacinaDto import VacinaDto
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
-from domain.errors.evento_agenda import StatusEventoError
+from domain.errors.evento_agenda import EventoAgendaError
+from domain.errors.FabricaErroEventoAgenda import FabricaErroEventoAgenda
 from domain.FiltroEventoAgenda import FiltroEventoAgenda
 from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
 from fastapi import HTTPException
@@ -60,12 +61,12 @@ class ControladorVacina:
 
             dto = VacinaDto.criar(vacina)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Vacina")
-            mensagem = str(mensagem).replace("agendado", "agendada")
-            mensagem = str(mensagem).replace("realizado", "aplicada")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
+                vacina_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def aplicar_vacina(self, vacina_id: str, data_realizacao: datetime):
         try:
@@ -79,12 +80,12 @@ class ControladorVacina:
             self._repositorio.atualizar(vacina)
             dto = VacinaDto.criar(vacina)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Vacina")
-            mensagem = str(mensagem).replace("realizado", "aplicada")
-            mensagem = str(mensagem).replace("cancelado", "cancelada")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
+                vacina_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def remarcar_vacina(self, vacina_id: str, data_remarcacao: datetime):
         try:
@@ -98,12 +99,12 @@ class ControladorVacina:
             self._repositorio.atualizar(vacina)
             dto = VacinaDto.criar(vacina)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Vacina")
-            mensagem = str(mensagem).replace("realizado", "aplicada")
-            mensagem = str(mensagem).replace("cancelado", "cancelada")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
+                vacina_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))
 
     def cancelar_vacina(self, vacina_id: str):
         try:
@@ -117,9 +118,9 @@ class ControladorVacina:
             self._repositorio.atualizar(vacina)
             dto = VacinaDto.criar(vacina)
             return dto.para_dicionario()
-        except StatusEventoError as e:
-            mensagem = str(e).replace("Evento", "Vacina")
-            mensagem = str(mensagem).replace("realizado", "aplicada")
-            mensagem = str(mensagem).replace("cancelado", "cancelada")
+        except EventoAgendaError as e:
+            mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
+                vacina_id
+            )
 
-            raise HTTPException(status_code=400, detail=mensagem)
+            raise HTTPException(status_code=400, detail=str(mensagem))

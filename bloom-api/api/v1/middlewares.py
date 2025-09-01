@@ -14,14 +14,6 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
 
         try:
             resposta_http = await call_next(request)
-        except HTTPException as e:
-            resposta = {
-                "sucesso": False,
-                "dados": None,
-                "mensagem": str(e),
-                "codigo_http": e.status_code,
-            }
-            return JSONResponse(content=resposta, status_code=e.status_code)
         except Exception as e:
             resposta = {
                 "sucesso": False,
@@ -36,6 +28,20 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
             corpo += chunk
 
         dados = json.loads(corpo.decode())
+
+        if resposta_http.status_code >= 400:
+            mensagem = (
+                dados.get("detail")
+                if isinstance(dados, dict) and "detail" in dados
+                else str(dados)
+            )
+            resposta = {
+                "sucesso": False,
+                "dados": None,
+                "mensagem": mensagem,
+                "codigo_http": resposta_http.status_code,
+            }
+            return JSONResponse(content=resposta, status_code=resposta_http.status_code)
 
         resposta = {
             "sucesso": True,
