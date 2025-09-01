@@ -9,5 +9,5 @@ conexao = ConexaoBancoDados.criar(
     usuario=os.getenv("USUARIO_BD") or "",
     senha=os.getenv("SENHA_BD") or "",
     host=os.getenv("HOST_BD") or "",
-    schema=os.getenv("SCHEMA_BD") or "public",
+    schema=os.getenv("SCHEMA_DB") or "public",
 )

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:app/src/modules/home/homepage.dart';
 import 'package:app/src/modules/auth/login/forgot_password_screen.dart';
 import 'package:app/src/modules/auth/create_account/new_pregnant_screen.dart';
 import 'package:app/src/shared/services/auth_service.dart';
+import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
 
 // --- CONSTANTES DE CORES ---
 // Definindo as cores principais para manter a consistência do design.
