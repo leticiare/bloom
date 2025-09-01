@@ -1,8 +1,6 @@
 name: app
 description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' 
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -12,9 +10,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.0.15
-  http: ^1.2.1 # Para fazer requisições HTTP
-  flutter_secure_storage: ^9.0.0 # Para armazenar o token de forma segura
-
+  http: ^1.2.1 
+  flutter_secure_storage: ^9.0.0 
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -24,5 +21,3 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-
-

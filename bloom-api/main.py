@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from api.v1 import auth, check_status
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
