@@ -1,6 +1,10 @@
 from typing import TypedDict
 from domain.entities.EventoAgenda import EventoAgenda, TipoEventoAgenda
 from domain.entities.Exame import Exame
+
+from domain.entities.Vacina import Vacina
+from domain.entities.Consulta import Consulta
+
 from domain.entities.PlanoPreNatal import ItemPlanoPreNatal
 
 
@@ -25,7 +29,13 @@ class DadosEventoAgenda(TypedDict):
 class FabricaEventoAgenda:
     @staticmethod
     def criar_evento_agenda(dados: DadosEventoAgenda) -> EventoAgenda:
-        print("dados: ", dados)
+        mapa_tipo_classe = {
+            TipoEventoAgenda.EXAME.value: Exame,
+            TipoEventoAgenda.VACINA.value: Vacina,
+            TipoEventoAgenda.CONSULTA.value: Consulta,
+        }
+
+
         info_plano = None
 
         if (dados.get("info_plano")) is not None:
@@ -37,11 +47,28 @@ class FabricaEventoAgenda:
                 semana_fim=dados.get("info_plano").get("semana_fim"),
             )
 
-        if dados.get("tipo") == TipoEventoAgenda.EXAME.value:
-            return Exame(
+        ClasseEventoAgenda = mapa_tipo_classe.get(dados.get("tipo"))
+
+        if ClasseEventoAgenda is None:
+            raise ValueError(f"Tipo de evento desconhecido: {dados.get('tipo')}")
+
+        # A classe Consulta possui um campo 'observacoes' que as outras classes não possuem, por isso precisa de um tratamento específico
+        if ClasseEventoAgenda == Consulta:
+            return ClasseEventoAgenda(
+
                 id=dados.get("id"),
                 status=dados.get("status"),
                 data_agendamento=dados.get("data_agendamento"),
                 data_realizacao=dados.get("data_realizacao"),
                 info_plano=info_plano,
+
+                observacoes=dados.get("observacoes"),
             )
+
+        return ClasseEventoAgenda(
+            id=dados.get("id"),
+            status=dados.get("status"),
+            data_agendamento=dados.get("data_agendamento"),
+            data_realizacao=dados.get("data_realizacao"),
+            info_plano=info_plano,
+        )

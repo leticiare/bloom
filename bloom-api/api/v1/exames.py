@@ -1,7 +1,12 @@
 from fastapi import APIRouter, Query, Path
 from pydantic import BaseModel, Field
 
+from typing import List
+
 from controllers.ControladorExame import ControladorExame
+from controllers.dto.ExameDto import ExameDto
+from api.resposta_padrao import RespostaPadrao
+
 from datetime import datetime
 from fastapi.responses import JSONResponse
 
@@ -44,7 +49,10 @@ class RequisicaoCancelarExame(BaseModel):
     )
 
 
-@router.get("/{gestante_id}", tags=["Exames"])
+@router.get(
+    "/{gestante_id}", tags=["Exames"], response_model=RespostaPadrao[List[ExameDto]]
+)
+
 def listar_exames(
     gestante_id: str = Path(
         ...,
@@ -67,7 +75,12 @@ def listar_exames(
     )
 
 
-@router.get("/agendados/{gestante_id}", tags=["Exames"])
+@router.get(
+    "/agendados/{gestante_id}",
+    tags=["Exames"],
+    response_model=RespostaPadrao[List[ExameDto]],
+)
+
 def listar_exames_agendados(
     gestante_id: str = Path(
         ...,
@@ -82,22 +95,29 @@ def listar_exames_agendados(
     )
 
 
-@router.get("/nao-agendados/{gestante_id}", tags=["Exames"])
-def listar_exames_nao_agendados(
+
+@router.get(
+    "/pendentes/{gestante_id}",
+    tags=["Exames"],
+    response_model=RespostaPadrao[List[ExameDto]],
+)
+def listar_exames_pendentes(
     gestante_id: str = Path(
         ...,
         description="UUID da gestante na versão 4",
         example="123e4567-e89b-12d3-a456-426614174000",
     ),
 ):
-    """Listar todos os exames não agendados da gestante."""
+
+    """Listar todos os exames pendentes da gestante."""
     return JSONResponse(
-        content=controlador.obter_exames_nao_agendados(gestante_id=gestante_id),
+        content=controlador.obter_exames_pendentes(gestante_id=gestante_id),
+
         status_code=200,
     )
 
+@router.put("/agendar", tags=["Exames"], response_model=RespostaPadrao[ExameDto])
 
-@router.put("/agendar", tags=["Exames"])
 def agendar_exame(requisicao: RequisicaoAgendarExame):
     """Agendar um exame da gestante."""
     return JSONResponse(
@@ -108,7 +128,8 @@ def agendar_exame(requisicao: RequisicaoAgendarExame):
     )
 
 
-@router.put("/realizar", tags=["Exames"])
+@router.put("/realizar", tags=["Exames"], response_model=RespostaPadrao[ExameDto])
+
 def realizar_exame(requisicao: RequisicaoRealizarExame):
     """Realizar um exame da gestante."""
     return JSONResponse(
@@ -119,7 +140,8 @@ def realizar_exame(requisicao: RequisicaoRealizarExame):
     )
 
 
-@router.put("/remarcar", tags=["Exames"])
+@router.put("/remarcar", tags=["Exames"], response_model=RespostaPadrao[ExameDto])
+
 def remarcar_exame(requisicao: RequisicaoAgendarExame):
     """Remarca um exame agendado da gestante."""
     return JSONResponse(
@@ -130,7 +152,9 @@ def remarcar_exame(requisicao: RequisicaoAgendarExame):
     )
 
 
-@router.put("/cancelar", tags=["Exames"])
+
+@router.put("/cancelar", tags=["Exames"], response_model=RespostaPadrao[ExameDto])
+
 def cancelar_exame(requisicao: RequisicaoCancelarExame):
     """Cancela um exame agendado da gestante."""
     return JSONResponse(

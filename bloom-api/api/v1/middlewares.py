@@ -14,14 +14,7 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
 
         try:
             resposta_http = await call_next(request)
-        except HTTPException as e:
-            resposta = {
-                "sucesso": False,
-                "dados": None,
-                "mensagem": str(e),
-                "codigo_http": e.status_code,
-            }
-            return JSONResponse(content=resposta, status_code=e.status_code)
+            
         except Exception as e:
             resposta = {
                 "sucesso": False,
