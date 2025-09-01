@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Importando as telas para navegação
+// Importando as telas para navegação interna da HomePage
 import 'medical_record_page.dart';
 import 'calendar_page.dart';
 import 'articles_page.dart';
@@ -12,21 +12,18 @@ const Color _kTextLight = Color(0xFF828282);
 const Color _kBackground = Color(0xFFF9F9F9);
 const Color _kLightPinkBackground = Color(0xFFFFF0F5);
 
-// Widget agora é stateless, pois não precisa mais gerenciar o estado do Drawer.
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // O Scaffold não precisa mais de uma key ou do drawer.
     return Scaffold(
       backgroundColor: _kBackground,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        // ATUALIZAÇÃO: Fundo transparente para combinar com o design
+        backgroundColor: _kBackground,
         elevation: 0,
-        // CORREÇÃO: Botão de menu (leading) foi removido.
-        automaticallyImplyLeading:
-            false, // Garante que o botão de voltar não apareça
+        automaticallyImplyLeading: false,
         title: const Text(
           'Página Inicial',
           style: TextStyle(color: _kTextDark, fontWeight: FontWeight.bold),
@@ -63,11 +60,10 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              _buildWeekCalendar(context), // Passando o contexto
+              _buildWeekCalendar(context),
               const SizedBox(height: 24),
-              _buildNextAppointmentCard(),
-              const SizedBox(height: 24),
-              _buildBabyInfoCard(),
+              // ATUALIZAÇÃO: Card de consulta e infos do bebê foram unificados
+              _buildAppointmentAndBabyInfoCard(),
               const SizedBox(height: 24),
               _buildNavigationButtons(context),
             ],
@@ -79,16 +75,17 @@ class HomePage extends StatelessWidget {
 
   // --- WIDGETS DE CONSTRUÇÃO DA UI ---
 
+  // Constrói o calendário resumido da semana
   Widget _buildWeekCalendar(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildDayWidget(context, 'Dom', '16', false),
-        _buildDayWidget(context, 'Ter', '17', false),
-        _buildDayWidget(context, 'Qua', '18', true),
-        _buildDayWidget(context, 'Qui', '19', false),
-        _buildDayWidget(context, 'Sex', '20', false),
-        _buildDayWidget(context, 'Sab', '21', false),
+        _buildDayWidget('Dom', '16', false),
+        _buildDayWidget('Ter', '17', false),
+        _buildDayWidget('Qua', '18', true),
+        _buildDayWidget('Qui', '19', false),
+        _buildDayWidget('Sex', '20', false),
+        _buildDayWidget('Sab', '21', false),
         InkWell(
           onTap: () {
             Navigator.push(
@@ -111,56 +108,44 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildDayWidget(
-    BuildContext context,
-    String day,
-    String date,
-    bool isSelected,
-  ) {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const CalendarPage()),
-        );
-      },
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        width: 45,
-        height: 65,
-        decoration: BoxDecoration(
-          color: isSelected ? _kPrimaryPink : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: isSelected ? null : Border.all(color: Colors.grey.shade200),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              day,
-              style: TextStyle(
-                fontSize: 12,
-                color: isSelected ? Colors.white : _kTextLight,
-              ),
+  // Constrói cada dia individual do calendário da semana
+  Widget _buildDayWidget(String day, String date, bool isSelected) {
+    return Container(
+      width: 45,
+      height: 65,
+      decoration: BoxDecoration(
+        color: isSelected ? _kPrimaryPink : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: isSelected ? null : Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            day,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? Colors.white : _kTextLight,
             ),
-            const SizedBox(height: 4),
-            Text(
-              date,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isSelected ? Colors.white : _kTextDark,
-              ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            date,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? Colors.white : _kTextDark,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildNextAppointmentCard() {
+  // ATUALIZAÇÃO: Este widget agora combina as informações da consulta e do bebê
+  Widget _buildAppointmentAndBabyInfoCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -172,75 +157,69 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              color: _kLightPinkBackground,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.favorite_border,
-              color: _kPrimaryPink,
-              size: 28,
-            ),
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: _kLightPinkBackground,
+                  shape: BoxShape.circle,
+                ),
+                // ATUALIZAÇÃO: Ícone mais apropriado
+                child: const Icon(
+                  Icons.child_friendly_outlined,
+                  color: _kPrimaryPink,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              const Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Próxima consulta:',
+                      style: TextStyle(color: _kTextLight, fontSize: 14),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Amanhã',
+                      style: TextStyle(
+                        color: _kTextDark,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // ATUALIZAÇÃO: Subtítulo adicionado
+                    Text(
+                      'Nutricionista',
+                      style: TextStyle(color: _kTextLight, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 16),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Próxima consulta:',
-                  style: TextStyle(color: _kTextLight, fontSize: 14),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'Amanhã',
-                  style: TextStyle(
-                    color: _kTextDark,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Nutricionista',
-                  style: TextStyle(color: _kTextLight, fontSize: 14),
-                ),
-              ],
-            ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Divider(height: 1),
+          ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _InfoColumn(label: 'Altura do bebê', value: '17 cm'),
+              _InfoColumn(label: 'Peso do bebê', value: '110 gr'),
+              _InfoColumn(label: 'Dias até o parto', value: '168 days'),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBabyInfoCard() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _InfoColumn(label: 'Altura do bebê', value: '17 cm'),
-          _InfoColumn(label: 'Peso do bebê', value: '110 gr'),
-          _InfoColumn(label: 'Dias até o parto', value: '168 days'),
-        ],
-      ),
-    );
-  }
-
+  // Constrói os botões de navegação grandes (Meu histórico, Calendário, Artigos)
   Widget _buildNavigationButtons(BuildContext context) {
     return Wrap(
       spacing: 16,
@@ -248,7 +227,7 @@ class HomePage extends StatelessWidget {
       children: [
         _buildNavButton(
           context,
-          Icons.star,
+          Icons.star_border_rounded,
           'Meu histórico',
           () => Navigator.push(
             context,
@@ -257,7 +236,7 @@ class HomePage extends StatelessWidget {
         ),
         _buildNavButton(
           context,
-          Icons.calendar_today,
+          Icons.calendar_today_outlined,
           'Calendário',
           () => Navigator.push(
             context,
@@ -266,7 +245,7 @@ class HomePage extends StatelessWidget {
         ),
         _buildNavButton(
           context,
-          Icons.article,
+          Icons.article_outlined,
           'Artigos',
           () => Navigator.push(
             context,
@@ -277,15 +256,19 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  // Widget auxiliar para criar cada um dos botões de navegação
   Widget _buildNavButton(
     BuildContext context,
     IconData icon,
     String label,
     VoidCallback onTap,
   ) {
+    // LayoutBuilder permite que os botões se ajustem ao tamanho da tela
     return LayoutBuilder(
       builder: (context, constraints) {
+        // Calcula o tamanho para que dois botões caibam lado a lado com um espaçamento
         final buttonSize = (constraints.maxWidth - 16) / 2;
+        // O botão 'Artigos' ocupará a largura total
         final isFullWidth = label == 'Artigos';
 
         return InkWell(
@@ -293,8 +276,7 @@ class HomePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Container(
             width: isFullWidth ? constraints.maxWidth : buttonSize,
-            height: buttonSize,
-            padding: const EdgeInsets.all(16),
+            height: 150, // Altura fixa para consistência
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
@@ -308,13 +290,11 @@ class HomePage extends StatelessWidget {
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(icon, color: _kPrimaryPink, size: 40),
                 const SizedBox(height: 12),
                 Text(
                   label,
-                  textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: _kTextDark,
                     fontSize: 16,
@@ -330,6 +310,7 @@ class HomePage extends StatelessWidget {
   }
 }
 
+// Widget auxiliar para as colunas de informação (Altura, Peso, Dias)
 class _InfoColumn extends StatelessWidget {
   final String label;
   final String value;
