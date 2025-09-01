@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.0.15
+  http: ^1.2.1 # Para fazer requisições HTTP
+  flutter_secure_storage: ^9.0.0 # Para armazenar o token de forma segura
 
 dev_dependencies:
   flutter_test:

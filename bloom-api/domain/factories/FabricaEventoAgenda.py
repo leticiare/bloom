@@ -1,8 +1,10 @@
 from typing import TypedDict
 from domain.entities.EventoAgenda import EventoAgenda, TipoEventoAgenda
 from domain.entities.Exame import Exame
+
 from domain.entities.Vacina import Vacina
 from domain.entities.Consulta import Consulta
+
 from domain.entities.PlanoPreNatal import ItemPlanoPreNatal
 
 
@@ -33,6 +35,7 @@ class FabricaEventoAgenda:
             TipoEventoAgenda.CONSULTA.value: Consulta,
         }
 
+
         info_plano = None
 
         if (dados.get("info_plano")) is not None:
@@ -52,11 +55,13 @@ class FabricaEventoAgenda:
         # A classe Consulta possui um campo 'observacoes' que as outras classes não possuem, por isso precisa de um tratamento específico
         if ClasseEventoAgenda == Consulta:
             return ClasseEventoAgenda(
+
                 id=dados.get("id"),
                 status=dados.get("status"),
                 data_agendamento=dados.get("data_agendamento"),
                 data_realizacao=dados.get("data_realizacao"),
                 info_plano=info_plano,
+
                 observacoes=dados.get("observacoes"),
             )
 

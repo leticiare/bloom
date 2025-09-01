@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app/src/modules/home/homepage.dart';
 import 'package:app/src/modules/auth/login/forgot_password_screen.dart';
 import 'package:app/src/modules/auth/create_account/new_pregnant_screen.dart';
+import 'package:app/src/shared/services/auth_service.dart';
 
 // --- CONSTANTES DE CORES ---
 // Definindo as cores principais para manter a consistência do design.
@@ -22,10 +23,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   // --- VARIÁVEIS DE ESTADO ---
   bool _isPasswordVisible = false; // Controla a visibilidade da senha.
+  bool _isLoading =
+      false; // Controla o estado de carregamento do botão de login.
 
   // Controladores para os campos de texto.
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _authService = AuthService(); // Serviço de autenticação.
   // Chave para validar o formulário.
   final _formKey = GlobalKey<FormState>();
 
@@ -40,27 +44,33 @@ class _LoginScreenState extends State<LoginScreen> {
   // --- MÉTODOS DE LÓGICA E NAVEGAÇÃO ---
 
   // Valida as credenciais e realiza o login.
-  void _handleLogin() {
+  void _handleLogin() async {
     // Verifica se os campos do formulário são válidos.
     if (_formKey.currentState!.validate()) {
-      // Credenciais de teste (substitua pela sua lógica de autenticação real).
-      const String testEmail = 'exemplo@teste.com';
-      const String testPassword = '12345';
+      setState(() {
+        _isLoading = true;
+      });
 
-      if (_emailController.text == testEmail &&
-          _passwordController.text == testPassword) {
+      // Tenta realizar o login usando o serviço de autenticação.
+      final error = await _authService.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (error == null) {
         // Se o login for bem-sucedido, navega para a HomePage.
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const HomePage()),
         );
       } else {
         // Se as credenciais forem inválidas, mostra uma mensagem de erro.
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Email ou senha incorretos. Tente novamente.'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(error)));
       }
     }
   }
@@ -153,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: _handleLogin,
+                  onPressed: _isLoading ? null : _handleLogin,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: K_MAIN_PINK,
                     foregroundColor: Colors.white,
@@ -161,10 +171,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
-                  child: const Text(
-                    'Entrar',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        )
+                      : const Text(
+                          'Entrar',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
               const SizedBox(height: 24),
