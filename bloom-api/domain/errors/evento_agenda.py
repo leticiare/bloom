@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> telas-dashboard
 class EventoAgendaError(Exception):
     pass
 

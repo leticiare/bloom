@@ -33,6 +33,7 @@ class RepositorioEventoAgenda:
         }
 
         entidade = FabricaEventoAgenda.criar_evento_agenda(dados=dados_entidade)
+
         return entidade
 
     def _obter_sql_busca(self) -> str:
@@ -92,9 +93,13 @@ class RepositorioEventoAgenda:
                     evento.status.value,
                     evento.data_agendamento,
                     evento.data_realizacao,
-                    evento.info_plano.id,
+
                     evento.tipo.value,
                     evento.observacoes,
+<<<<<<< HEAD
+=======
+
+>>>>>>> telas-dashboard
                     evento.id,
                 ),
             )

@@ -1,3 +1,7 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+from api.v1 import auth, check_status
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infra.logger.logger import logger
@@ -27,6 +31,7 @@ app.include_router(
     tags=["Check connection"],
 )
 app.include_router(exames.router, prefix="/api/exames", tags=["Exames"])
+
 app.include_router(vacinas.router, prefix="/api/vacinas", tags=["Vacinas"])
 app.include_router(consultas.router, prefix="/api/consultas", tags=["Consultas"])
 app.include_router(auth.router, prefix="/api/auth", tags=["Auth"])

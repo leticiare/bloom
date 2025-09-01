@@ -1,8 +1,10 @@
 from dataclasses import dataclass
+
 from typing import Optional
 from datetime import datetime
 
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
+
 from domain.entities.Exame import Exame
 
 
@@ -49,4 +51,5 @@ class ExameDto:
             "semana_inicio": self.semana_inicio,
             "semana_fim": self.semana_fim,
             "tipo": self.tipo.value,
+
         }

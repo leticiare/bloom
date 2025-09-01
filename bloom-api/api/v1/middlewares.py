@@ -14,6 +14,10 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
 
         try:
             resposta_http = await call_next(request)
+<<<<<<< HEAD
+=======
+            
+>>>>>>> telas-dashboard
         except Exception as e:
             resposta = {
                 "sucesso": False,

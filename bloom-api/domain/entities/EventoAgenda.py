@@ -1,5 +1,11 @@
 from enum import Enum
+<<<<<<< HEAD
 from typing import List, Optional
+=======
+
+from typing import List, Optional
+
+>>>>>>> telas-dashboard
 from datetime import datetime
 from domain.errors.evento_agenda import (
     EventoJaAgendadoError,
@@ -11,6 +17,7 @@ from domain.errors.evento_agenda import (
 
 class TipoEventoAgenda(Enum):
     EXAME = "exame"
+
     VACINA = "vacina"
     CONSULTA = "consulta"
 
@@ -31,12 +38,18 @@ class EventoAgenda:
         data_realizacao: Optional[datetime],
         tipo: TipoEventoAgenda,
         observacoes: Optional[str] = None,
+<<<<<<< HEAD
+=======
+
+>>>>>>> telas-dashboard
     ):
         self.id = id
         self.status = StatusEvento(status)
         self.data_agendamento = data_agendamento
         self.data_realizacao = data_realizacao
         self.tipo = tipo
+        self.observacoes = observacoes
+
         self.observacoes = observacoes
 
     def _validar_status(self, lista_status: List[StatusEvento]):
@@ -48,7 +61,13 @@ class EventoAgenda:
 
         for status in lista_status:
             if self.status == status:
+<<<<<<< HEAD
                 raise mapa_excecoes[status]()
+=======
+
+                raise mapa_excecoes[status]()
+
+>>>>>>> telas-dashboard
 
     def agendar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.AGENDADO, StatusEvento.REALIZADO])
@@ -61,7 +80,13 @@ class EventoAgenda:
         self._validar_status([StatusEvento.REALIZADO, StatusEvento.CANCELADO])
 
         if data_realizacao is None and self.data_agendamento is not None:
+<<<<<<< HEAD
             raise EventoSemDataAgendamentoError()
+=======
+
+            raise EventoSemDataAgendamentoError()
+
+>>>>>>> telas-dashboard
 
         self.status = StatusEvento.REALIZADO
         self.data_realizacao = data_realizacao or self.data_agendamento
@@ -72,6 +97,10 @@ class EventoAgenda:
         self.status = StatusEvento.CANCELADO
         self.data_agendamento = None
         self.data_realizacao = None
+
+        self.data_agendamento = None
+        self.data_realizacao = None
+
 
     def remarcar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.CANCELADO, StatusEvento.REALIZADO])
