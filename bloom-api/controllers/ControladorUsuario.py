@@ -26,6 +26,11 @@ class ControladorUsuario:
             usuario.perfil = usuario.perfil.value.lower()
             usuario.tipo_documento = usuario.tipo_documento.value
 
+            if isinstance(usuario, Profissional):
+                usuario.id_entidade_perfil = usuario.codigo
+            elif isinstance(usuario, Gestante):
+                usuario.id_entidade_perfil = usuario.id
+
             await asyncio.to_thread(
                 run_async_in_thread, self._repositorio_usuario.inserir_usuario(usuario)
             )

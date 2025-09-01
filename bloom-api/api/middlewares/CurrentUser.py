@@ -13,7 +13,8 @@ async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
     try:
-        ServicoAutenticacao.decodificar_token(credentials.token)
+        usuario = ServicoAutenticacao.decodificar_token(credentials.credentials)
+        return usuario
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

@@ -62,12 +62,10 @@ class RepositorioProfissional:
                 RETURNING codigo, nome, especialidade, usuario_email;
             """).format(tabela=Identifier(self._tabela))
 
-        codigo = str(uuid.uuid4())
-
         self._conexao.executar_sql(
             sql=sql,
             parametros=(
-                codigo,
+                str(profissional.codigo),
                 profissional.nome,
                 profissional.especialidade,
                 profissional.registro,

@@ -1,7 +1,6 @@
 import uuid
 
 from domain.entities.Gestante import Gestante
-from domain.entities.Profissional import Profissional
 from domain.enums.TiposDocumento import TiposDocumento
 from domain.factories.FabricaDocumento import FabricaDocumento
 from dotenv import load_dotenv
@@ -9,7 +8,7 @@ from psycopg2.sql import SQL, Identifier
 
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
-from infra.logger.logger import logger
+from infra.repositories.RepositorioPlanoPreNatal import RepositorioPlanoPreNatal
 
 load_dotenv()
 
@@ -17,6 +16,9 @@ load_dotenv()
 class RepositorioGestante:
     def __init__(self):
         self._conexao: ConexaoBancoDados = ConexaoBancoDados.obter_instancia()
+        self._repositorio_pre_natal: RepositorioPlanoPreNatal = (
+            RepositorioPlanoPreNatal()
+        )
         self._tabela: str = "gestante"
         self._tabela_usuario: str = "usuario"
 
@@ -61,9 +63,6 @@ class RepositorioGestante:
         self,
         gestante: Gestante,
     ) -> Gestante:
-        if not gestante.id:
-            gestante.id = str(uuid.uuid4())
-
         sql = SQL("""
                 INSERT INTO {tabela} (
                     id, nome, dum, dpp,
@@ -77,7 +76,7 @@ class RepositorioGestante:
         self._conexao.executar_sql(
             sql=sql,
             parametros=(
-                gestante.id,
+                str(gestante.id),
                 gestante.nome,
                 gestante.dum,
                 gestante.dpp,
@@ -87,5 +86,7 @@ class RepositorioGestante:
                 gestante.email,
             ),
         )
+
+        self._repositorio_pre_natal.criar_plano_para_gestante(gestante.id)
 
         return gestante

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Query, Path
+from fastapi import APIRouter, Depends, Query, Path
 from pydantic import BaseModel, Field
 from typing import List
 
@@ -7,6 +7,7 @@ from controllers.dto.ConsultaDto import ConsultaDto
 from api.resposta_padrao import RespostaPadrao
 from datetime import datetime
 from fastapi.responses import JSONResponse
+from api.middlewares.CurrentUser import perfil_autorizado
 
 router = APIRouter()
 
@@ -61,25 +62,21 @@ class RequisicaoAnotarObservacaoConsulta(BaseModel):
 
 
 @router.get(
-    "/{gestante_id}",
+    "/",
     tags=["Consultas"],
     response_model=RespostaPadrao[List[ConsultaDto]],
 )
 def listar_consultas(
-    gestante_id: str = Path(
-        ...,
-        description="UUID da gestante na versão 4",
-        example="123e4567-e89b-12d3-a456-426614174000",
-    ),
     data_inicio: datetime | None = Query(
         None, description="Data início no formato ISO 8601"
     ),
     data_fim: datetime | None = Query(None, description="Data fim no formato ISO 8601"),
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
     """Listar as consultas da gestante. É possível passar um intervalo de datas como parâmetros na url."""
     return JSONResponse(
         content=controlador.obter_todos(
-            gestante_id=gestante_id,
+            gestante_id=usuario.get("id_entidade_perfil"),
             data_inicio=data_inicio,
             data_fim=data_fim,
         ),
@@ -88,45 +85,44 @@ def listar_consultas(
 
 
 @router.get(
-    "/agendados/{gestante_id}",
+    "/agendados/",
     tags=["Consultas"],
     response_model=RespostaPadrao[List[ConsultaDto]],
 )
 def listar_consultas_agendados(
-    gestante_id: str = Path(
-        ...,
-        description="UUID da gestante na versão 4",
-        example="123e4567-e89b-12d3-a456-426614174000",
-    ),
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
     """Listar todas as consultas agendadas da gestante."""
     return JSONResponse(
-        content=controlador.obter_consultas_agendados(gestante_id=gestante_id),
+        content=controlador.obter_consultas_agendados(
+            gestante_id=usuario.get("id_entidade_perfil")
+        ),
         status_code=200,
     )
 
 
 @router.get(
-    "/pendentes/{gestante_id}",
+    "/pendentes/",
     tags=["Consultas"],
     response_model=RespostaPadrao[List[ConsultaDto]],
 )
 def listar_consultas_pendentes(
-    gestante_id: str = Path(
-        ...,
-        description="UUID da gestante na versão 4",
-        example="123e4567-e89b-12d3-a456-426614174000",
-    ),
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
     """Listar todas as consultas pendentes da gestante."""
     return JSONResponse(
-        content=controlador.obter_consultas_pendentes(gestante_id=gestante_id),
+        content=controlador.obter_consultas_pendentes(
+            gestante_id=usuario.get("id_entidade_perfil")
+        ),
         status_code=200,
     )
 
 
 @router.put("/agendar", tags=["Consultas"], response_model=RespostaPadrao[ConsultaDto])
-def agendar_consulta(requisicao: RequisicaoAgendarConsulta):
+def agendar_consulta(
+    requisicao: RequisicaoAgendarConsulta,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Agendar uma consulta da gestante."""
     return JSONResponse(
         content=controlador.agendar_consulta(
@@ -137,7 +133,10 @@ def agendar_consulta(requisicao: RequisicaoAgendarConsulta):
 
 
 @router.put("/realizar", tags=["Consultas"], response_model=RespostaPadrao[ConsultaDto])
-def realizar_consulta(requisicao: RequisicaoRealizarConsulta):
+def realizar_consulta(
+    requisicao: RequisicaoRealizarConsulta,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Realizar uma consulta da gestante."""
     return JSONResponse(
         content=controlador.realizar_consulta(
@@ -147,8 +146,15 @@ def realizar_consulta(requisicao: RequisicaoRealizarConsulta):
     )
 
 
-@router.put("/remarcar", tags=["Consultas"], response_model=RespostaPadrao[ConsultaDto])
-def remarcar_consulta(requisicao: RequisicaoAgendarConsulta):
+@router.put(
+    "/remarcar",
+    tags=["Consultas"],
+    response_model=RespostaPadrao[ConsultaDto],
+)
+def remarcar_consulta(
+    requisicao: RequisicaoAgendarConsulta,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Remarca uma consulta agendada da gestante."""
     return JSONResponse(
         content=controlador.remarcar_consulta(
@@ -159,7 +165,10 @@ def remarcar_consulta(requisicao: RequisicaoAgendarConsulta):
 
 
 @router.put("/cancelar", tags=["Consultas"], response_model=RespostaPadrao[ConsultaDto])
-def cancelar_consulta(requisicao: RequisicaoCancelarConsulta):
+def cancelar_consulta(
+    requisicao: RequisicaoCancelarConsulta,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Cancela uma consulta agendada da gestante."""
     return JSONResponse(
         content=controlador.cancelar_consulta(consulta_id=requisicao.id),
@@ -168,7 +177,10 @@ def cancelar_consulta(requisicao: RequisicaoCancelarConsulta):
 
 
 @router.put("/anotar", tags=["Consultas"], response_model=RespostaPadrao[ConsultaDto])
-def anotar_observacao_consulta(requisicao: RequisicaoAnotarObservacaoConsulta):
+def anotar_observacao_consulta(
+    requisicao: RequisicaoAnotarObservacaoConsulta,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Anota uma observação em uma consulta da gestante."""
     return JSONResponse(
         content=controlador.anotar_observacao_consulta(

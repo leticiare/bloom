@@ -38,7 +38,7 @@ class ServicoAutenticacao:
             expire = datetime.utcnow() + timedelta(minutes=30)
         to_encode.update({"exp": expire})
         for key, value in to_encode.items():
-            if isinstance(value, (datetime, date)):
+            if key != "exp" and isinstance(value, (datetime, date)):
                 to_encode[key] = value.isoformat()
         return jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
 
@@ -68,7 +68,11 @@ class ServicoAutenticacao:
         ):
             raise ValueError("Usuário ou senha incorretos")
 
-        dados_usuario = {"email": usuario.email, "perfil": usuario_encontrado.perfil}
+        dados_usuario = {
+            "email": usuario.email,
+            "perfil": usuario_encontrado.perfil,
+            "id_entidade_perfil": usuario_encontrado.id_entidade_perfil,
+        }
         token = cls._gerar_token_acesso(dados_usuario)
         return {"jwt_token": token}
 
