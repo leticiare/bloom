@@ -1,8 +1,8 @@
-from starlette.middleware.base import BaseHTTPMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.requests import Request
-from fastapi import HTTPException
 import json
+
+from fastapi.requests import Request
+from fastapi.responses import JSONResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
@@ -28,7 +28,16 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
         async for chunk in resposta_http.body_iterator:
             corpo += chunk
 
-        dados = json.loads(corpo.decode())
+        # Ignorar se o tipo de conteúdo não for JSON - Para exportação do pdf
+        content_type = resposta_http.headers.get("content-type", "")
+        if "application/json" not in content_type:
+            # Retorna a resposta original (ex: PDF, HTML, etc)
+            return resposta_http
+
+        try:
+            dados = json.loads(corpo.decode())
+        except json.JSONDecodeError:
+            dados = {}
 
         resposta = {
             "sucesso": True,

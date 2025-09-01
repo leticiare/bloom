@@ -1,13 +1,11 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from api.v1 import auth, check_status
+from api.v1 import check_status, auth, exames, vacinas, consultas, plano_pre_natal, relatorio
+from api.v1.middlewares import FormatadorRespostaHttpMiddleware
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from infra.logger.logger import logger
-
-from api.v1 import check_status, auth, exames, vacinas, consultas, plano_pre_natal
-from api.v1.middlewares import FormatadorRespostaHttpMiddleware
 
 tags_metadata = [
     {
@@ -59,6 +57,7 @@ app.include_router(
     prefix="/api/gestante/plano_pre_natal",
     tags=["Plano Pré-Natal"],
 )
+app.include_router(relatorio.router, prefix="/api/gestante/relatorio", tags=["Relatório"])
 
 
 @app.on_event("startup")

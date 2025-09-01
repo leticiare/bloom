@@ -42,6 +42,17 @@ class ControladorExame:
 
         return [ExameDto.criar(exame).para_dicionario() for exame in lista_exames]
 
+    def obter_exames_realizados(self, gestante_id: str):
+        exames = self._repositorio.obter_todos_por_gestante(
+            gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME
+        )
+
+        lista_exames = FiltroEventoAgenda.filtrar_por_status(
+            eventos=exames, status=[StatusEvento.REALIZADO]
+        )
+
+        return [ExameDto.criar(exame).para_dicionario() for exame in lista_exames]
+
     def obter_exames_pendentes(self, gestante_id: str):
         exames = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.EXAME

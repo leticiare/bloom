@@ -90,3 +90,40 @@ class RepositorioGestante:
         self._repositorio_pre_natal.criar_plano_para_gestante(gestante.id)
 
         return gestante
+
+    def buscar_gestante_por_id(self, id: str) -> Gestante:
+        sql = SQL("""
+        SELECT
+            g.id, g.nome, u.email, u.senha, u.perfil, u.data_nascimento,
+            u.documento, u.tipo_documento, g.dum, g.dpp, g.antecedentes_familiares,
+            g.antecedentes_ginecologicos, g.antecedentes_obstetricos
+        FROM {tabela_gestante} g
+        INNER JOIN {tabela_usuario} u ON g.usuario_email = u.email
+        WHERE g.id = %s
+    """).format(
+            tabela_gestante=Identifier(self._tabela),
+            tabela_usuario=Identifier(self._tabela_usuario),
+        )
+        resultado = conexao.executar_sql(
+            sql=sql, parametros=(id,), possui_resultado=True
+        )[0]
+
+        if not resultado:
+            return None
+
+        gestante = Gestante(
+            id=resultado[0],
+            nome=resultado[1],
+            email=resultado[2],
+            senha=resultado[3],
+            perfil=resultado[4],
+            data_nascimento=resultado[5],
+            documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
+            tipo_documento=TiposDocumento(resultado[7]),
+            dum=resultado[8],
+            dpp=resultado[9],
+            antecedentes_familiares=resultado[10],
+            antecedentes_ginecologicos=resultado[11],
+            antecedentes_obstetricos=resultado[12],
+        )
+        return gestante
