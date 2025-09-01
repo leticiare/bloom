@@ -1,27 +1,28 @@
-class StatusEventoError(Exception):
+
+class EventoAgendaError(Exception):
     pass
 
 
-class EventoNaoEncontradoError(StatusEventoError):
-    def __init__(self, id: str):
-        super().__init__(f"Exame não encontrado: {id}")
+class EventoNaoEncontradoError(EventoAgendaError):
+    def __init__(self):
+        super().__init__("Evento não encontrado.")
 
 
-class EventoJaRealizadoError(StatusEventoError):
-    def __init__(self, id: str):
-        super().__init__(f"Exame já realizado: {id}")
+class EventoJaRealizadoError(EventoAgendaError):
+    def __init__(self):
+        super().__init__("Evento já realizado.")
 
 
-class EventoJaAgendadoError(StatusEventoError):
-    def __init__(self, id: str):
-        super().__init__(f"Exame já agendado: {id}")
+class EventoJaAgendadoError(EventoAgendaError):
+    def __init__(self):
+        super().__init__("Evento já agendado.")
 
 
-class EventoJaCanceladoError(StatusEventoError):
-    def __init__(self, id: str):
-        super().__init__(f"Exame já cancelado: {id}")
+class EventoJaCanceladoError(EventoAgendaError):
+    def __init__(self):
+        super().__init__("Evento já cancelado.")
 
 
-class EventoSemDataAgendamentoError(StatusEventoError):
-    def __init__(self, id: str):
-        super().__init__(f"Exame sem data de agendamento: {id}")
+class EventoSemDataAgendamentoError(EventoAgendaError):
+    def __init__(self):
+        super().__init__("Evento sem data de agendamento.")

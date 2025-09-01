@@ -1,16 +1,14 @@
 from dataclasses import dataclass
-
 from typing import Optional
 from datetime import datetime
 
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
-
-from domain.entities.Exame import Exame
+from domain.entities.Consulta import Consulta
 
 
 @dataclass
-class ExameDto:
-    """DTO para transferência de dados de Exame"""
+class ConsultaDto:
+    """DTO para transferência de dados de Consulta"""
 
     id: str
     status: StatusEvento
@@ -20,20 +18,22 @@ class ExameDto:
     descricao: str
     semana_inicio: int
     semana_fim: int
+    observacoes: str
     tipo: TipoEventoAgenda
 
     @classmethod
-    def criar(cls, exame: Exame) -> "ExameDto":
+    def criar(cls, consulta: Consulta) -> "ConsultaDto":
         return cls(
-            id=exame.id,
-            status=exame.status,
-            data_agendamento=exame.data_agendamento,
-            data_realizacao=exame.data_realizacao,
-            nome=exame.info_plano.nome,
-            descricao=exame.info_plano.descricao,
-            semana_inicio=exame.info_plano.semana_inicio,
-            semana_fim=exame.info_plano.semana_fim,
-            tipo=exame.tipo,
+            id=consulta.id,
+            status=consulta.status,
+            data_agendamento=consulta.data_agendamento,
+            data_realizacao=consulta.data_realizacao,
+            observacoes=consulta.observacoes,
+            nome=consulta.info_plano.nome,
+            descricao=consulta.info_plano.descricao,
+            semana_inicio=consulta.info_plano.semana_inicio,
+            semana_fim=consulta.info_plano.semana_fim,
+            tipo=consulta.tipo,
         )
 
     def para_dicionario(self):
@@ -51,5 +51,5 @@ class ExameDto:
             "semana_inicio": self.semana_inicio,
             "semana_fim": self.semana_fim,
             "tipo": self.tipo.value,
-
+            "observacoes": self.observacoes,
         }
