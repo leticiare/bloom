@@ -1,6 +1,6 @@
 // main.dart
 
-import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
+import 'package:app/main_screen.dart';
 import 'package:flutter/material.dart';
 
 // Variável para forçar o onboarding a ser sempre falso
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       title: 'Bloom',
       theme: ThemeData(primarySwatch: Colors.blue),
       // A tela inicial agora será sempre o OnboardingScreen
-      home: HomePage(),
+      home: const MainScreen(),
     );
   }
 }

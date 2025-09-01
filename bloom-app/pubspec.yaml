@@ -13,7 +13,6 @@ dependencies:
   http: ^1.2.1 # Para fazer requisições HTTP
   flutter_secure_storage: ^9.0.0 # Para armazenar o token de forma segura
   table_calendar: ^3.0.9
-  http: ^1.1.0
 
 dev_dependencies:
   flutter_test:
