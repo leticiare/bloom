@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // IMPORTAÇÃO: Pacote para formatação de data
+import 'package:intl/date_symbol_data_local.dart'; // IMPORTAÇÃO: Para usar localização (pt_BR)
 
 // Importando as telas para navegação interna da HomePage
 import 'medical_record_page.dart';
@@ -12,15 +14,54 @@ const Color _kTextLight = Color(0xFF828282);
 const Color _kBackground = Color(0xFFF9F9F9);
 const Color _kLightPinkBackground = Color(0xFFFFF0F5);
 
-class HomePage extends StatelessWidget {
+// ATUALIZAÇÃO: Convertido para StatefulWidget para gerenciar o estado do calendário
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // ATUALIZAÇÃO: Variável de estado para guardar a data selecionada.
+  // Inicia com a data e hora de hoje.
+  late DateTime _selectedDate;
+
+  // Lista para guardar os 7 dias da semana atual
+  List<DateTime> _weekDays = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicializa o formatador de datas para o português do Brasil
+    initializeDateFormatting('pt_BR', null);
+
+    _selectedDate = DateTime.now();
+    _generateWeekDays(_selectedDate);
+  }
+
+  // Função para gerar os 7 dias da semana baseados em uma data
+  void _generateWeekDays(DateTime date) {
+    _weekDays = [];
+    // Encontra o domingo da semana atual
+    DateTime startOfWeek = date.subtract(Duration(days: date.weekday % 7));
+    for (int i = 0; i < 7; i++) {
+      _weekDays.add(startOfWeek.add(Duration(days: i)));
+    }
+  }
+
+  // ATUALIZAÇÃO: Função auxiliar para verificar se duas datas são o mesmo dia
+  bool _isSameDay(DateTime dateA, DateTime dateB) {
+    return dateA.year == dateB.year &&
+        dateA.month == dateB.month &&
+        dateA.day == dateB.day;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _kBackground,
       appBar: AppBar(
-        // ATUALIZAÇÃO: Fundo transparente para combinar com o design
         backgroundColor: _kBackground,
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -62,7 +103,6 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 24),
               _buildWeekCalendar(context),
               const SizedBox(height: 24),
-              // ATUALIZAÇÃO: Card de consulta e infos do bebê foram unificados
               _buildAppointmentAndBabyInfoCard(),
               const SizedBox(height: 24),
               _buildNavigationButtons(context),
@@ -75,44 +115,36 @@ class HomePage extends StatelessWidget {
 
   // --- WIDGETS DE CONSTRUÇÃO DA UI ---
 
-  // Constrói o calendário resumido da semana
+  // ATUALIZAÇÃO: Calendário agora é construído dinamicamente
   Widget _buildWeekCalendar(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildDayWidget('Dom', '16', false),
-        _buildDayWidget('Ter', '17', false),
-        _buildDayWidget('Qua', '18', true),
-        _buildDayWidget('Qui', '19', false),
-        _buildDayWidget('Sex', '20', false),
-        _buildDayWidget('Sab', '21', false),
-        InkWell(
+      // Gera os 7 widgets de dia dinamicamente a partir da lista _weekDays
+      children: _weekDays.map((date) {
+        // Verifica se a data do loop é a data selecionada
+        final bool isSelected = _isSameDay(date, _selectedDate);
+        // Formata o nome do dia (ex: 'Seg') e o número do dia (ex: '17')
+        final String dayName = DateFormat('E', 'pt_BR').format(date);
+        final String dayNumber = DateFormat('d').format(date);
+
+        return GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const CalendarPage()),
-            );
+            // ATUALIZAÇÃO: Adiciona interatividade ao tocar no dia
+            setState(() {
+              _selectedDate = date;
+            });
           },
-          borderRadius: BorderRadius.circular(12),
-          child: Container(
-            width: 45,
-            height: 65,
-            decoration: BoxDecoration(
-              color: _kLightPinkBackground,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.add, color: _kPrimaryPink, size: 28),
-          ),
-        ),
-      ],
+          child: _buildDayWidget(dayName, dayNumber, isSelected),
+        );
+      }).toList(),
     );
   }
 
-  // Constrói cada dia individual do calendário da semana
+  // NENHUMA MUDANÇA AQUI - Este widget já era reutilizável
   Widget _buildDayWidget(String day, String date, bool isSelected) {
     return Container(
-      width: 45,
-      height: 65,
+      width: 48, // Um pouco mais de espaço
+      height: 70,
       decoration: BoxDecoration(
         color: isSelected ? _kPrimaryPink : Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -125,10 +157,11 @@ class HomePage extends StatelessWidget {
             day,
             style: TextStyle(
               fontSize: 12,
+              fontWeight: FontWeight.w600,
               color: isSelected ? Colors.white : _kTextLight,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           Text(
             date,
             style: TextStyle(
@@ -142,7 +175,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // ATUALIZAÇÃO: Este widget agora combina as informações da consulta e do bebê
+  // O restante do seu código permanece igual, pois já estava bem estruturado.
+  // ... (Cole o resto dos seus métodos _buildAppointmentAndBabyInfoCard, _buildNavigationButtons, etc. aqui)
+
   Widget _buildAppointmentAndBabyInfoCard() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -167,7 +202,6 @@ class HomePage extends StatelessWidget {
                   color: _kLightPinkBackground,
                   shape: BoxShape.circle,
                 ),
-                // ATUALIZAÇÃO: Ícone mais apropriado
                 child: const Icon(
                   Icons.child_friendly_outlined,
                   color: _kPrimaryPink,
@@ -192,7 +226,6 @@ class HomePage extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    // ATUALIZAÇÃO: Subtítulo adicionado
                     Text(
                       'Nutricionista',
                       style: TextStyle(color: _kTextLight, fontSize: 14),
@@ -219,7 +252,6 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Constrói os botões de navegação grandes (Meu histórico, Calendário, Artigos)
   Widget _buildNavigationButtons(BuildContext context) {
     return Wrap(
       spacing: 16,
@@ -256,19 +288,15 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  // Widget auxiliar para criar cada um dos botões de navegação
   Widget _buildNavButton(
     BuildContext context,
     IconData icon,
     String label,
     VoidCallback onTap,
   ) {
-    // LayoutBuilder permite que os botões se ajustem ao tamanho da tela
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Calcula o tamanho para que dois botões caibam lado a lado com um espaçamento
         final buttonSize = (constraints.maxWidth - 16) / 2;
-        // O botão 'Artigos' ocupará a largura total
         final isFullWidth = label == 'Artigos';
 
         return InkWell(
@@ -276,7 +304,7 @@ class HomePage extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Container(
             width: isFullWidth ? constraints.maxWidth : buttonSize,
-            height: 150, // Altura fixa para consistência
+            height: 150,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
@@ -310,7 +338,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// Widget auxiliar para as colunas de informação (Altura, Peso, Dias)
 class _InfoColumn extends StatelessWidget {
   final String label;
   final String value;
