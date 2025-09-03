@@ -16,14 +16,9 @@ const Color _kTextLight = Color(0xFF828282);
 const Color _kBackground = Color(0xFFF9F9F9);
 const Color _kLightPinkBackground = Color(0xFFFFF0F5);
 
-// --------------------------------------------------------------------------
-// MUDANÇA 1: CRIAMOS UM MODELO PARA REPRESENTAR UM COMPROMISSO
-// --------------------------------------------------------------------------
-/// Uma classe simples para representar um compromisso ou evento.
 class Appointment {
   final String title;
-  final String type; // Ex: "Consulta", "Exame", "Atividade"
-
+  final String type;
   Appointment({required this.title, required this.type});
 }
 
@@ -37,12 +32,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late DateTime _selectedDate;
   final List<DateTime> _weekDays = [];
-
-  // --------------------------------------------------------------------------
-  // MUDANÇA 2: CRIAMOS UM MAPA COM DADOS DE EXEMPLO (MOCK)
-  // --------------------------------------------------------------------------
-  /// Um mapa que simula um banco de dados de eventos.
-  /// A chave é a data (sem a hora) e o valor é uma lista de compromissos.
   final Map<DateTime, List<Appointment>> _mockEvents = {};
 
   @override
@@ -52,15 +41,12 @@ class _HomePageState extends State<HomePage> {
 
     _selectedDate = DateTime.now();
     _generateWeekDays(_selectedDate);
-
-    // Populamos nossos dados de exemplo ao iniciar a tela
     _populateMockEvents();
   }
 
-  /// Popula nosso mapa de eventos com dados de exemplo baseados na data atual.
   void _populateMockEvents() {
+    // ... (código dos dados mockados continua o mesmo)
     final today = DateTime.now();
-    // Usamos DateTime.utc para garantir que a chave do mapa não tenha fuso horário ou horas.
     final todayKey = DateTime.utc(today.year, today.month, today.day);
     final tomorrowKey = DateTime.utc(today.year, today.month, today.day + 1);
     final twoDaysFromNowKey = DateTime.utc(
@@ -81,33 +67,49 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
-  // --------------------------------------------------------------------------
-  // MUDANÇA 3: FUNÇÕES PARA BUSCAR OS DADOS E FORMATAR A DATA
-  // --------------------------------------------------------------------------
-
-  /// Busca a lista de compromissos para um dia específico no nosso mapa.
-  List<Appointment> _getEventsForDay(DateTime day) {
-    // Normaliza a data para usar como chave de busca
-    final dayKey = DateTime.utc(day.year, day.month, day.day);
-    return _mockEvents[dayKey] ??
-        []; // Retorna uma lista vazia se não encontrar nada
-  }
-
-  /// Formata a data para uma string amigável como "Hoje", "Amanhã" ou a data normal.
-  String _formatRelativeDate(DateTime date) {
-    final today = DateTime.now();
-    if (_isSameDay(date, today)) return 'Hoje';
-    if (_isSameDay(date, today.add(const Duration(days: 1)))) return 'Amanhã';
-
-    return DateFormat('dd/MM/yyyy').format(date);
-  }
-
   void _generateWeekDays(DateTime date) {
     _weekDays.clear();
     DateTime startOfWeek = date.subtract(Duration(days: date.weekday % 7));
     for (int i = 0; i < 7; i++) {
       _weekDays.add(startOfWeek.add(Duration(days: i)));
     }
+  }
+
+  // --------------------------------------------------------------------------
+  // MUDANÇA 1: FUNÇÕES PARA NAVEGAR ENTRE AS SEMANAS
+  // --------------------------------------------------------------------------
+
+  /// Navega para a semana anterior.
+  void _goToPreviousWeek() {
+    setState(() {
+      // Pega a data selecionada atual e subtrai 7 dias
+      _selectedDate = _selectedDate.subtract(const Duration(days: 7));
+      // Gera a lista de dias para a nova semana
+      _generateWeekDays(_selectedDate);
+    });
+  }
+
+  /// Navega para a próxima semana.
+  void _goToNextWeek() {
+    setState(() {
+      // Pega a data selecionada atual e adiciona 7 dias
+      _selectedDate = _selectedDate.add(const Duration(days: 7));
+      // Gera a lista de dias para a nova semana
+      _generateWeekDays(_selectedDate);
+    });
+  }
+
+  // Funções de ajuda (continuam as mesmas)
+  List<Appointment> _getEventsForDay(DateTime day) {
+    final dayKey = DateTime.utc(day.year, day.month, day.day);
+    return _mockEvents[dayKey] ?? [];
+  }
+
+  String _formatRelativeDate(DateTime date) {
+    final today = DateTime.now();
+    if (_isSameDay(date, today)) return 'Hoje';
+    if (_isSameDay(date, today.add(const Duration(days: 1)))) return 'Amanhã';
+    return DateFormat('dd/MM/yyyy').format(date);
   }
 
   bool _isSameDay(DateTime dateA, DateTime dateB) {
@@ -121,7 +123,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: _kBackground,
       appBar: AppBar(
-        // ... (seu AppBar continua o mesmo)
+        // ... (AppBar continua o mesmo)
         backgroundColor: _kBackground,
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -147,6 +149,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // ... (Saudação continua a mesma)
               const Text(
                 'Olá Júlia!',
                 style: TextStyle(color: _kTextLight, fontSize: 18),
@@ -161,12 +164,12 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const SizedBox(height: 24),
+
+              // O widget do calendário foi atualizado
               _buildWeekCalendar(context),
+
               const SizedBox(height: 24),
-
-              // O card de compromissos agora será construído dinamicamente
               _buildAppointmentAndBabyInfoCard(),
-
               const SizedBox(height: 24),
               _buildNavigationButtons(context),
             ],
@@ -176,41 +179,139 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // O Calendário da semana já funcionava perfeitamente para atualizar o _selectedDate
+  // --------------------------------------------------------------------------
+  // MUDANÇA 2: O WIDGET DO CALENDÁRIO AGORA TEM UM CABEÇALHO E SETAS
+  // --------------------------------------------------------------------------
   Widget _buildWeekCalendar(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: _weekDays.map((date) {
-        final bool isSelected = _isSameDay(date, _selectedDate);
-        final String dayName = DateFormat('E', 'pt_BR').format(date);
-        final String dayNumber = DateFormat('d').format(date);
+    // Formata o texto do cabeçalho (ex: "Setembro 2025")
+    String headerText = DateFormat('MMMM yyyy', 'pt_BR').format(_selectedDate);
+    // Capitaliza a primeira letra do mês
+    headerText = '${headerText[0].toUpperCase()}${headerText.substring(1)}';
 
-        return GestureDetector(
+    return Column(
+      children: [
+        // CABEÇALHO CLICÁVEL
+        InkWell(
           onTap: () {
-            // Ao tocar, o setState é chamado e a tela se reconstrói,
-            // fazendo com que _buildAppointmentAndBabyInfoCard() seja chamado novamente
-            // com a nova data.
-            setState(() {
-              _selectedDate = date;
-            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const CalendarPage()),
+            );
           },
-          child: _buildDayWidget(dayName, dayNumber, isSelected),
-        );
-      }).toList(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.calendar_today_outlined,
+                  color: _kTextLight,
+                  size: 16,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  headerText,
+                  style: const TextStyle(
+                    color: _kTextDark,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        // LINHA DO CALENDÁRIO COM SETAS
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Seta para a Esquerda
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 16,
+                color: _kTextLight,
+              ),
+              onPressed: _goToPreviousWeek,
+            ),
+
+            // Dias da Semana
+            // Usamos Expanded para garantir que os dias ocupem o espaço disponível
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: _weekDays.map((date) {
+                  final bool isSelected = _isSameDay(date, _selectedDate);
+                  final String dayName = DateFormat('E', 'pt_BR').format(date);
+                  final String dayNumber = DateFormat('d').format(date);
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedDate = date;
+                      });
+                    },
+                    child: _buildDayWidget(dayName, dayNumber, isSelected),
+                  );
+                }).toList(),
+              ),
+            ),
+
+            // Seta para a Direita
+            IconButton(
+              icon: const Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: _kTextLight,
+              ),
+              onPressed: _goToNextWeek,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
-  // ... (_buildDayWidget e _buildNavButton continuam os mesmos)
+  // O restante do código (_buildDayWidget, _buildAppointmentAndBabyInfoCard, etc.)
+  // permanece exatamente o mesmo de antes.
+  Widget _buildDayWidget(String day, String date, bool isSelected) {
+    return Container(
+      width: 40, // Diminuí um pouco para caber com as setas
+      height: 65,
+      decoration: BoxDecoration(
+        color: isSelected ? _kPrimaryPink : Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: isSelected ? null : Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            day,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: isSelected ? Colors.white : _kTextLight,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            date,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: isSelected ? Colors.white : _kTextDark,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-  // --------------------------------------------------------------------------
-  // MUDANÇA 4: O CARD DE COMPROMISSO AGORA É DINÂMICO
-  // --------------------------------------------------------------------------
-  /// Constrói o card de informações baseado no `_selectedDate`.
   Widget _buildAppointmentAndBabyInfoCard() {
-    // Busca os eventos para o dia que está selecionado no estado.
     final eventsForSelectedDay = _getEventsForDay(_selectedDate);
-
-    // O primeiro compromisso da lista (se houver)
     final mainAppointment = eventsForSelectedDay.isNotEmpty
         ? eventsForSelectedDay.first
         : null;
@@ -239,7 +340,6 @@ class _HomePageState extends State<HomePage> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  // Muda o ícone baseado na existência de um evento
                   mainAppointment != null
                       ? Icons.calendar_month_outlined
                       : Icons.child_friendly_outlined,
@@ -253,7 +353,6 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // Muda o texto baseado na existência de um evento
                       mainAppointment != null
                           ? 'Próximo compromisso:'
                           : 'Informações do bebê',
@@ -261,7 +360,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      // Mostra a data relativa ("Hoje", "Amanhã")
                       _formatRelativeDate(_selectedDate),
                       style: const TextStyle(
                         color: _kTextDark,
@@ -269,10 +367,9 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    // Se tiver um evento, mostra o título. Senão, uma mensagem padrão.
                     if (mainAppointment != null)
                       Text(
-                        mainAppointment.title, // Título do evento
+                        mainAppointment.title,
                         style: const TextStyle(
                           color: _kTextLight,
                           fontSize: 14,
@@ -280,7 +377,7 @@ class _HomePageState extends State<HomePage> {
                       )
                     else
                       const Text(
-                        'Nenhum evento para hoje.',
+                        'Nenhum evento para este dia.',
                         style: TextStyle(color: _kTextLight, fontSize: 14),
                       ),
                   ],
@@ -299,41 +396,6 @@ class _HomePageState extends State<HomePage> {
               _InfoColumn(label: 'Peso do bebê', value: '110 gr'),
               _InfoColumn(label: 'Dias até o parto', value: '168 days'),
             ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // O restante do seu código pode continuar igual
-  Widget _buildDayWidget(String day, String date, bool isSelected) {
-    return Container(
-      width: 48, // Um pouco mais de espaço
-      height: 70,
-      decoration: BoxDecoration(
-        color: isSelected ? _kPrimaryPink : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: isSelected ? null : Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            day,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: isSelected ? Colors.white : _kTextLight,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            date,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: isSelected ? Colors.white : _kTextDark,
-            ),
           ),
         ],
       ),
@@ -386,7 +448,6 @@ class _HomePageState extends State<HomePage> {
       builder: (context, constraints) {
         final buttonSize = (constraints.maxWidth - 16) / 2;
         final isFullWidth = label == 'Artigos';
-
         return InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(16),
@@ -430,7 +491,6 @@ class _InfoColumn extends StatelessWidget {
   final String label;
   final String value;
   const _InfoColumn({required this.label, required this.value});
-
   @override
   Widget build(BuildContext context) {
     return Column(
