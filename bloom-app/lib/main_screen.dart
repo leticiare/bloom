@@ -1,10 +1,8 @@
-// main_screen.dart
-import 'package:app/src/modules/calendar/calendar_page.dart';
-import 'package:app/src/modules/dashboard-pregnant/articles_page.dart';
-import 'package:app/src/modules/dashboard-pregnant/profile_page.dart';
-import 'package:app/src/modules/dashboard-pregnant/report_page.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
+import 'package:app/src/modules/dashboard-pregnant/forum_page.dart';
+import 'package:app/src/modules/dashboard-pregnant/timeline_page.dart';
+import 'package:app/src/modules/dashboard-pregnant/profile_page.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
@@ -19,9 +17,9 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _screens = [
     const HomePage(),
-    const CalendarPage(),
-    const ArticlesPage(),
-    const ReportPage(),
+    const ForumPage(),
+    const TimelinePage(),
+    const ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -36,26 +34,36 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: AppColors.background,
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppColors.background,
-        unselectedItemColor: AppColors.black,
-        selectedItemColor: AppColors.boldPink,
+        backgroundColor: AppColors.white,
+        unselectedItemColor: AppColors.textDark.withOpacity(0.6),
+        selectedItemColor: AppColors.primaryPink,
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        // <<< ALTERAÇÃO: Os ícones e a ordem foram atualizados.
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.apps_outlined),
+            activeIcon: Icon(Icons.apps),
             label: 'Home',
           ),
+          // Ícone para o Fórum
           BottomNavigationBarItem(
-            icon: Icon(Icons.article_outlined),
-            label: 'Calendário',
+            icon: Icon(Icons.chat_bubble_outline),
+            activeIcon: Icon(Icons.chat_bubble),
+            label: 'Fórum',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Artigos'),
+          // Ícone para a Timeline/Semanas
+          BottomNavigationBarItem(
+            icon: Icon(Icons.timeline_outlined),
+            activeIcon: Icon(Icons.timeline),
+            label: 'Semanas',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
+            activeIcon: Icon(Icons.person),
             label: 'Perfil',
           ),
         ],

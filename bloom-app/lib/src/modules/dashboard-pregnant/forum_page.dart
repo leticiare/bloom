@@ -1,11 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-// Constantes de cores
-const Color _kPrimaryPink = Color(0xFFF55A8A);
-const Color _kTextDark = Color(0xFF333333);
-const Color _kBackground = Color(0xFFF9F9F9);
-const Color _kLightPinkBackground = Color(0xFFFFF0F5);
+import 'package:app/src/core/theme/app_colors.dart'; // Ajuste o import
 
 class ForumPage extends StatelessWidget {
   const ForumPage({super.key});
@@ -13,27 +8,23 @@ class ForumPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _kBackground,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        // CORREÇÃO: Botão de menu (leading) foi removido.
         automaticallyImplyLeading: false,
-        title: const Text('Fórum', style: TextStyle(color: _kTextDark)),
-        backgroundColor: _kBackground,
+        title: const Text('Fórum', style: TextStyle(color: AppColors.textDark)),
+        backgroundColor: AppColors.background,
         elevation: 0,
-        iconTheme: const IconThemeData(color: _kTextDark),
+        iconTheme: const IconThemeData(color: AppColors.textDark),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.add, color: _kTextDark),
-            onPressed: () {
-              // Ação para criar novo tópico
-            },
+            icon: const Icon(Icons.add, color: AppColors.textDark),
+            onPressed: () {},
           ),
         ],
       ),
       body: Column(
         children: [
-          // Barra de pesquisa
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16.0,
@@ -42,9 +33,9 @@ class ForumPage extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Pesquisar Tópicos',
-                prefixIcon: Icon(Icons.search, color: Colors.grey.shade500),
+                prefixIcon: Icon(Icons.search, color: AppColors.grey),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: AppColors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -53,14 +44,13 @@ class ForumPage extends StatelessWidget {
               ),
             ),
           ),
-          // Lista de tópicos
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(16.0),
               children: [
                 _buildTopicCard(context),
                 const SizedBox(height: 16),
-                _buildTopicCard(context), // Tópico duplicado para exemplo
+                _buildTopicCard(context),
               ],
             ),
           ),
@@ -69,18 +59,16 @@ class ForumPage extends StatelessWidget {
     );
   }
 
-  // Widget para construir o card de um tópico inteiro
   Widget _buildTopicCard(BuildContext context) {
     return Card(
       elevation: 2,
-      shadowColor: Colors.grey.withOpacity(0.2),
+      shadowColor: AppColors.grey.withOpacity(0.2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      color: Colors.white,
+      color: AppColors.white,
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            // Mensagem principal (a pergunta)
             _buildMessage(
               avatarUrl: 'https://i.pravatar.cc/150?img=1',
               sender: 'Júlia, primeira vez grávida',
@@ -88,7 +76,6 @@ class ForumPage extends StatelessWidget {
                   'Oi! Estou de 16 semanas na minha primeira gravidez e tenho sentido umas cólicas leves de vez em quando. Não são fortes, mas fico preocupada. Isso é normal ou devo falar com meu médico?',
             ),
             const Divider(height: 24),
-            // Resposta do especialista
             _buildMessage(
               avatarUrl: 'https://i.pravatar.cc/150?img=3',
               sender: 'Carlos Eduardo, Obstetra',
@@ -97,7 +84,6 @@ class ForumPage extends StatelessWidget {
               showContinueReading: true,
             ),
             const SizedBox(height: 12),
-            // Tags do tópico
             Row(
               children: [
                 _buildTag('Cólicas'),
@@ -111,7 +97,6 @@ class ForumPage extends StatelessWidget {
     );
   }
 
-  // Widget para construir cada balão de mensagem dentro do card
   Widget _buildMessage({
     required String avatarUrl,
     required String sender,
@@ -119,13 +104,13 @@ class ForumPage extends StatelessWidget {
     bool showContinueReading = false,
   }) {
     final textSpan = TextSpan(
-      style: TextStyle(color: Colors.grey.shade700, fontSize: 14, height: 1.5),
+      style: TextStyle(color: AppColors.grey, fontSize: 14, height: 1.5),
       children: [
         TextSpan(text: message),
         if (showContinueReading)
           TextSpan(
             text: ' continuar lendo',
-            style: const TextStyle(color: _kPrimaryPink),
+            style: const TextStyle(color: AppColors.primaryPink),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 // Ação para ver o resto da mensagem
@@ -147,7 +132,7 @@ class ForumPage extends StatelessWidget {
                 sender,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: _kTextDark,
+                  color: AppColors.textDark,
                 ),
               ),
               const SizedBox(height: 4),
@@ -159,17 +144,16 @@ class ForumPage extends StatelessWidget {
     );
   }
 
-  // Widget para construir as tags
   Widget _buildTag(String label) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: _kLightPinkBackground,
+        color: AppColors.lightPinkBackground,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         label,
-        style: const TextStyle(color: _kPrimaryPink, fontSize: 12),
+        style: const TextStyle(color: AppColors.primaryPink, fontSize: 12),
       ),
     );
   }
