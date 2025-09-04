@@ -1,120 +1,219 @@
 import 'package:flutter/material.dart';
+import 'medical_record_page.dart';
 
-// Constantes de cores
+// --- CONSTANTES DE CORES ---
 const Color _kPrimaryPink = Color(0xFFF55A8A);
+const Color _kLightPink = Color(0xFFFFF0F5);
 const Color _kTextDark = Color(0xFF333333);
+const Color _kTextLight = Color(0xFF828282);
 const Color _kBackground = Color(0xFFF9F9F9);
-const Color _kLightPinkBackground = Color(0xFFFFF0F5);
 
 class ReportPage extends StatefulWidget {
-  const ReportPage({super.key});
+  final List<MedicalRecord> records;
+
+  const ReportPage({super.key, this.records = const []});
 
   @override
   State<ReportPage> createState() => _ReportPageState();
 }
 
 class _ReportPageState extends State<ReportPage> {
-  // Variável para controlar qual relatório está selecionado
-  String _selectedReportType = 'completo';
+  bool _isCompleteReport = true;
+  bool _isMonthlyReport = false;
 
   @override
   Widget build(BuildContext context) {
+    final pendingItems = widget.records
+        .where((record) => record.status != RecordStatus.completed)
+        .toList();
+
     return Scaffold(
       backgroundColor: _kBackground,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: _kTextDark),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: const Text(
           'Relatório Clínico',
           style: TextStyle(color: _kTextDark),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: _kBackground,
         elevation: 0,
-        iconTheme: const IconThemeData(color: _kTextDark),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert, color: _kTextDark),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                color: _kLightPinkBackground,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Text(
-                'O seu relatório reunirá, de forma segura, todas as informações da sua gestação.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: _kPrimaryPink, fontSize: 14),
-              ),
-            ),
-            const SizedBox(height: 30),
-            // Opções de tipo de relatório
-            _buildRadioOption('Relatório completo', 'completo'),
-            const SizedBox(height: 12),
-            _buildRadioOption('Relatório manual', 'manual'),
+            _buildInfoCard(),
+            const SizedBox(height: 24),
+            _buildPendingItemsSection(pendingItems),
             const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Lógica para baixar o relatório
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: _kPrimaryPink,
-                  side: const BorderSide(color: _kPrimaryPink),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text(
-                  'Baixar relatório',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
+            _buildCheckbox(
+              title: 'Relatório completo',
+              value: _isCompleteReport,
+              onChanged: (value) {
+                setState(() {
+                  _isCompleteReport = value ?? false;
+                });
+              },
             ),
-            const SizedBox(height: 20),
+            _buildCheckbox(
+              title: 'Relatório mensal',
+              value: _isMonthlyReport,
+              onChanged: (value) {
+                setState(() {
+                  _isMonthlyReport = value ?? false;
+                });
+              },
+            ),
+            const SizedBox(height: 24),
+            _buildDownloadButton(),
           ],
         ),
       ),
     );
   }
 
-  // Widget para construir as opções de rádio
-  Widget _buildRadioOption(String title, String value) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedReportType = value;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: _selectedReportType == value
-                ? _kPrimaryPink
-                : Colors.grey.shade300,
-            width: 1.5,
+  // --- MÉTODOS AUXILIARES ---
+  // Os métodos abaixo estão DENTRO da classe _ReportPageState para que possam usar o 'context'
+  // e o 'setState' corretamente.
+
+  Widget _buildPendingItemsSection(List<MedicalRecord> pendingItems) {
+    if (pendingItems.isEmpty) {
+      return const Text(
+        '🎉 Tudo em dia! Você não tem nenhuma pendência.',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: Colors.green,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Falta você fazer isso:',
+          style: TextStyle(
+            color: _kTextDark,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        child: Row(
-          children: [
-            Radio<String>(
-              value: value,
-              groupValue: _selectedReportType,
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedReportType = newValue!;
-                });
-              },
-              activeColor: _kPrimaryPink,
+        const SizedBox(height: 12),
+        ...pendingItems.map(
+          (item) => Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  color: _kPrimaryPink,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    item.name,
+                    style: const TextStyle(color: _kTextDark, fontSize: 16),
+                  ),
+                ),
+              ],
             ),
-            Text(title, style: const TextStyle(color: _kTextDark)),
-          ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoCard() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: _kLightPink,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        children: [
+          const Icon(
+            Icons.monitor_heart_outlined,
+            color: _kPrimaryPink,
+            size: 40,
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'O seu relatório reunirá, de forma organizada, as informações sobre:',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: _kTextDark, fontSize: 16, height: 1.5),
+          ),
+          const SizedBox(height: 20),
+          const Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            alignment: WrapAlignment.center,
+            children: [
+              Chip(label: Text('Exames realizados')),
+              Chip(label: Text('Sua situação vacinal')),
+              Chip(label: Text('Histórico das suas consultas')),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Assim, você terá tudo em mãos para acompanhar sua saúde e a do seu bebê com mais tranquilidade.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: _kTextLight.withOpacity(0.8)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCheckbox({
+    required String title,
+    required bool value,
+    required ValueChanged<bool?> onChanged,
+  }) {
+    return CheckboxListTile(
+      title: Text(
+        title,
+        style: const TextStyle(fontWeight: FontWeight.bold, color: _kTextDark),
+      ),
+      value: value,
+      onChanged: onChanged,
+      activeColor: _kPrimaryPink,
+      controlAffinity: ListTileControlAffinity.leading,
+      contentPadding: EdgeInsets.zero,
+    );
+  }
+
+  Widget _buildDownloadButton() {
+    return ElevatedButton(
+      onPressed: () {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Gerando relatório...')));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: _kPrimaryPink,
+        minimumSize: const Size(double.infinity, 52),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      child: const Text(
+        'Baixar Relatório',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
         ),
       ),
     );
