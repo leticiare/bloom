@@ -1,18 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart';
+import 'forum_topic_detail_page.dart'; // MUDANÇA: Importa a nova página de detalhes
 
-// --------------------------------------------------------------------------
-// MUDANÇA 1: MODELOS DE DADOS PARA O FÓRUM
-// --------------------------------------------------------------------------
-
-/// Representa uma única mensagem no fórum.
+// --- MODELOS DE DADOS PARA O FÓRUM ---
 class ForumMessage {
   final String authorName;
   final String authorTitle;
   final String avatarUrl;
   final String message;
-  final bool isFromUser; // Determina o estilo (rosa/esquerda ou branco/direita)
+  final bool isFromUser;
 
   ForumMessage({
     required this.authorName,
@@ -23,7 +20,6 @@ class ForumMessage {
   });
 }
 
-/// Representa um tópico completo do fórum, com a pergunta e a resposta.
 class ForumTopic {
   final ForumMessage question;
   final ForumMessage answer;
@@ -36,9 +32,7 @@ class ForumTopic {
   });
 }
 
-// --------------------------------------------------------------------------
-// MUDANÇA 2: DADOS MOCKADOS PARA POPULAR A TELA
-// --------------------------------------------------------------------------
+// --- DADOS MOCKADOS ---
 final List<ForumTopic> _mockTopics = [
   ForumTopic(
     question: ForumMessage(
@@ -54,7 +48,7 @@ final List<ForumTopic> _mockTopics = [
       authorTitle: 'Obstetra',
       avatarUrl: 'https://i.pravatar.cc/150?img=3',
       message:
-          'Olá! Cólicas leves podem ser normais nesta fase da gravidez, pois seu útero está crescendo e os ligamentos se esticando para acomodar o bebê. No entanto, se a dor for intensa, constante ou vier acompanhada de sangramento, procure seu médico imediatamente. Para aliviar o desconforto, tente descansar, beber bastante água e evitar ficar...',
+          'Olá! Cólicas leves podem ser normais nesta fase da gravidez, pois seu útero está crescendo e os ligamentos se esticando para acomodar o bebê. No entanto, se a dor for intensa, constante ou vier acompanhada de sangramento, procure seu médico imediatamente. Para aliviar o desconforto, tente descansar, beber bastante água e evitar ficar muito tempo em pé. A prática de exercícios leves como caminhada também pode ajudar.',
     ),
     tags: ['Cólicas', '16 semanas'],
   ),
@@ -86,12 +80,10 @@ class ForumPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Remove o botão de voltar padrão
+        automaticallyImplyLeading: false,
         leading: IconButton(
           icon: const Icon(Icons.menu, color: AppColors.textDark),
-          onPressed: () {
-            /* Ação para abrir menu lateral */
-          },
+          onPressed: () {},
         ),
         title: const Text('Fórum', style: TextStyle(color: AppColors.textDark)),
         backgroundColor: AppColors.background,
@@ -100,9 +92,7 @@ class ForumPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: AppColors.textDark),
-            onPressed: () {
-              /* Ação para adicionar novo tópico */
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -115,7 +105,6 @@ class ForumPage extends StatelessWidget {
               itemCount: _mockTopics.length,
               itemBuilder: (context, index) {
                 final topic = _mockTopics[index];
-                // MUDANÇA 3: Construímos uma coluna de balões, não mais um Card.
                 return Column(
                   children: [
                     _MessageBubble(message: topic.question),
@@ -124,6 +113,8 @@ class ForumPage extends StatelessWidget {
                       message: topic.answer,
                       tags: topic.tags,
                       showContinueReading: true,
+                      // MUDANÇA: Passamos o tópico inteiro para o balão de resposta
+                      topic: topic,
                     ),
                   ],
                 );
@@ -136,7 +127,6 @@ class ForumPage extends StatelessWidget {
     );
   }
 
-  /// Constrói a barra de pesquisa.
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -157,23 +147,21 @@ class ForumPage extends StatelessWidget {
   }
 }
 
-// --------------------------------------------------------------------------
-// MUDANÇA 4: O WIDGET DE BALÃO DE MENSAGEM REUTILIZÁVEL
-// --------------------------------------------------------------------------
 class _MessageBubble extends StatelessWidget {
   final ForumMessage message;
   final List<String>? tags;
   final bool showContinueReading;
+  final ForumTopic? topic; // MUDANÇA: Parâmetro opcional para receber o tópico
 
   const _MessageBubble({
     required this.message,
     this.tags,
     this.showContinueReading = false,
+    this.topic, // MUDANÇA: Adicionado ao construtor
   });
 
   @override
   Widget build(BuildContext context) {
-    // Determina o alinhamento e as cores com base em quem enviou a mensagem
     final alignment = message.isFromUser
         ? CrossAxisAlignment.start
         : CrossAxisAlignment.end;
@@ -188,7 +176,6 @@ class _MessageBubble extends StatelessWidget {
         ? AppColors.white.withOpacity(0.8)
         : AppColors.textLight;
 
-    // Define o formato do balão para criar a "cauda"
     final borderRadius = message.isFromUser
         ? const BorderRadius.only(
             topLeft: Radius.circular(16),
@@ -206,7 +193,6 @@ class _MessageBubble extends StatelessWidget {
     return Column(
       crossAxisAlignment: alignment,
       children: [
-        // Informações do autor (Avatar, Nome, Título)
         Row(
           mainAxisAlignment: message.isFromUser
               ? MainAxisAlignment.start
@@ -243,18 +229,15 @@ class _MessageBubble extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 8),
-
-        // O balão de mensagem
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             color: bubbleColor,
             borderRadius: borderRadius,
           ),
-          child: _buildMessageContent(textColor),
+          // MUDANÇA: Passamos o 'context' para a função que constrói o texto
+          child: _buildMessageContent(context, textColor),
         ),
-
-        // As tags (só aparecem na resposta do médico)
         if (tags != null && tags!.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -267,12 +250,16 @@ class _MessageBubble extends StatelessWidget {
     );
   }
 
-  /// Constrói o texto da mensagem, com a opção "continuar lendo".
-  Widget _buildMessageContent(Color textColor) {
+  Widget _buildMessageContent(BuildContext context, Color textColor) {
+    // Corta a mensagem para o preview se necessário
+    final previewMessage = showContinueReading
+        ? '${message.message.substring(0, 120)}'
+        : message.message;
+
     final textSpan = TextSpan(
       style: TextStyle(color: textColor, fontSize: 14, height: 1.5),
       children: [
-        TextSpan(text: message.message),
+        TextSpan(text: previewMessage),
         if (showContinueReading)
           TextSpan(
             text: '... continuar lendo',
@@ -280,9 +267,17 @@ class _MessageBubble extends StatelessWidget {
               color: AppColors.primaryPink,
               fontWeight: FontWeight.bold,
             ),
+            // MUDANÇA: Ação de clique para navegar
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                /* Ação para ver o resto da mensagem */
+                if (topic != null) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ForumTopicDetailPage(topic: topic!),
+                    ),
+                  );
+                }
               },
           ),
       ],
@@ -291,7 +286,6 @@ class _MessageBubble extends StatelessWidget {
   }
 }
 
-/// Widget para as tags ('Cólicas', '16 semanas').
 class _Tag extends StatelessWidget {
   final String label;
   const _Tag({required this.label});
