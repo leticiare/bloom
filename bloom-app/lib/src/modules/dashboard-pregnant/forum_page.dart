@@ -81,10 +81,6 @@ class ForumPage extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.menu, color: AppColors.textDark),
-          onPressed: () {},
-        ),
         title: const Text('Fórum', style: TextStyle(color: AppColors.textDark)),
         backgroundColor: AppColors.background,
         elevation: 0,
