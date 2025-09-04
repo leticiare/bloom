@@ -1,7 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:app/src/core/theme/app_colors.dart';
-import 'forum_topic_detail_page.dart'; // MUDANÇA: Importa a nova página de detalhes
+import 'package:app/src/core/theme/app_colors.dart'; // Ajuste o import para o seu projeto
+import 'forum_topic_detail_page.dart';
+import 'add_topic_page.dart';
 
 // --- MODELOS DE DADOS PARA O FÓRUM ---
 class ForumMessage {
@@ -32,48 +33,95 @@ class ForumTopic {
   });
 }
 
-// --- DADOS MOCKADOS ---
-final List<ForumTopic> _mockTopics = [
-  ForumTopic(
-    question: ForumMessage(
-      authorName: 'Júlia',
-      authorTitle: 'primeira vez grávida',
-      avatarUrl: 'https://i.pravatar.cc/150?img=1',
-      message:
-          'Oi! Estou de 16 semanas na minha primeira gravidez e tenho sentido umas cólicas leves de vez em quando. Não são fortes, mas fico preocupada. Isso é normal ou devo falar com meu médico?',
-      isFromUser: true,
-    ),
-    answer: ForumMessage(
-      authorName: 'Carlos Eduardo',
-      authorTitle: 'Obstetra',
-      avatarUrl: 'https://i.pravatar.cc/150?img=3',
-      message:
-          'Olá! Cólicas leves podem ser normais nesta fase da gravidez, pois seu útero está crescendo e os ligamentos se esticando para acomodar o bebê. No entanto, se a dor for intensa, constante ou vier acompanhada de sangramento, procure seu médico imediatamente. Para aliviar o desconforto, tente descansar, beber bastante água e evitar ficar muito tempo em pé. A prática de exercícios leves como caminhada também pode ajudar.',
-    ),
-    tags: ['Cólicas', '16 semanas'],
-  ),
-  ForumTopic(
-    question: ForumMessage(
-      authorName: 'Mariana',
-      authorTitle: 'segunda gravidez',
-      avatarUrl: 'https://i.pravatar.cc/150?img=5',
-      message:
-          'É seguro continuar a fazer exercícios de baixo impacto durante o segundo trimestre? Gosto de caminhar e nadar.',
-      isFromUser: true,
-    ),
-    answer: ForumMessage(
-      authorName: 'Dr. Ricardo Mendes',
-      authorTitle: 'Ginecologista',
-      avatarUrl: 'https://i.pravatar.cc/150?img=8',
-      message:
-          'Sim, Mariana! Exercícios de baixo impacto como caminhada e natação são altamente recomendados, desde que não haja contraindicações do seu médico. Eles ajudam na circulação e no controle do peso. Sempre ouça seu corpo e evite a exaustão.',
-    ),
-    tags: ['Exercícios', '2º Trimestre'],
-  ),
-];
-
-class ForumPage extends StatelessWidget {
+// --- WIDGET PRINCIPAL DA PÁGINA ---
+class ForumPage extends StatefulWidget {
   const ForumPage({super.key});
+
+  @override
+  State<ForumPage> createState() => _ForumPageState();
+}
+
+class _ForumPageState extends State<ForumPage> {
+  // A lista de tópicos agora é uma variável de estado dentro da classe
+  final List<ForumTopic> _topics = [
+    ForumTopic(
+      question: ForumMessage(
+        authorName: 'Júlia',
+        authorTitle: 'primeira vez grávida',
+        avatarUrl: 'https://i.pravatar.cc/150?img=1',
+        message:
+            'Oi! Estou de 16 semanas na minha primeira gravidez e tenho sentido umas cólicas leves de vez em quando. Não são fortes, mas fico preocupada. Isso é normal ou devo falar com meu médico?',
+        isFromUser: true,
+      ),
+      answer: ForumMessage(
+        authorName: 'Carlos Eduardo',
+        authorTitle: 'Obstetra',
+        avatarUrl: 'https://i.pravatar.cc/150?img=3',
+        message:
+            'Olá! Cólicas leves podem ser normais nesta fase da gravidez, pois seu útero está crescendo e os ligamentos se esticando para acomodar o bebê. No entanto, se a dor for intensa, constante ou vier acompanhada de sangramento, procure seu médico imediatamente. Para aliviar o desconforto, tente descansar, beber bastante água e evitar ficar muito tempo em pé. A prática de exercícios leves como caminhada também pode ajudar.',
+      ),
+      tags: ['Cólicas', '16 semanas'],
+    ),
+    ForumTopic(
+      question: ForumMessage(
+        authorName: 'Mariana',
+        authorTitle: 'segunda gravidez',
+        avatarUrl: 'https://i.pravatar.cc/150?img=5',
+        message:
+            'É seguro continuar a fazer exercícios de baixo impacto durante o segundo trimestre? Gosto de caminhar e nadar.',
+        isFromUser: true,
+      ),
+      answer: ForumMessage(
+        authorName: 'Dr. Ricardo Mendes',
+        authorTitle: 'Ginecologista',
+        avatarUrl: 'https://i.pravatar.cc/150?img=8',
+        message:
+            'Sim, Mariana! Exercícios de baixo impacto como caminhada e natação são altamente recomendados, desde que não haja contraindicações do seu médico. Eles ajudam na circulação e no controle do peso. Sempre ouça seu corpo e evite a exaustão.',
+      ),
+      tags: ['Exercícios', '2º Trimestre'],
+    ),
+  ];
+
+  // --- MÉTODOS DE LÓGICA (DENTRO DA CLASSE STATE) ---
+
+  /// Adiciona um novo tópico à lista e atualiza a tela.
+  void _addTopic(String questionText) {
+    final newTopic = ForumTopic(
+      question: ForumMessage(
+        authorName: 'Júlia', // Dados do usuário logado (exemplo)
+        authorTitle: 'primeira vez grávida',
+        avatarUrl: 'https://i.pravatar.cc/150?img=1',
+        message: questionText,
+        isFromUser: true,
+      ),
+      answer: ForumMessage(
+        authorName: 'Especialista',
+        authorTitle: 'Aguardando resposta',
+        avatarUrl: 'https://i.pravatar.cc/150?img=10',
+        message: 'Sua pergunta foi enviada e será respondida em breve.',
+      ),
+      tags: ['Nova Pergunta'],
+    );
+
+    // setState notifica o Flutter que o estado mudou e a tela precisa ser reconstruída
+    setState(() {
+      _topics.insert(0, newTopic);
+    });
+  }
+
+  /// Navega para a tela de adicionar tópico e aguarda o resultado.
+  void _navigateAndAddTopic() async {
+    final newQuestionText = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (_) => const AddTopicPage()),
+    );
+
+    if (newQuestionText != null && newQuestionText.isNotEmpty) {
+      _addTopic(newQuestionText);
+    }
+  }
+
+  // --- MÉTODOS DE CONSTRUÇÃO DA UI (DENTRO DA CLASSE STATE) ---
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +136,7 @@ class ForumPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: AppColors.textDark),
-            onPressed: () {},
+            onPressed: _navigateAndAddTopic,
           ),
         ],
       ),
@@ -98,9 +146,9 @@ class ForumPage extends StatelessWidget {
           Expanded(
             child: ListView.separated(
               padding: const EdgeInsets.all(16.0),
-              itemCount: _mockTopics.length,
+              itemCount: _topics.length,
               itemBuilder: (context, index) {
-                final topic = _mockTopics[index];
+                final topic = _topics[index];
                 return Column(
                   children: [
                     _MessageBubble(message: topic.question),
@@ -109,7 +157,6 @@ class ForumPage extends StatelessWidget {
                       message: topic.answer,
                       tags: topic.tags,
                       showContinueReading: true,
-                      // MUDANÇA: Passamos o tópico inteiro para o balão de resposta
                       topic: topic,
                     ),
                   ],
@@ -123,6 +170,7 @@ class ForumPage extends StatelessWidget {
     );
   }
 
+  /// Constrói a barra de pesquisa.
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -143,17 +191,20 @@ class ForumPage extends StatelessWidget {
   }
 }
 
+// --- WIDGETS AUXILIARES (COMPONENTES) ---
+// Estes são stateless e podem ficar fora da classe principal para organização.
+
 class _MessageBubble extends StatelessWidget {
   final ForumMessage message;
   final List<String>? tags;
   final bool showContinueReading;
-  final ForumTopic? topic; // MUDANÇA: Parâmetro opcional para receber o tópico
+  final ForumTopic? topic;
 
   const _MessageBubble({
     required this.message,
     this.tags,
     this.showContinueReading = false,
-    this.topic, // MUDANÇA: Adicionado ao construtor
+    this.topic,
   });
 
   @override
@@ -231,7 +282,6 @@ class _MessageBubble extends StatelessWidget {
             color: bubbleColor,
             borderRadius: borderRadius,
           ),
-          // MUDANÇA: Passamos o 'context' para a função que constrói o texto
           child: _buildMessageContent(context, textColor),
         ),
         if (tags != null && tags!.isNotEmpty)
@@ -247,23 +297,25 @@ class _MessageBubble extends StatelessWidget {
   }
 
   Widget _buildMessageContent(BuildContext context, Color textColor) {
-    // Corta a mensagem para o preview se necessário
-    final previewMessage = showContinueReading
-        ? '${message.message.substring(0, 120)}'
-        : message.message;
+    String previewMessage = message.message;
+    bool needsTruncation = false;
+
+    if (showContinueReading && message.message.length > 120) {
+      previewMessage = message.message.substring(0, 120);
+      needsTruncation = true;
+    }
 
     final textSpan = TextSpan(
       style: TextStyle(color: textColor, fontSize: 14, height: 1.5),
       children: [
         TextSpan(text: previewMessage),
-        if (showContinueReading)
+        if (needsTruncation)
           TextSpan(
             text: '... continuar lendo',
             style: const TextStyle(
               color: AppColors.primaryPink,
               fontWeight: FontWeight.bold,
             ),
-            // MUDANÇA: Ação de clique para navegar
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 if (topic != null) {
