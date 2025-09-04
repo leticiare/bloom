@@ -89,10 +89,6 @@ class TimelinePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: _kBackground,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: _kTextDark),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
         title: const Text(
           'Artigos das Semanas',
           style: TextStyle(color: _kTextDark),
