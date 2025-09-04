@@ -217,11 +217,11 @@ class _MessageBubble extends StatelessWidget {
         : AppColors.white;
     final textColor = message.isFromUser ? AppColors.white : AppColors.textDark;
     final titleColor = message.isFromUser
-        ? AppColors.white.withOpacity(0.9)
-        : AppColors.textDark;
-    final subtitleColor = message.isFromUser
-        ? AppColors.white.withOpacity(0.8)
+        ? AppColors.textDark
         : AppColors.textLight;
+    final subtitleColor = message.isFromUser
+        ? AppColors.textLight
+        : AppColors.textDark;
 
     final borderRadius = message.isFromUser
         ? const BorderRadius.only(
