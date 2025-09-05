@@ -1,9 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart';
-import 'forum_page.dart'; // Importa os modelos de dados
+import './data/models/mock_models.dart'; // Importa os modelos de dados
 import 'forum_topic_detail_page.dart'; // Importa a página de destino
 
+/// Widget PÚBLICO para um balão de mensagem do fórum.
 class MessageBubble extends StatelessWidget {
   final ForumMessage message;
   final List<String>? tags;
@@ -20,46 +21,79 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ... (o código do build continua exatamente o mesmo)
-    final alignment = message.isFromUser ? CrossAxisAlignment.start : CrossAxisAlignment.end;
-    final bubbleColor = message.isFromUser ? AppColors.primaryPink : AppColors.white;
+    final alignment = message.isFromUser
+        ? CrossAxisAlignment.start
+        : CrossAxisAlignment.end;
+    final bubbleColor = message.isFromUser
+        ? AppColors.primaryPink
+        : AppColors.white;
     final textColor = message.isFromUser ? AppColors.white : AppColors.textDark;
-    final titleColor = message.isFromUser ? AppColors.white.withOpacity(0.9) : AppColors.textDark;
-    final subtitleColor = message.isFromUser ? AppColors.white.withOpacity(0.8) : AppColors.textLight;
+    final titleColor = message.isFromUser
+        ? AppColors.white
+        : AppColors.textDark;
+    final subtitleColor = message.isFromUser
+        ? AppColors.white.withOpacity(0.9)
+        : AppColors.textLight;
 
     final borderRadius = message.isFromUser
         ? const BorderRadius.only(
-            topLeft: Radius.circular(16), topRight: Radius.circular(16),
-            bottomRight: Radius.circular(16), bottomLeft: Radius.circular(4),
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+            bottomLeft: Radius.circular(4),
           )
         : const BorderRadius.only(
-            topLeft: Radius.circular(16), topRight: Radius.circular(16),
-            bottomLeft: Radius.circular(16), bottomRight: Radius.circular(4),
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(4),
           );
 
     return Column(
       crossAxisAlignment: alignment,
       children: [
         Row(
-          mainAxisAlignment: message.isFromUser ? MainAxisAlignment.start : MainAxisAlignment.end,
+          mainAxisAlignment: message.isFromUser
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.end,
           children: [
-            if (message.isFromUser) CircleAvatar(radius: 16, backgroundImage: NetworkImage(message.avatarUrl)),
+            if (message.isFromUser)
+              CircleAvatar(
+                radius: 16,
+                backgroundImage: NetworkImage(message.avatarUrl),
+              ),
             if (message.isFromUser) const SizedBox(width: 8),
             Column(
               crossAxisAlignment: alignment,
               children: [
-                Text(message.authorName, style: TextStyle(fontWeight: FontWeight.bold, color: titleColor)),
-                Text(message.authorTitle, style: TextStyle(fontSize: 12, color: subtitleColor)),
+                Text(
+                  message.authorName,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: titleColor,
+                  ),
+                ),
+                Text(
+                  message.authorTitle,
+                  style: TextStyle(fontSize: 12, color: subtitleColor),
+                ),
               ],
             ),
             if (!message.isFromUser) const SizedBox(width: 8),
-            if (!message.isFromUser) CircleAvatar(radius: 16, backgroundImage: NetworkImage(message.avatarUrl)),
+            if (!message.isFromUser)
+              CircleAvatar(
+                radius: 16,
+                backgroundImage: NetworkImage(message.avatarUrl),
+              ),
           ],
         ),
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(color: bubbleColor, borderRadius: borderRadius),
+          decoration: BoxDecoration(
+            color: bubbleColor,
+            borderRadius: borderRadius,
+          ),
           child: _buildMessageContent(context, textColor),
         ),
         if (tags != null && tags!.isNotEmpty)
@@ -74,29 +108,30 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
-  // --------------------------------------------------------------------------
-  // A CORREÇÃO ESTÁ AQUI
-  // --------------------------------------------------------------------------
+  /// Constrói o conteúdo do texto, agora com a lógica 100% correta.
   Widget _buildMessageContent(BuildContext context, Color textColor) {
-    String previewMessage = message.message;
-    bool needsTruncation = false; // Flag para saber se o link "continuar lendo" deve aparecer
+    // Por padrão, o texto a ser exibido é a mensagem completa.
+    String textToShow = message.message;
+    bool needsReadMoreLink = false;
 
-    // Verifica se precisa cortar o texto.
-    // Só corta se a flag `showContinueReading` for verdadeira E o texto for maior que o limite.
+    // CONDIÇÃO CORRIGIDA: Só cortamos o texto se for para mostrar o preview
+    // E o texto for realmente longo.
     if (showContinueReading && message.message.length > 120) {
-      previewMessage = message.message.substring(0, 120);
-      needsTruncation = true;
+      textToShow = message.message.substring(0, 120);
+      needsReadMoreLink = true;
     }
-        
+
     final textSpan = TextSpan(
       style: TextStyle(color: textColor, fontSize: 14, height: 1.5),
       children: [
-        TextSpan(text: previewMessage),
-        // O link "continuar lendo" só é adicionado se o texto foi realmente cortado.
-        if (needsTruncation)
+        TextSpan(text: textToShow),
+        if (needsReadMoreLink)
           TextSpan(
             text: '... continuar lendo',
-            style: const TextStyle(color: AppColors.primaryPink, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: AppColors.primaryPink,
+              fontWeight: FontWeight.bold,
+            ),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 if (topic != null) {

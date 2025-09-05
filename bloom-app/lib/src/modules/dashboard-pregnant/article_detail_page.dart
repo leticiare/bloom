@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'articles_page.dart'; // Importa o modelo 'Article'
 import 'package:app/src/core/theme/app_colors.dart';
+import './data/models/mock_models.dart'; // MUDANÇA: Importa os modelos do arquivo central
 
 /// Tela para exibir o conteúdo completo de um único artigo.
 class ArticleDetailPage extends StatelessWidget {

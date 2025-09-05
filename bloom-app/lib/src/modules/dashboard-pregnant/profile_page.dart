@@ -1,16 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:app/src/core/theme/app_colors.dart'; // Ajuste o import
+import 'package:app/src/core/theme/app_colors.dart';
 
-class ProfilePage extends StatelessWidget {
+// Importa os modelos e os dados mockados
+import './data/models/mock_models.dart';
+
+// Importa as páginas de destino para navegação
+import 'article_detail_page.dart';
+import 'forum_topic_detail_page.dart';
+import 'doctor_profile_page.dart';
+
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  void _toggleBookmark(Article article) {
+    setState(() {
+      final originalArticle = mockArticles.firstWhere(
+        (a) => a.title == article.title,
+      );
+      originalArticle.isBookmarked = !originalArticle.isBookmarked;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final savedArticles = mockArticles.where((a) => a.isBookmarked).toList();
+    final myQuestion = mockTopics.isNotEmpty ? mockTopics.first : null;
+
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text(
-          '16ª Semana',
+          'Meu Perfil',
           style: TextStyle(color: AppColors.textDark),
         ),
         centerTitle: true,
@@ -24,141 +50,152 @@ class ProfilePage extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.only(bottom: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildProfileHeader(),
             const SizedBox(height: 24),
+            _buildProfileHeader(mockUserProfile),
+            const SizedBox(height: 32),
             _buildSectionTitle('Meus Médicos Especialistas'),
             const SizedBox(height: 16),
-            _buildDoctorsGrid(),
-            const SizedBox(height: 24),
+            _buildDoctorsGrid(mockDoctors),
+            const SizedBox(height: 32),
             _buildSectionTitle('Artigos Salvos'),
             const SizedBox(height: 16),
-            _buildSavedArticles(),
-            const SizedBox(height: 24),
+            _buildSavedArticles(savedArticles),
+            const SizedBox(height: 32),
             _buildSectionTitle('Perguntas Respondidas'),
             const SizedBox(height: 16),
-            _buildQuestionAnswerCard(),
-            const SizedBox(height: 24),
+            if (myQuestion != null) _buildQuestionAnswerCard(myQuestion),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileHeader() {
-    return Center(
-      child: Column(
-        children: [
-          const CircleAvatar(
-            radius: 50,
-            backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=1'),
+  Widget _buildProfileHeader(UserProfile profile) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Card(
+        elevation: 2,
+        shadowColor: AppColors.grey.withOpacity(0.1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: NetworkImage(profile.avatarUrl),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                profile.name,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textDark,
+                ),
+              ),
+              Text(
+                profile.pregnancyInfo,
+                style: const TextStyle(color: AppColors.textLight),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _InfoColumn(
+                    label: 'Tamanho do bebê',
+                    value: profile.babySize,
+                  ),
+                  _InfoColumn(
+                    label: 'Semanas restantes',
+                    value: '${profile.weeksLeft} Semanas',
+                  ),
+                  _InfoColumn(label: 'Peso do bebê', value: profile.babyWeight),
+                  _InfoColumn(
+                    label: 'Dias restantes',
+                    value: '${profile.daysLeft} dias',
+                  ),
+                ],
+              ),
+            ],
           ),
-          const SizedBox(height: 12),
-          const Text(
-            'Júlia Oliveira',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textDark,
-            ),
-          ),
-          const Text(
-            'Primeira gestação',
-            style: TextStyle(color: AppColors.textLight),
-          ),
-          const SizedBox(height: 20),
-          const IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _InfoColumn(label: 'Tamanho do bebê', value: '17 cm'),
-                VerticalDivider(),
-                _InfoColumn(label: 'Semanas restantes', value: '30 Semanas'),
-                VerticalDivider(),
-                _InfoColumn(label: 'Peso do bebê', value: '110 gr'),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
   Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: AppColors.textDark,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.textDark,
+        ),
       ),
     );
   }
 
-  Widget _buildDoctorsGrid() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 5, // Exemplo
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.85,
-      ),
-      itemBuilder: (context, index) {
-        return _buildDoctorCard();
-      },
-    );
-  }
-
-  Widget _buildDoctorCard() {
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=3'),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'José Ricardo',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-            textAlign: TextAlign.center,
-          ),
-          const Text(
-            'Obstetra',
-            style: TextStyle(color: AppColors.primaryPink, fontSize: 10),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSavedArticles() {
-    return SizedBox(
-      height: 180,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: 2,
-        separatorBuilder: (context, index) => const SizedBox(width: 16),
+  Widget _buildDoctorsGrid(List<Doctor> doctors) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: doctors.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.8,
+        ),
         itemBuilder: (context, index) {
-          return SizedBox(
-            width: 150,
+          final doctor = doctors[index];
+          return InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => DoctorProfilePage(doctor: doctor),
+              ),
+            ),
+            borderRadius: BorderRadius.circular(12),
             child: Card(
-              clipBehavior: Clip.antiAlias,
+              elevation: 2,
+              shadowColor: AppColors.grey.withOpacity(0.1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Image.network(
-                'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400',
-                fit: BoxFit.cover,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage(doctor.avatarUrl),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    doctor.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    doctor.specialty,
+                    style: const TextStyle(
+                      color: AppColors.primaryPink,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
             ),
           );
@@ -167,23 +204,129 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildQuestionAnswerCard() {
-    return Card(
-      color: AppColors.lightPinkBackground,
-      elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: const Padding(
-        padding: EdgeInsets.all(12.0),
+  Widget _buildSavedArticles(List<Article> articles) {
+    if (articles.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
         child: Text(
-          'Oi! Cólicas leves podem ser normais nesta fase da gravidez, pois seu útero está crescendo... Mantenha o descanso, tente beber bastante água e evite ficar...',
-          style: TextStyle(color: AppColors.textDark, height: 1.5),
+          'Você ainda não salvou nenhum artigo.',
+          style: TextStyle(color: AppColors.textLight),
+        ),
+      );
+    }
+    return SizedBox(
+      height: 220,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        itemCount: articles.length,
+        separatorBuilder: (context, index) => const SizedBox(width: 16),
+        itemBuilder: (context, index) {
+          final article = articles[index];
+          return SizedBox(
+            width: 160,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ArticleDetailPage(
+                      article: article,
+                      onBookmarkTap: () => _toggleBookmark(article),
+                    ),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Card(
+                    clipBehavior: Clip.antiAlias,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Image.network(
+                      article.imageUrl,
+                      height: 150,
+                      width: 160,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    article.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildQuestionAnswerCard(ForumTopic topic) {
+    String previewMessage = topic.answer.message;
+    if (previewMessage.length > 100) {
+      previewMessage = '${previewMessage.substring(0, 100)}...';
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ForumTopicDetailPage(topic: topic),
+            ),
+          );
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Card(
+          color: AppColors.lightPinkBackground.withOpacity(0.5),
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sua pergunta sobre "${topic.tags.first}"',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  previewMessage,
+                  style: const TextStyle(
+                    color: AppColors.textLight,
+                    height: 1.5,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-// Widget auxiliar para as colunas de informação (reutilizado e adaptado)
 class _InfoColumn extends StatelessWidget {
   final String label;
   final String value;

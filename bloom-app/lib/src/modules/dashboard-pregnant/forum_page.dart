@@ -3,36 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart'; // Ajuste o import para o seu projeto
 import 'forum_topic_detail_page.dart';
 import 'add_topic_page.dart';
+import './data/models/mock_models.dart'; // MUDANÇA: Importa os modelos do arquivo central
 
 // --- MODELOS DE DADOS PARA O FÓRUM ---
-class ForumMessage {
-  final String authorName;
-  final String authorTitle;
-  final String avatarUrl;
-  final String message;
-  final bool isFromUser;
-
-  ForumMessage({
-    required this.authorName,
-    required this.authorTitle,
-    required this.avatarUrl,
-    required this.message,
-    this.isFromUser = false,
-  });
-}
-
-class ForumTopic {
-  final ForumMessage question;
-  final ForumMessage answer;
-  final List<String> tags;
-
-  ForumTopic({
-    required this.question,
-    required this.answer,
-    required this.tags,
-  });
-}
-
 // --- WIDGET PRINCIPAL DA PÁGINA ---
 class ForumPage extends StatefulWidget {
   const ForumPage({super.key});

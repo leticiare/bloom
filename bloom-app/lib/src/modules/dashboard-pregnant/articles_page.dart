@@ -1,30 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 import 'article_detail_page.dart'; // Importa a nova página de detalhes
-
-// --- Modelo de Dados para um Artigo ---
-// MUDANÇA 1: Adicionamos o campo 'fullContent'
-class Article {
-  final String title;
-  final String summary;
-  final String imageUrl;
-  final String authorName;
-  final String authorTitle;
-  final String authorAvatarUrl;
-  final String fullContent; // Novo campo para o texto completo
-  bool isBookmarked;
-
-  Article({
-    required this.title,
-    required this.summary,
-    required this.imageUrl,
-    required this.authorName,
-    required this.authorTitle,
-    required this.authorAvatarUrl,
-    required this.fullContent,
-    this.isBookmarked = false,
-  });
-}
+import './data/models/mock_models.dart'; // MUDANÇA: Importa os modelos do arquivo central
 
 class ArticlesPage extends StatefulWidget {
   const ArticlesPage({super.key});
