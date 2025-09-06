@@ -35,7 +35,6 @@ class FabricaEventoAgenda:
             TipoEventoAgenda.CONSULTA.value: Consulta,
         }
 
-
         info_plano = None
 
         if (dados.get("info_plano")) is not None:
@@ -55,14 +54,13 @@ class FabricaEventoAgenda:
         # A classe Consulta possui um campo 'observacoes' que as outras classes não possuem, por isso precisa de um tratamento específico
         if ClasseEventoAgenda == Consulta:
             return ClasseEventoAgenda(
-
                 id=dados.get("id"),
                 status=dados.get("status"),
                 data_agendamento=dados.get("data_agendamento"),
                 data_realizacao=dados.get("data_realizacao"),
                 info_plano=info_plano,
-
                 observacoes=dados.get("observacoes"),
+                gestante_id=dados.get("gestante_id"),
             )
 
         return ClasseEventoAgenda(
@@ -70,5 +68,6 @@ class FabricaEventoAgenda:
             status=dados.get("status"),
             data_agendamento=dados.get("data_agendamento"),
             data_realizacao=dados.get("data_realizacao"),
+            gestante_id=dados.get("gestante_id"),
             info_plano=info_plano,
         )
