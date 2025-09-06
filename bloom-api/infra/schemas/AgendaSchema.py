@@ -6,3 +6,4 @@ class AgendaSchema:
     ITEM_PLANO_PRE_NATAL_ID: str = "item_plano_pre_natal_id"
     OBSERVACOES: str = "observacoes"
     TIPO: str = "tipo"
+    GESTANTE_ID: str = "gestante_id"
