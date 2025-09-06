@@ -1,5 +1,4 @@
-import uuid
-
+from datetime import date
 from domain.entities.Gestante import Gestante
 from domain.enums.TiposDocumento import TiposDocumento
 from domain.factories.FabricaDocumento import FabricaDocumento
@@ -127,3 +126,17 @@ class RepositorioGestante:
             antecedentes_obstetricos=resultado[12],
         )
         return gestante
+
+    def obter_dum_gestante(self, id: str) -> date:
+        sql = SQL("""
+                SELECT dum FROM {tabela} WHERE id = %s
+            """).format(tabela=Identifier(self._tabela))
+
+        resultado = self._conexao.executar_sql(
+            sql=sql, parametros=(id,), possui_resultado=True
+        )
+
+        if not resultado:
+            return None
+
+        return resultado[0][0]
