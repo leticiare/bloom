@@ -38,6 +38,7 @@ async def exportar_pdf(
             consultas=consultas,
             exames=exames,
             gestante=gestante,
+            tipo_relatorio=requisicao.tipo,
         )
         headers = {"Content-Disposition": 'attachment; filename="relatorio.pdf"'}
         return Response(

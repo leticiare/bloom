@@ -1,7 +1,8 @@
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from io import BytesIO
 from pathlib import Path
+from typing_extensions import Literal
 
 from domain.entities.EventoAgenda import EventoAgenda
 from domain.entities.Gestante import Gestante
@@ -21,6 +22,7 @@ class ControladorRelatorio:
         consultas: list[EventoAgenda],
         exames: list[EventoAgenda],
         gestante: Gestante,
+        tipo_relatorio: Literal["mensal", "completo"] = "completo",
     ) -> bytes:
         caminho_template = self.base_path / template_name
         caminho_logo = self.base_path / "assets" / logo_name
@@ -33,6 +35,11 @@ class ControladorRelatorio:
         html_content = html_content.replace(
             "{{logo}}", f"data:image/png;base64,{logo_base64}"
         )
+
+        vacinas = self._filtrar_eventos(vacinas, tipo_relatorio)
+        consultas = self._filtrar_eventos(consultas, tipo_relatorio)
+        exames = self._filtrar_eventos(exames, tipo_relatorio)
+
         consultas_html = self.renderizar_eventos_html(consultas)
         vacinas_html = self.renderizar_eventos_html(vacinas)
         exames_html = self.renderizar_eventos_html(exames)
@@ -42,7 +49,7 @@ class ControladorRelatorio:
         html_content = html_content.replace("{relatorio.consultas}", consultas_html)
         html_content = html_content.replace("{relatorio.exames}", exames_html)
         html_content = html_content.replace("{relatorio.gestante}", gestante_html)
-
+        html_content = html_content.replace("{relatorio.tipo}", tipo_relatorio)
         result_file = BytesIO()
         pisa_status = pisa.CreatePDF(
             BytesIO(html_content.encode("utf-8")),
@@ -55,6 +62,36 @@ class ControladorRelatorio:
 
         result_file.seek(0)
         return result_file.read()
+
+    def _filtrar_eventos(
+        self, eventos: list[EventoAgenda], tipo_relatorio: str
+    ) -> list[EventoAgenda]:
+        if tipo_relatorio == "mensal":
+            # O relatório mensal filtra os eventos realizados nos últimos 30 dias
+            hoje = datetime.now(timezone.utc)
+            limite = hoje - timedelta(days=30)
+            eventos_filtrados = []
+
+            for evento in eventos:
+                dt = evento.get("data_realizacao")
+                if not dt:
+                    continue
+
+                if isinstance(dt, str):
+                    try:
+                        dt = datetime.fromisoformat(dt)
+                    except ValueError:
+                        continue
+
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=timezone.utc)
+
+                if limite <= dt <= hoje:
+                    eventos_filtrados.append(evento)
+
+            return eventos_filtrados
+
+        return eventos
 
     def relatorio(self) -> Response:
         pdf_bytes = self.gerar_pdf("relatorio.html", "logo-bloom.png")
