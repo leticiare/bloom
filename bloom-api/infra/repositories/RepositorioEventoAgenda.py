@@ -130,7 +130,7 @@ class RepositorioEventoAgenda:
                 return self._mapear_para_entidade(resultado[0])
 
             else:
-                return None
+                raise ValueError("Evento não encontrado")
 
         except Exception as e:
             print(f"Erro ao obter eventos por item de plano pré-natal: {e}")

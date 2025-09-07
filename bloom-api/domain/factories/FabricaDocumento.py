@@ -7,11 +7,15 @@ from domain.enums.TiposDocumento import TiposDocumento
 class FabricaDocumento:
     def criar_documento(tipo: TiposDocumento, numero: str) -> Documento:
         tipo_map = {"cpf": CPF, "cnpj": CNPJ}
-        classe_documento = tipo_map.get(tipo.lower())
+        # Usa o valor do Enum, que já está em minúsculo
+        classe_documento = tipo_map.get(tipo.value)
+
+        if not classe_documento:
+            raise ValueError(f"Tipo de documento '{tipo}' não suportado.")
 
         documento_obj = classe_documento(numero)
 
         if not documento_obj.validar():
-            raise ValueError(f"Número de {tipo.upper()} inválido.")
+            raise ValueError(f"Número de {tipo.value.upper()} inválido.")
 
         return documento_obj
