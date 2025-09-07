@@ -1,8 +1,11 @@
 import json
+import traceback
 
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse, Response
 from starlette.middleware.base import BaseHTTPMiddleware
+
+from infra.logger.logger import logger
 
 
 class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
@@ -15,11 +18,25 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
         try:
             resposta_http = await call_next(request)
 
-        except Exception:
+        except Exception as e:
+            # Log completo com traceback para auxiliar depuração
+            tb = traceback.format_exc()
+            try:
+                logger.error(
+                    "Erro interno não tratado na requisição %s %s:\n%s",
+                    request.method,
+                    request.url.path,
+                    tb,
+                )
+            except Exception:
+                # Caso o logger falhe por algum motivo, cai para print
+                print(f"Erro interno não tratado: {e}\n{tb}")
+
             resposta = {
                 "sucesso": False,
                 "dados": None,
-                "mensagem": "Erro interno do servidor",
+                # Retorna a mensagem da exceção para facilitar debugging local
+                "mensagem": str(e),
                 "codigo_http": 500,
             }
             return JSONResponse(content=resposta, status_code=500)

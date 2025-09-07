@@ -1,18 +1,9 @@
-// main.dart
-
 import 'package:flutter/material.dart';
-import 'package:app/src/modules/auth/login/login_screen.dart';
-import 'package:app/src/modules/onboarding/onboarding_screen.dart'; // Corrigido o caminho do onboarding
+import 'package:app/main_screen.dart'; // <<< CORREÇÃO: Importando a nova tela principal
+import 'package:app/src/core/theme/app_colors.dart';
+import 'package:app/src/modules/onboarding/onboarding_screen.dart';
 
-// Variável para forçar o onboarding a ser sempre falso
-bool onboardingCompleted = false;
-
-void main() async {
-  // Apenas para fins de teste, o SharedPreferences não será lido
-  // WidgetsFlutterBinding.ensureInitialized();
-  // final prefs = await SharedPreferences.getInstance();
-  // onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
-
+void main() {
   runApp(const MyApp());
 }
 
@@ -22,10 +13,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Seu App',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      // A tela inicial agora será sempre o OnboardingScreen
-      home: onboardingCompleted ? const LoginScreen() : OnboardingScreen(),
+      title: 'Bloom App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: AppColors.primaryPink,
+        scaffoldBackgroundColor: AppColors.background,
+        fontFamily: 'Roboto',
+      ),
+      // <<< CORREÇÃO: Usando MainScreen como a página inicial do app
+      home: const OnboardingScreen(),
     );
   }
 }

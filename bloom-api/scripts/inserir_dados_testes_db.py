@@ -1,15 +1,28 @@
+import hashlib
 import infra.db.iniciar_db
 from infra.db.conexao import ConexaoBancoDados
 
 # Comando para executar a inserção: poetry run python -m scripts.insercao_dados_testes_db
 
+infra.db.iniciar_db.conexao
+
 conexao = ConexaoBancoDados.obter_instancia()
 
-# Inserir usuários
-conexao.executar_sql("""
-    INSERT INTO usuario (email, senha, perfil) VALUES
-    ('ana.silva@email.com', 'senha123', 'gestante'),
-    ('maria.souza@email.com', 'senha456', 'gestante')
+# Função para criptografar a senha usando SHA256
+def criptografar_senha(senha):
+    hash_obj = hashlib.sha256()
+    hash_obj.update(senha.encode('utf-8'))
+    return hash_obj.hexdigest()
+
+# Criptografa as senhas
+senha_ana_criptografada = criptografar_senha('senha123')
+senha_maria_criptografada = criptografar_senha('senha456')
+
+# Inserir usuários com senhas criptografadas
+conexao.executar_sql(f"""
+    INSERT INTO usuario (email, senha, documento, tipo_documento, data_nascimento, perfil, id_entidade_perfil) VALUES
+    ('ana.silva@email.com', '{senha_ana_criptografada}', '111.111.111-11', 'cpf', '1990-01-01', 'gestante', '11111111-1111-1111-1111-111111111111'),
+    ('maria.souza@email.com', '{senha_maria_criptografada}', '222.222.222-22', 'cpf', '1995-05-05', 'gestante', '22222222-2222-2222-2222-222222222222')
     ON CONFLICT (email) DO NOTHING;
 """)
 
@@ -30,7 +43,7 @@ conexao.executar_sql("""
     ('aaaaaaa3-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'Vacina dTpa', 'Vacina contra difteria, tétano e coqueluche', 20, 36, 'vacina'),
     ('aaaaaaa4-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'Exame de Glicemia', 'Exame para detectar diabetes gestacional', 24, 28, 'exame'),
     ('aaaaaaa5-aaaa-aaaa-aaaa-aaaaaaaaaaa5', 'Consulta de Rotina', 'Consulta de acompanhamento', 13, 40, 'consulta'),
-    ('aaaaaaa6-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'TOTG e Curva Glicêmica',	'Exame realizado com o objetivo de analisar e identificar indícios de diabetes gestacional',	24,	28,	'exame')
+    ('aaaaaaa6-aaaa-aaaa-aaaa-aaaaaaaaaaa6', 'TOTG e Curva Glicêmica',  'Exame realizado com o objetivo de analisar e identificar indícios de diabetes gestacional',    24, 28, 'exame')
     ON CONFLICT (id) DO NOTHING;
 """)
 
