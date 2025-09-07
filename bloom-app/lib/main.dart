@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app/main_screen.dart'; // <<< CORREÇÃO: Importando a nova tela principal
 import 'package:app/src/core/theme/app_colors.dart';
+import 'package:app/src/modules/onboarding/onboarding_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto',
       ),
       // <<< CORREÇÃO: Usando MainScreen como a página inicial do app
-      home: const MainScreen(),
+      home: const OnboardingScreen(),
     );
   }
 }

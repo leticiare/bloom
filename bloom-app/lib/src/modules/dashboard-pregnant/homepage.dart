@@ -1,5 +1,6 @@
 // lib/src/modules/dashboard-pregnant/homepage.dart
 
+import 'package:app/src/shared/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   late DateTime _selectedDate;
   final List<DateTime> _weekDays = [];
   final Map<DateTime, List<Appointment>> _mockEvents = {};
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {

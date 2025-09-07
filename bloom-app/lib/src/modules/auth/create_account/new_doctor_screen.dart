@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/src/modules/auth/login/login_screen.dart';
 import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
 import 'new_pregnant_screen.dart'; // Para navegação no Switch
-import 'package:app/src/core/constants/constants.dart';
 
 // --- CONSTANTES ---
 const Color K_MAIN_PINK = Color(0xFFE91E63);
@@ -133,7 +132,7 @@ class _NewDoctorScreenState extends State<NewDoctorScreen> {
     try {
       final response = await http
           .post(
-            Uri.parse('$kApiBaseUrl/api/auth/registro/profissional'),
+            Uri.parse('http://localhost:8000/api/auth/registro/profissional'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode(dadosCadastro),
           )
