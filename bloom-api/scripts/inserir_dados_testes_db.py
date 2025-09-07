@@ -1,7 +1,7 @@
 import infra.db.iniciar_db
 from infra.db.conexao import ConexaoBancoDados
 
-# Comando para executar a inserção: poetry run python -m tests.insercao_dados_testes_db
+# Comando para executar a inserção: poetry run python -m scripts.insercao_dados_testes_db
 
 conexao = ConexaoBancoDados.obter_instancia()
 

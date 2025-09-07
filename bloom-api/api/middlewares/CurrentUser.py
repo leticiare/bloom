@@ -1,9 +1,8 @@
-import os
-
+from auth.AuthService import ServicoAutenticacao
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from jose import JWTError, jwt
+from jose import JWTError
 
 security = HTTPBearer()
 
@@ -13,12 +12,9 @@ load_dotenv(override=True)
 async def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ):
-    token = credentials.credentials
-    key = os.getenv("SECRET_KEY")
-    algoritmo = os.getenv("ALGORITHM")
     try:
-        payload = jwt.decode(token, key, algorithms=[algoritmo])
-        return payload
+        usuario = ServicoAutenticacao.decodificar_token(credentials.credentials)
+        return usuario
     except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

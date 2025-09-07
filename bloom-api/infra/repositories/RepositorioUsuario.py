@@ -1,11 +1,10 @@
-from domain.entities.entidade_usuario import Usuario
+from domain.entities.Usuario import Usuario
 from dotenv import load_dotenv
+from psycopg2.sql import SQL, Identifier
 
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
 from infra.logger.logger import logger
-
-from psycopg2.sql import SQL, Identifier
 
 load_dotenv()
 
@@ -18,17 +17,23 @@ class RepositorioUsuario:
     async def buscar_usuario_por_email(self, email: str) -> Usuario:
         try:
             sql = SQL("""
-                    SELECT * FROM {tabela} WHERE email = %s
+                    SELECT email, senha, perfil, data_nascimento, tipo_documento, documento, id_entidade_perfil FROM {tabela} WHERE email = %s
                 """).format(tabela=Identifier(self._tabela))
             resultado = conexao.executar_sql(
                 sql=sql, parametros=(email,), possui_resultado=True
             )[0]
-            logger.debug(f"BUSCA: {resultado}")
+
             if not resultado:
                 return None
 
             usuario = Usuario(
-                email=resultado[0], senha=resultado[1], perfil=resultado[4]
+                email=resultado[0],
+                senha=resultado[1],
+                perfil=resultado[2],
+                data_nascimento=resultado[3],
+                tipo_documento=resultado[4],
+                documento=resultado[5],
+                id_entidade_perfil=resultado[6],
             )
             return usuario
         except Exception as e:
@@ -38,11 +43,20 @@ class RepositorioUsuario:
     async def inserir_usuario(self, usuario: Usuario):
         try:
             sql = SQL("""
-                  INSERT INTO {tabela} (email, senha, perfil) VALUES (%s, %s, %s)
+                  INSERT INTO {tabela} (email, senha, perfil, documento, tipo_documento, data_nascimento, id_entidade_perfil) VALUES (%s, %s, %s,%s,%s,%s,%s)
                 """).format(tabela=Identifier(self._tabela))
 
             self._conexao.executar_sql(
-                sql=sql, parametros=(usuario.email, usuario.senha, usuario.perfil)
+                sql=sql,
+                parametros=(
+                    usuario.email,
+                    usuario.senha,
+                    usuario.perfil,
+                    usuario.documento,
+                    usuario.tipo_documento,
+                    usuario.data_nascimento,
+                    str(usuario.id_entidade_perfil),
+                ),
             )
         except Exception as e:
             logger.error(f"Erro ao cadastrar usuario: {e}")

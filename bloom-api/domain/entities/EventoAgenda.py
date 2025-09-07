@@ -1,5 +1,7 @@
 from enum import Enum
-from typing import List
+
+from typing import List, Optional
+
 from datetime import datetime
 from domain.errors.evento_agenda import (
     EventoJaAgendadoError,
@@ -11,6 +13,9 @@ from domain.errors.evento_agenda import (
 
 class TipoEventoAgenda(Enum):
     EXAME = "exame"
+
+    VACINA = "vacina"
+    CONSULTA = "consulta"
 
 
 class StatusEvento(Enum):
@@ -25,15 +30,19 @@ class EventoAgenda:
         self,
         id: str,
         status: StatusEvento,
-        data_agendamento: datetime | None,
-        data_realizacao: datetime | None,
-        tipo: str,
+        data_agendamento: Optional[datetime],
+        data_realizacao: Optional[datetime],
+        tipo: TipoEventoAgenda,
+        observacoes: Optional[str] = None,
+
     ):
         self.id = id
         self.status = StatusEvento(status)
         self.data_agendamento = data_agendamento
         self.data_realizacao = data_realizacao
         self.tipo = tipo
+
+        self.observacoes = observacoes
 
     def _validar_status(self, lista_status: List[StatusEvento]):
         mapa_excecoes = {
@@ -44,7 +53,9 @@ class EventoAgenda:
 
         for status in lista_status:
             if self.status == status:
-                raise mapa_excecoes[status](self.id)
+
+                raise mapa_excecoes[status]()
+
 
     def agendar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.AGENDADO, StatusEvento.REALIZADO])
@@ -57,7 +68,9 @@ class EventoAgenda:
         self._validar_status([StatusEvento.REALIZADO, StatusEvento.CANCELADO])
 
         if data_realizacao is None and self.data_agendamento is not None:
-            raise EventoSemDataAgendamentoError(self.id)
+
+            raise EventoSemDataAgendamentoError()
+
 
         self.status = StatusEvento.REALIZADO
         self.data_realizacao = data_realizacao or self.data_agendamento
@@ -66,6 +79,10 @@ class EventoAgenda:
         self._validar_status([StatusEvento.CANCELADO, StatusEvento.REALIZADO])
 
         self.status = StatusEvento.CANCELADO
+
+        self.data_agendamento = None
+        self.data_realizacao = None
+
 
     def remarcar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.CANCELADO, StatusEvento.REALIZADO])
