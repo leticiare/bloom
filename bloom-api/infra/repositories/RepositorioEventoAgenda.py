@@ -95,6 +95,7 @@ class RepositorioEventoAgenda:
                     evento.status.value,
                     evento.data_agendamento,
                     evento.data_realizacao,
+                    evento.info_plano.id,
                     evento.tipo.value,
                     evento.observacoes,
                     evento.id,

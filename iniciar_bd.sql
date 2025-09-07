@@ -138,6 +138,7 @@ CREATE TABLE artigo (
     titulo VARCHAR(100) NOT NULL,
     conteudo TEXT NOT NULL,
     usuario_email VARCHAR(100) NOT NULL,
+    temas TEXT[] NOT NULL, 
     CONSTRAINT fk_artigo_usuario
         FOREIGN KEY (usuario_email)
         REFERENCES usuario(email)

@@ -8,13 +8,30 @@ from fastapi.security import OAuth2PasswordBearer
 from infra.repositories.RepositorioUsuario import RepositorioUsuario
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from infra.logger.logger import logger
 
 
 class ServicoAutenticacao:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
     SECRET_KEY = os.getenv("SECRET_KEY")
-    ALGORITHM = os.getenv("ALGORITHM")
+    # Se a variável de ambiente vier como 'SHA256' (errado para jose),
+    # mapeamos para um algoritmo JWT válido ('HS256'). Se não definida,
+    # usamos um padrão seguro 'HS256'.
+    _raw_algorithm = os.getenv("ALGORITHM")
+    if _raw_algorithm:
+        _alg_up = _raw_algorithm.strip().upper()
+        if _alg_up in ("SHA256", "SHA-256"):
+            ALGORITHM = "HS256"
+            logger.warning(
+                "Variável ALGORITHM contém '%s' — mapeando para '%s'",
+                _raw_algorithm,
+                ALGORITHM,
+            )
+        else:
+            ALGORITHM = _raw_algorithm
+    else:
+        ALGORITHM = "HS256"
     ACCESS_EXPIRES = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES") or 30
 
     @classmethod
@@ -40,7 +57,16 @@ class ServicoAutenticacao:
         for key, value in to_encode.items():
             if key != "exp" and isinstance(value, (datetime, date)):
                 to_encode[key] = value.isoformat()
-        return jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
+        try:
+            return jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
+        except Exception as e:
+            # Log mais detalhado antes de propagar
+            logger.error(
+                "Falha ao gerar token JWT com algoritmo '%s': %s",
+                cls.ALGORITHM,
+                str(e),
+            )
+            raise
 
     @classmethod
     def decodificar_token(cls, token: str) -> Optional[dict]:

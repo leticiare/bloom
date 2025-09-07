@@ -46,3 +46,4 @@ async def perfil(current_user: dict = Depends(get_current_user)):
         email=current_user.get("email"), perfil=current_user.get("perfil")
     )
     return JSONResponse(status_code=200, content={"Response": usuario.to_dict()})
+

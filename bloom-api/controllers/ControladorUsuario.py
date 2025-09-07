@@ -29,11 +29,12 @@ class ControladorUsuario:
             usuario.tipo_documento = usuario.tipo_documento.value
 
             if isinstance(usuario, Profissional):
-                usuario.id_entidade_perfil = usuario.codigo
                 usuario.id_entidade_perfil = usuario.codigo or uuid.uuid4()
                 usuario.codigo = usuario.id_entidade_perfil
+
             elif isinstance(usuario, Gestante):
-                usuario.id_entidade_perfil = usuario.id
+                usuario.id_entidade_perfil = usuario.id or uuid.uuid4()
+                usuario.id = usuario.id_entidade_perfil
                 if (
                     usuario.dpp is None or usuario.dpp == ""
                 ) and usuario.dum is not None:
