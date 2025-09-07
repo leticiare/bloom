@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'dart:convert';
 import 'medical_record_page.dart';
 
 // --- CONSTANTES DE CORES ---
@@ -20,6 +25,7 @@ class ReportPage extends StatefulWidget {
 class _ReportPageState extends State<ReportPage> {
   bool _isCompleteReport = true;
   bool _isMonthlyReport = false;
+  final _storage = const FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -198,10 +204,62 @@ class _ReportPageState extends State<ReportPage> {
 
   Widget _buildDownloadButton() {
     return ElevatedButton(
-      onPressed: () {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(const SnackBar(content: Text('Gerando relatório...')));
+      onPressed: () async {
+        // IDs mockados
+        const String gestanteId = '2970c137-35bf-404f-bb2a-e0628960ab05';
+        const String tipoRelatorio = 'mensal';
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Gerando e baixando relatório...')),
+        );
+
+        try {
+          final String? token = await _storage.read(key: 'access_token');
+
+          if (token == null) {
+            throw Exception('Token de autenticação não encontrado.');
+          }
+
+          final url = Uri.parse(
+            'http://127.0.0.1:8000/api/gestante/relatorio/',
+          );
+          final response = await http.post(
+            url,
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            body: json.encode({
+              'id_gestante': gestanteId,
+              'tipo': tipoRelatorio,
+            }),
+          );
+
+          if (response.statusCode == 200) {
+            final directory = await getApplicationDocumentsDirectory();
+            final String filePath = '${directory.path}/relatorio_prenatal.pdf';
+
+            final File file = File(filePath);
+            await file.writeAsBytes(response.bodyBytes);
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Relatório salvo em: $filePath')),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Erro ao baixar o relatório: ${response.statusCode}',
+                ),
+              ),
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Erro: ${e.toString()}')));
+        }
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: _kPrimaryPink,

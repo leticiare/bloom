@@ -40,4 +40,4 @@ async def login(usuario: RequisicaoLogin):
 
 @router.get("/perfil")
 async def perfil(current_user: dict = Depends(perfil_autorizado(["gestante"]))):
-    return {"email": current_user.get("email"), "perfil": current_user.get("perfil")}
+    return {"email": current_user.get("email"), "perfil": current_user.get("perfil"), "nome": current_user.get("nome")}
