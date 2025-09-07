@@ -56,15 +56,34 @@ class RepositorioArtigo:
             autor=registro[4],
         )
 
+    def editar(self, artigo: Artigo) -> None:
+        sql = SQL("""
+            UPDATE {tabela}
+            SET titulo = %s,
+                conteudo = %s,
+                temas = %s,
+                usuario_email = %s
+            WHERE id = %s
+        """).format(tabela=Identifier(self._tabela))
+
+        self._conexao.executar_sql(
+            sql=sql,
+            parametros=(
+                artigo.titulo,
+                artigo.conteudo,
+                artigo.temas,
+                artigo.autor,
+                artigo.id,
+            ),
+        )
+
     def obter_todos(self) -> list[Artigo]:
         sql = SQL("""
             SELECT id, titulo, conteudo, temas, usuario_email
             FROM {tabela}
         """).format(tabela=Identifier(self._tabela))
 
-        registros = self._conexao.executar_sql(
-            sql=sql,
-        )
+        registros = self._conexao.executar_sql(sql=sql, possui_resultado=True)
 
         artigos: list[Artigo] = []
         for registro in registros:
