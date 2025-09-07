@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 
 from domain.entities.Gestante import Gestante
 from domain.entities.Profissional import Profissional
@@ -29,6 +30,8 @@ class ControladorUsuario:
 
             if isinstance(usuario, Profissional):
                 usuario.id_entidade_perfil = usuario.codigo
+                usuario.id_entidade_perfil = usuario.codigo or uuid.uuid4()
+                usuario.codigo = usuario.id_entidade_perfil
             elif isinstance(usuario, Gestante):
                 usuario.id_entidade_perfil = usuario.id
                 if (
