@@ -1,12 +1,14 @@
 from datetime import datetime
-from controllers.dto.ConsultaDto import ConsultaDto
+
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
 from domain.errors.evento_agenda import EventoAgendaError
 from domain.errors.FabricaErroEventoAgenda import FabricaErroEventoAgenda
 from domain.FiltroEventoAgenda import FiltroEventoAgenda
+from fastapi import HTTPException
 from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
 from infra.repositories.RepositorioGestante import RepositorioGestante
-from fastapi import HTTPException
+
+from controllers.dto.ConsultaDto import ConsultaDto
 
 
 class ControladorConsulta:
@@ -58,7 +60,7 @@ class ControladorConsulta:
         )
 
         return [
-            ConsultaDto.criar(consulta).para_dicionario()
+            ConsultaDto.criar(consulta=consulta, dum=dum).para_dicionario()
             for consulta in lista_consultas
         ]
 
