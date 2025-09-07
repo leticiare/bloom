@@ -1,4 +1,3 @@
-
 from typing import Optional
 from datetime import datetime
 
@@ -11,11 +10,10 @@ class Exame(EventoAgenda):
     def __init__(
         self,
         id: str,
-
         data_agendamento: Optional[datetime],
         data_realizacao: Optional[datetime],
-
         status: StatusEvento,
+        gestante_id: str,
         info_plano: ItemPlanoPreNatal,
     ):
         super().__init__(
@@ -23,8 +21,7 @@ class Exame(EventoAgenda):
             data_agendamento=data_agendamento,
             data_realizacao=data_realizacao,
             status=status,
-
             tipo=TipoEventoAgenda.EXAME,
-
+            gestante_id=gestante_id,
         )
         self.info_plano = info_plano

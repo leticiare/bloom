@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Query, Path
+from fastapi import APIRouter, Depends, Query, Path
 from pydantic import BaseModel, Field
 from typing import List
 
+from api.middlewares.CurrentUser import perfil_autorizado
 from controllers.ControladorVacina import ControladorVacina
 from datetime import datetime
 from fastapi.responses import JSONResponse
@@ -47,24 +48,18 @@ class RequisicaoCancelarVacina(BaseModel):
     )
 
 
-@router.get(
-    "/{gestante_id}", tags=["Vacinas"], response_model=RespostaPadrao[List[VacinaDto]]
-)
+@router.get("/", tags=["Vacinas"], response_model=RespostaPadrao[List[VacinaDto]])
 def listar_vacinas(
-    gestante_id: str = Path(
-        ...,
-        description="UUID da gestante na versão 4",
-        example="123e4567-e89b-12d3-a456-426614174000",
-    ),
     data_inicio: datetime | None = Query(
         None, description="Data início no formato ISO 8601"
     ),
     data_fim: datetime | None = Query(None, description="Data fim no formato ISO 8601"),
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
     """Listar as vacinas da gestante. É possível passar um intervalo de datas como parâmetros na url."""
     return JSONResponse(
         content=controlador.obter_todos(
-            gestante_id=gestante_id,
+            gestante_id=usuario.get("id_entidade_perfil"),
             data_inicio=data_inicio,
             data_fim=data_fim,
         ),
@@ -73,45 +68,44 @@ def listar_vacinas(
 
 
 @router.get(
-    "/agendadas/{gestante_id}",
+    "/agendadas/",
     tags=["Vacinas"],
     response_model=RespostaPadrao[List[VacinaDto]],
 )
 def listar_vacinas_agendadas(
-    gestante_id: str = Path(
-        ...,
-        description="UUID da gestante na versão 4",
-        example="123e4567-e89b-12d3-a456-426614174000",
-    ),
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
     """Listar todas as vacinas agendadas da gestante."""
     return JSONResponse(
-        content=controlador.obter_vacinas_agendadas(gestante_id=gestante_id),
+        content=controlador.obter_vacinas_agendadas(
+            gestante_id=usuario.get("id_entidade_perfil")
+        ),
         status_code=200,
     )
 
 
 @router.get(
-    "/pendentes/{gestante_id}",
+    "/pendentes/",
     tags=["Vacinas"],
     response_model=RespostaPadrao[List[VacinaDto]],
 )
 def listar_vacinas_pendentes(
-    gestante_id: str = Path(
-        ...,
-        description="UUID da gestante na versão 4",
-        example="123e4567-e89b-12d3-a456-426614174000",
-    ),
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
     """Listar todas as vacinas pendentes da gestante."""
     return JSONResponse(
-        content=controlador.obter_vacinas_pendentes(gestante_id=gestante_id),
+        content=controlador.obter_vacinas_pendentes(
+            gestante_id=usuario.get("id_entidade_perfil")
+        ),
         status_code=200,
     )
 
 
 @router.put("/agendar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
-def agendar_vacina(requisicao: RequisicaoAgendarVacina):
+def agendar_vacina(
+    requisicao: RequisicaoAgendarVacina,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Agendar uma vacina da gestante."""
     return JSONResponse(
         content=controlador.agendar_vacina(
@@ -122,7 +116,10 @@ def agendar_vacina(requisicao: RequisicaoAgendarVacina):
 
 
 @router.put("/aplicar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
-def aplicar_vacina(requisicao: RequisicaoAplicarVacina):
+def aplicar_vacina(
+    requisicao: RequisicaoAplicarVacina,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Aplicar uma vacina da gestante."""
     return JSONResponse(
         content=controlador.aplicar_vacina(
@@ -133,7 +130,10 @@ def aplicar_vacina(requisicao: RequisicaoAplicarVacina):
 
 
 @router.put("/remarcar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
-def remarcar_vacina(requisicao: RequisicaoAgendarVacina):
+def remarcar_vacina(
+    requisicao: RequisicaoAgendarVacina,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Remarca uma vacina agendada da gestante."""
     return JSONResponse(
         content=controlador.remarcar_vacina(
@@ -144,7 +144,10 @@ def remarcar_vacina(requisicao: RequisicaoAgendarVacina):
 
 
 @router.put("/cancelar", tags=["Vacinas"], response_model=RespostaPadrao[VacinaDto])
-def cancelar_vacina(requisicao: RequisicaoCancelarVacina):
+def cancelar_vacina(
+    requisicao: RequisicaoCancelarVacina,
+    usuario: dict = Depends(perfil_autorizado(["gestante"])),
+):
     """Cancela uma vacina agendada da gestante."""
     return JSONResponse(
         content=controlador.cancelar_vacina(vacina_id=requisicao.id),

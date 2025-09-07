@@ -29,7 +29,8 @@ CREATE TABLE usuario (
     data_nascimento DATE NOT NULL,
     criado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    perfil usuario_perfil NOT NULL
+    perfil usuario_perfil NOT NULL,
+    id_entidade_perfil UUID NOT NULL
 );
 
 -- Tabela: notificacao

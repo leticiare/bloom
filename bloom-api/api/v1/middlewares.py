@@ -1,8 +1,8 @@
-from starlette.middleware.base import BaseHTTPMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.requests import Request
-from fastapi import HTTPException
 import json
+
+from fastapi.requests import Request
+from fastapi.responses import JSONResponse, Response
+from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
@@ -14,8 +14,8 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
 
         try:
             resposta_http = await call_next(request)
-            
-        except Exception as e:
+
+        except Exception:
             resposta = {
                 "sucesso": False,
                 "dados": None,
@@ -28,7 +28,20 @@ class FormatadorRespostaHttpMiddleware(BaseHTTPMiddleware):
         async for chunk in resposta_http.body_iterator:
             corpo += chunk
 
-        dados = json.loads(corpo.decode())
+        content_type = resposta_http.headers.get("content-type", "")
+
+        if "application/json" not in content_type:
+            return Response(
+                content=corpo,
+                status_code=resposta_http.status_code,
+                headers=dict(resposta_http.headers),
+                media_type=content_type,
+            )
+
+        try:
+            dados = json.loads(corpo.decode())
+        except json.JSONDecodeError:
+            dados = {}
 
         resposta = {
             "sucesso": True,

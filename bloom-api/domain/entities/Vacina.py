@@ -12,6 +12,7 @@ class Vacina(EventoAgenda):
         data_agendamento: Optional[datetime],
         data_realizacao: Optional[datetime],
         status: StatusEvento,
+        gestante_id: str,
         info_plano: ItemPlanoPreNatal,
     ):
         super().__init__(
@@ -20,6 +21,7 @@ class Vacina(EventoAgenda):
             data_realizacao=data_realizacao,
             status=status,
             tipo=TipoEventoAgenda.VACINA,
+            gestante_id=gestante_id,
         )
         self.info_plano = info_plano
 

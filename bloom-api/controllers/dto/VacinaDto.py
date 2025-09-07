@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, date
 
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
+from domain.entities.CalculadoraGestacional import CalculadoraGestacional
 from domain.entities.Vacina import Vacina
 
 
@@ -18,10 +19,12 @@ class VacinaDto:
     descricao: str
     semana_inicio: int
     semana_fim: int
+    data_semana_inicio: date
+    data_semana_fim: date
     tipo: TipoEventoAgenda
 
     @classmethod
-    def criar(cls, vacina: Vacina) -> "VacinaDto":
+    def criar(cls, vacina: Vacina, dum: date) -> "VacinaDto":
         return cls(
             id=vacina.id,
             status=vacina.status,
@@ -31,6 +34,12 @@ class VacinaDto:
             descricao=vacina.info_plano.descricao,
             semana_inicio=vacina.info_plano.semana_inicio,
             semana_fim=vacina.info_plano.semana_fim,
+            data_semana_inicio=CalculadoraGestacional.calcular_data_semana(
+                dum=dum, semana=vacina.info_plano.semana_inicio
+            ),
+            data_semana_fim=CalculadoraGestacional.calcular_data_semana(
+                dum=dum, semana=vacina.info_plano.semana_fim
+            ),
             tipo=vacina.tipo,
         )
 
@@ -48,5 +57,7 @@ class VacinaDto:
             "descricao": self.descricao,
             "semana_inicio": self.semana_inicio,
             "semana_fim": self.semana_fim,
+            "data_semana_inicio": self.data_semana_inicio.isoformat(),
+            "data_semana_fim": self.data_semana_fim.isoformat(),
             "tipo": self.tipo.value,
         }

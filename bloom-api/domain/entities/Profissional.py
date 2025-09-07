@@ -37,6 +37,7 @@ class Profissional(Usuario):
             tipo_documento=tipo_documento,
             data_nascimento=data_nascimento,
             perfil=perfil,
+            id_entidade_perfil=codigo,
         )
         self.codigo = codigo
         self.nome = nome

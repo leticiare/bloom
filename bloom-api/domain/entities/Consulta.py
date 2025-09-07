@@ -13,6 +13,7 @@ class Consulta(EventoAgenda):
         data_realizacao: Optional[datetime],
         observacoes: Optional[str],
         status: StatusEvento,
+        gestante_id: str,
         info_plano: ItemPlanoPreNatal,
     ):
         super().__init__(
@@ -21,6 +22,7 @@ class Consulta(EventoAgenda):
             data_realizacao=data_realizacao,
             status=status,
             tipo=TipoEventoAgenda.CONSULTA,
+            gestante_id=gestante_id,
             observacoes=observacoes,
         )
         self.info_plano = info_plano

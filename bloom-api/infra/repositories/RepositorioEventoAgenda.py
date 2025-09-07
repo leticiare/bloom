@@ -29,6 +29,7 @@ class RepositorioEventoAgenda:
             "data_realizacao": linha_db[3],
             "observacoes": linha_db[4],
             "tipo": linha_db[5],
+            "gestante_id": linha_db[11],
             "info_plano": info_plano,
         }
 
@@ -50,6 +51,7 @@ class RepositorioEventoAgenda:
                 "plano_pre_natal." + PlanoPreNatalSchema.DESCRICAO,
                 "plano_pre_natal." + PlanoPreNatalSchema.SEMANA_INICIO,
                 "plano_pre_natal." + PlanoPreNatalSchema.SEMANA_FIM,
+                "agenda." + AgendaSchema.GESTANTE_ID,
             ]
         )
         return f"""
@@ -93,10 +95,8 @@ class RepositorioEventoAgenda:
                     evento.status.value,
                     evento.data_agendamento,
                     evento.data_realizacao,
-
                     evento.tipo.value,
                     evento.observacoes,
-
                     evento.id,
                 ),
             )

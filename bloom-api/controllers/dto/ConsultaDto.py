@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, date
 
 from domain.entities.EventoAgenda import StatusEvento, TipoEventoAgenda
+from domain.entities.CalculadoraGestacional import CalculadoraGestacional
 from domain.entities.Consulta import Consulta
 
 
@@ -18,11 +19,13 @@ class ConsultaDto:
     descricao: str
     semana_inicio: int
     semana_fim: int
+    data_semana_inicio: date
+    data_semana_fim: date
     observacoes: str
     tipo: TipoEventoAgenda
 
     @classmethod
-    def criar(cls, consulta: Consulta) -> "ConsultaDto":
+    def criar(cls, consulta: Consulta, dum: date) -> "ConsultaDto":
         return cls(
             id=consulta.id,
             status=consulta.status,
@@ -33,6 +36,12 @@ class ConsultaDto:
             descricao=consulta.info_plano.descricao,
             semana_inicio=consulta.info_plano.semana_inicio,
             semana_fim=consulta.info_plano.semana_fim,
+            data_semana_inicio=CalculadoraGestacional.calcular_data_semana(
+                dum=dum, semana=consulta.info_plano.semana_inicio
+            ),
+            data_semana_fim=CalculadoraGestacional.calcular_data_semana(
+                dum=dum, semana=consulta.info_plano.semana_fim
+            ),
             tipo=consulta.tipo,
         )
 
@@ -50,6 +59,8 @@ class ConsultaDto:
             "descricao": self.descricao,
             "semana_inicio": self.semana_inicio,
             "semana_fim": self.semana_fim,
+            "data_semana_inicio": self.data_semana_inicio.isoformat(),
+            "data_semana_fim": self.data_semana_fim.isoformat(),
             "tipo": self.tipo.value,
             "observacoes": self.observacoes,
         }

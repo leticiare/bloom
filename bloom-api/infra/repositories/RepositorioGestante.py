@@ -1,7 +1,5 @@
-import uuid
-
+from datetime import date
 from domain.entities.Gestante import Gestante
-from domain.entities.Profissional import Profissional
 from domain.enums.TiposDocumento import TiposDocumento
 from domain.factories.FabricaDocumento import FabricaDocumento
 from dotenv import load_dotenv
@@ -9,7 +7,7 @@ from psycopg2.sql import SQL, Identifier
 
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
-from infra.logger.logger import logger
+from infra.repositories.RepositorioPlanoPreNatal import RepositorioPlanoPreNatal
 
 load_dotenv()
 
@@ -17,6 +15,9 @@ load_dotenv()
 class RepositorioGestante:
     def __init__(self):
         self._conexao: ConexaoBancoDados = ConexaoBancoDados.obter_instancia()
+        self._repositorio_pre_natal: RepositorioPlanoPreNatal = (
+            RepositorioPlanoPreNatal()
+        )
         self._tabela: str = "gestante"
         self._tabela_usuario: str = "usuario"
 
@@ -61,9 +62,6 @@ class RepositorioGestante:
         self,
         gestante: Gestante,
     ) -> Gestante:
-        if not gestante.id:
-            gestante.id = str(uuid.uuid4())
-
         sql = SQL("""
                 INSERT INTO {tabela} (
                     id, nome, dum, dpp,
@@ -77,7 +75,7 @@ class RepositorioGestante:
         self._conexao.executar_sql(
             sql=sql,
             parametros=(
-                gestante.id,
+                str(gestante.id),
                 gestante.nome,
                 gestante.dum,
                 gestante.dpp,
@@ -88,4 +86,57 @@ class RepositorioGestante:
             ),
         )
 
+        self._repositorio_pre_natal.criar_plano_para_gestante(gestante.id)
+
         return gestante
+
+    def buscar_gestante_por_id(self, id: str) -> Gestante:
+        sql = SQL("""
+        SELECT
+            g.id, g.nome, u.email, u.senha, u.perfil, u.data_nascimento,
+            u.documento, u.tipo_documento, g.dum, g.dpp, g.antecedentes_familiares,
+            g.antecedentes_ginecologicos, g.antecedentes_obstetricos
+        FROM {tabela_gestante} g
+        INNER JOIN {tabela_usuario} u ON g.usuario_email = u.email
+        WHERE g.id = %s
+    """).format(
+            tabela_gestante=Identifier(self._tabela),
+            tabela_usuario=Identifier(self._tabela_usuario),
+        )
+        resultado = conexao.executar_sql(
+            sql=sql, parametros=(id,), possui_resultado=True
+        )[0]
+
+        if not resultado:
+            return None
+
+        gestante = Gestante(
+            id=resultado[0],
+            nome=resultado[1],
+            email=resultado[2],
+            senha=resultado[3],
+            perfil=resultado[4],
+            data_nascimento=resultado[5],
+            documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
+            tipo_documento=TiposDocumento(resultado[7]),
+            dum=resultado[8],
+            dpp=resultado[9],
+            antecedentes_familiares=resultado[10],
+            antecedentes_ginecologicos=resultado[11],
+            antecedentes_obstetricos=resultado[12],
+        )
+        return gestante
+
+    def obter_dum_gestante(self, id: str) -> date:
+        sql = SQL("""
+                SELECT dum FROM {tabela} WHERE id = %s
+            """).format(tabela=Identifier(self._tabela))
+
+        resultado = self._conexao.executar_sql(
+            sql=sql, parametros=(id,), possui_resultado=True
+        )
+
+        if not resultado:
+            return None
+
+        return resultado[0][0]

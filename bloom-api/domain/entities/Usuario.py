@@ -16,3 +16,4 @@ class Usuario:
     data_nascimento: datetime
     tipo_documento: TiposDocumento
     documento: Documento
+    id_entidade_perfil: str
