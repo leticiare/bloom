@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 
 from domain.entities.Gestante import Gestante
 from domain.entities.Profissional import Profissional
@@ -27,9 +28,12 @@ class ControladorUsuario:
             usuario.tipo_documento = usuario.tipo_documento.value
 
             if isinstance(usuario, Profissional):
-                usuario.id_entidade_perfil = usuario.codigo
+                usuario.id_entidade_perfil = usuario.codigo or uuid.uuid4()
+                usuario.codigo = usuario.id_entidade_perfil
+
             elif isinstance(usuario, Gestante):
-                usuario.id_entidade_perfil = usuario.id
+                usuario.id_entidade_perfil = usuario.id or uuid.uuid4()
+                usuario.id = usuario.id_entidade_perfil
 
             await asyncio.to_thread(
                 run_async_in_thread, self._repositorio_usuario.inserir_usuario(usuario)
