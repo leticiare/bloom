@@ -1,7 +1,7 @@
 from domain.entities.Profissional import Profissional
 from domain.enums.EspecialidadesMedicas import EspecialidadesMedicas
 from domain.enums.UsuarioPerfil import UsuarioPerfil
-
+from domain.factories.FabricaDocumento import FabricaDocumento
 from .UsuarioDTO import UsuarioDTO
 
 
@@ -15,7 +15,9 @@ class ProfissionalDTO(UsuarioDTO):
         return Profissional(
             email=self.email,
             senha=self.senha,
-            documento=self.documento,
+            documento=FabricaDocumento.criar_documento(
+                self.tipo_documento.value, self.documento
+            ).obter_numero(),
             tipo_documento=self.tipo_documento,
             data_nascimento=self.data_nascimento,
             nome=self.nome,

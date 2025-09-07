@@ -1,4 +1,5 @@
 from datetime import date
+
 from domain.entities.Gestante import Gestante
 from domain.enums.TiposDocumento import TiposDocumento
 from domain.factories.FabricaDocumento import FabricaDocumento
@@ -36,10 +37,11 @@ class RepositorioGestante:
         )
         resultado = conexao.executar_sql(
             sql=sql, parametros=(email,), possui_resultado=True
-        )[0]
+        )
 
         if not resultado:
             return None
+        resultado = resultado[0]
 
         gestante = Gestante(
             id=resultado[0],

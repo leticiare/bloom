@@ -17,6 +17,9 @@ class Documento(ABC):
         """
         return re.sub(r"\D", "", numero)
 
+    def obter_numero(self):
+        return self.numero
+
     @abstractmethod
     def validar(self) -> bool: ...
 
