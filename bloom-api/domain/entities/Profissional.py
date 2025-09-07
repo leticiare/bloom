@@ -1,3 +1,4 @@
+from enum import Enum
 import uuid
 from datetime import date
 from typing import Optional
@@ -44,3 +45,24 @@ class Profissional(Usuario):
         self.especialidade = especialidade
         self.usuario_email = email
         self.registro = registro
+
+    def to_dict(self) -> dict:
+        return {
+            "codigo": str(self.codigo),
+            "email": self.email,
+            "nome": self.nome,
+            "perfil": self.perfil.value
+            if isinstance(self.perfil, Enum)
+            else self.perfil,
+            "documento": str(self.documento),
+            "tipo_documento": self.tipo_documento.value
+            if isinstance(self.tipo_documento, Enum)
+            else self.tipo_documento,
+            "data_nascimento": self.data_nascimento.isoformat()
+            if self.data_nascimento
+            else None,
+            "especialidade": self.especialidade.value
+            if isinstance(self.especialidade, Enum)
+            else self.especialidade,
+            "registro": self.registro,
+        }
