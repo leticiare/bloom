@@ -3,6 +3,7 @@ from typing import Optional
 
 from domain.entities.Gestante import Gestante
 from domain.enums.UsuarioPerfil import UsuarioPerfil
+from domain.factories.FabricaDocumento import FabricaDocumento
 
 from .UsuarioDTO import UsuarioDTO
 
@@ -20,7 +21,9 @@ class GestanteDTO(UsuarioDTO):
         return Gestante(
             email=self.email,
             senha=self.senha,
-            documento=self.documento,
+            documento=FabricaDocumento.criar_documento(
+                self.tipo_documento, self.documento
+            ).obter_numero(),
             perfil=self.perfil,
             tipo_documento=self.tipo_documento,
             data_nascimento=self.data_nascimento,
