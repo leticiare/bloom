@@ -5,6 +5,8 @@ from psycopg2.sql import SQL, Identifier
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
 from infra.logger.logger import logger
+from domain.factories.FabricaDocumento import FabricaDocumento
+from domain.enums.TiposDocumento import TiposDocumento
 
 load_dotenv()
 
@@ -25,14 +27,15 @@ class RepositorioUsuario:
 
             if not resultado:
                 return None
-
+            tipo_documento = TiposDocumento(resultado[4])
+            documento = FabricaDocumento.criar_documento(tipo_documento, resultado[5])
             usuario = Usuario(
                 email=resultado[0],
                 senha=resultado[1],
                 perfil=resultado[2],
                 data_nascimento=resultado[3],
-                tipo_documento=resultado[4],
-                documento=resultado[5],
+                tipo_documento=tipo_documento,
+                documento=documento,
                 id_entidade_perfil=resultado[6],
             )
             return usuario
@@ -53,7 +56,7 @@ class RepositorioUsuario:
                     usuario.senha,
                     usuario.perfil,
                     usuario.documento,
-                    usuario.tipo_documento,
+                    usuario.tipo_documento.value,
                     usuario.data_nascimento,
                     str(usuario.id_entidade_perfil),
                 ),
