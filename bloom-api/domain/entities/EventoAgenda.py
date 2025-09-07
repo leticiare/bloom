@@ -33,8 +33,8 @@ class EventoAgenda:
         data_agendamento: Optional[datetime],
         data_realizacao: Optional[datetime],
         tipo: TipoEventoAgenda,
+        gestante_id: str,
         observacoes: Optional[str] = None,
-
     ):
         self.id = id
         self.status = StatusEvento(status)
@@ -42,6 +42,7 @@ class EventoAgenda:
         self.data_realizacao = data_realizacao
         self.tipo = tipo
 
+        self.gestante_id = gestante_id
         self.observacoes = observacoes
 
     def _validar_status(self, lista_status: List[StatusEvento]):
@@ -53,9 +54,7 @@ class EventoAgenda:
 
         for status in lista_status:
             if self.status == status:
-
                 raise mapa_excecoes[status]()
-
 
     def agendar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.AGENDADO, StatusEvento.REALIZADO])
@@ -68,9 +67,7 @@ class EventoAgenda:
         self._validar_status([StatusEvento.REALIZADO, StatusEvento.CANCELADO])
 
         if data_realizacao is None and self.data_agendamento is not None:
-
             raise EventoSemDataAgendamentoError()
-
 
         self.status = StatusEvento.REALIZADO
         self.data_realizacao = data_realizacao or self.data_agendamento
@@ -82,7 +79,6 @@ class EventoAgenda:
 
         self.data_agendamento = None
         self.data_realizacao = None
-
 
     def remarcar(self, data_agendamento: datetime):
         self._validar_status([StatusEvento.CANCELADO, StatusEvento.REALIZADO])

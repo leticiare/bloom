@@ -3,6 +3,7 @@ import uuid
 
 from domain.entities.Gestante import Gestante
 from domain.entities.Profissional import Profissional
+from domain.entities.CalculadoraGestacional import CalculadoraGestacional
 from domain.entities.Usuario import Usuario
 from infra.db.conexao import ConexaoBancoDados
 from infra.repositories.RepositorioGestante import RepositorioGestante
@@ -34,6 +35,12 @@ class ControladorUsuario:
             elif isinstance(usuario, Gestante):
                 usuario.id_entidade_perfil = usuario.id or uuid.uuid4()
                 usuario.id = usuario.id_entidade_perfil
+                if (
+                    usuario.dpp is None or usuario.dpp == ""
+                ) and usuario.dum is not None:
+                    usuario.dpp = CalculadoraGestacional.calcular_data_provavel_parto(
+                        usuario.dum
+                    )
 
             await asyncio.to_thread(
                 run_async_in_thread, self._repositorio_usuario.inserir_usuario(usuario)

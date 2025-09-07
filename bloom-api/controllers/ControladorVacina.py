@@ -5,16 +5,19 @@ from domain.errors.evento_agenda import EventoAgendaError
 from domain.errors.FabricaErroEventoAgenda import FabricaErroEventoAgenda
 from domain.FiltroEventoAgenda import FiltroEventoAgenda
 from infra.repositories.RepositorioEventoAgenda import RepositorioEventoAgenda
+from infra.repositories.RepositorioGestante import RepositorioGestante
 from fastapi import HTTPException
 
 
 class ControladorVacina:
     def __init__(self):
         self._repositorio: RepositorioEventoAgenda = RepositorioEventoAgenda()
+        self._repositorio_gestante: RepositorioGestante = RepositorioGestante()
 
     def obter_todos(
         self, gestante_id: str, data_inicio: datetime | None, data_fim: datetime | None
     ):
+        dum = self._repositorio_gestante.obter_dum_gestante(gestante_id)
         vacinas = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.VACINA
         )
@@ -24,9 +27,13 @@ class ControladorVacina:
                 eventos=vacinas, data_inicio=data_inicio, data_fim=data_fim
             )
 
-        return [VacinaDto.criar(vacina).para_dicionario() for vacina in vacinas]
+        return [
+            VacinaDto.criar(vacina=vacina, dum=dum).para_dicionario()
+            for vacina in vacinas
+        ]
 
     def obter_vacinas_agendadas(self, gestante_id: str):
+        dum = self._repositorio_gestante.obter_dum_gestante(gestante_id)
         vacinas = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.VACINA
         )
@@ -35,9 +42,13 @@ class ControladorVacina:
             eventos=vacinas, status=[StatusEvento.AGENDADO]
         )
 
-        return [VacinaDto.criar(vacina).para_dicionario() for vacina in lista_vacinas]
+        return [
+            VacinaDto.criar(vacina=vacina, dum=dum).para_dicionario()
+            for vacina in lista_vacinas
+        ]
 
     def obter_vacinas_realizadas(self, gestante_id: str):
+        dum = self._repositorio_gestante.obter_dum_gestante(gestante_id)
         vacinas = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.VACINA
         )
@@ -46,9 +57,13 @@ class ControladorVacina:
             eventos=vacinas, status=[StatusEvento.REALIZADO]
         )
 
-        return [VacinaDto.criar(vacina).para_dicionario() for vacina in lista_vacinas]
+        return [
+            VacinaDto.criar(vacina=vacina, dum=dum).para_dicionario()
+            for vacina in lista_vacinas
+        ]
 
     def obter_vacinas_pendentes(self, gestante_id: str):
+        dum = self._repositorio_gestante.obter_dum_gestante(gestante_id)
         vacinas = self._repositorio.obter_todos_por_gestante(
             gestante_id=gestante_id, tipo=TipoEventoAgenda.VACINA
         )
@@ -57,11 +72,15 @@ class ControladorVacina:
             eventos=vacinas, status=[StatusEvento.PENDENTE, StatusEvento.CANCELADO]
         )
 
-        return [VacinaDto.criar(vacina).para_dicionario() for vacina in lista_vacinas]
+        return [
+            VacinaDto.criar(vacina=vacina, dum=dum).para_dicionario()
+            for vacina in lista_vacinas
+        ]
 
     def agendar_vacina(self, vacina_id: str, data_agendamento: datetime):
         try:
             vacina = self._repositorio.obter_por_id(vacina_id)
+            dum = self._repositorio_gestante.obter_dum_gestante(vacina.gestante_id)
 
             if vacina is None:
                 raise HTTPException(status_code=404, detail="Vacina não encontrada")
@@ -70,7 +89,7 @@ class ControladorVacina:
 
             self._repositorio.atualizar(vacina)
 
-            dto = VacinaDto.criar(vacina)
+            dto = VacinaDto.criar(vacina=vacina, dum=dum)
             return dto.para_dicionario()
         except EventoAgendaError as e:
             mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
@@ -82,6 +101,7 @@ class ControladorVacina:
     def aplicar_vacina(self, vacina_id: str, data_realizacao: datetime):
         try:
             vacina = self._repositorio.obter_por_id(vacina_id)
+            dum = self._repositorio_gestante.obter_dum_gestante(vacina.gestante_id)
 
             if vacina is None:
                 raise HTTPException(status_code=404, detail="Vacina não encontrada")
@@ -89,7 +109,7 @@ class ControladorVacina:
             vacina.aplicar(data_realizacao=data_realizacao)
 
             self._repositorio.atualizar(vacina)
-            dto = VacinaDto.criar(vacina)
+            dto = VacinaDto.criar(vacina=vacina, dum=dum)
             return dto.para_dicionario()
         except EventoAgendaError as e:
             mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
@@ -101,6 +121,7 @@ class ControladorVacina:
     def remarcar_vacina(self, vacina_id: str, data_remarcacao: datetime):
         try:
             vacina = self._repositorio.obter_por_id(vacina_id)
+            dum = self._repositorio_gestante.obter_dum_gestante(vacina.gestante_id)
 
             if vacina is None:
                 raise HTTPException(status_code=404, detail="Vacina não encontrada")
@@ -108,7 +129,7 @@ class ControladorVacina:
             vacina.remarcar(data_agendamento=data_remarcacao)
 
             self._repositorio.atualizar(vacina)
-            dto = VacinaDto.criar(vacina)
+            dto = VacinaDto.criar(vacina=vacina, dum=dum)
             return dto.para_dicionario()
         except EventoAgendaError as e:
             mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
@@ -120,6 +141,7 @@ class ControladorVacina:
     def cancelar_vacina(self, vacina_id: str):
         try:
             vacina = self._repositorio.obter_por_id(vacina_id)
+            dum = self._repositorio_gestante.obter_dum_gestante(vacina.gestante_id)
 
             if vacina is None:
                 raise HTTPException(status_code=404, detail="Vacina não encontrada")
@@ -127,7 +149,7 @@ class ControladorVacina:
             vacina.cancelar()
 
             self._repositorio.atualizar(vacina)
-            dto = VacinaDto.criar(vacina)
+            dto = VacinaDto.criar(vacina=vacina, dum=dum)
             return dto.para_dicionario()
         except EventoAgendaError as e:
             mensagem = FabricaErroEventoAgenda.criar(e, TipoEventoAgenda.VACINA)(
