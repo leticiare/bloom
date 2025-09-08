@@ -23,7 +23,7 @@ class _TimelinePageState extends State<TimelinePage> {
   @override
   void initState() {
     super.initState();
-    _filterWeeklyUpdates();
+    // O filtro não é mais chamado aqui.
     _loadUserProfile();
   }
 
@@ -31,6 +31,10 @@ class _TimelinePageState extends State<TimelinePage> {
     final user = await ProfileService().getUser();
     setState(() {
       _userProfile = user;
+      // Agora, o filtro é chamado AQUI, APÓS o _userProfile ter um valor.
+      if (_userProfile != null) {
+        _filterWeeklyUpdates();
+      }
     });
   }
 
