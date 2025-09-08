@@ -20,15 +20,21 @@ class RequisicaoLogin(BaseModel):
 @router.post("/registro/gestante")
 async def registrar_gestante(gestante_dto: GestanteDTO):
     gestante = gestante_dto.para_entidade()
-    resposta = await autenticacao.registrar_usuario(gestante)
-    return JSONResponse(status_code=200, content={"Response": resposta})
+    try:
+        resposta = await autenticacao.registrar_usuario(gestante)
+        return JSONResponse(status_code=200, content={"Response": resposta})
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.post("/registro/profissional")
 async def registrar_profissional(profissional_dto: ProfissionalDTO):
     profissional = profissional_dto.para_entidade()
-    resposta = await autenticacao.registrar_usuario(profissional)
-    return JSONResponse(status_code=200, content={"Response": resposta})
+    try:
+        resposta = await autenticacao.registrar_usuario(profissional)
+        return JSONResponse(status_code=200, content={"Response": resposta})
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @router.post("/login")
@@ -46,4 +52,3 @@ async def perfil(current_user: dict = Depends(get_current_user)):
         email=current_user.get("email"), perfil=current_user.get("perfil")
     )
     return JSONResponse(status_code=200, content={"Response": usuario.to_dict()})
-

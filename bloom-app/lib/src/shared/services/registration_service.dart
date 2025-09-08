@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:app/src/shared/services/auth_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 /// Serviço responsável por lidar com a lógica de registro de usuários.
 class RegistrationService {
   final String _baseUrl = 'http://localhost:8000/api';
+  final _authService = AuthService();
 
   /// Realiza o registro de um novo usuário.
   ///
@@ -23,17 +24,16 @@ class RegistrationService {
       final responseBody = jsonDecode(response.body);
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        if (responseBody['token'] != null) {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('token', responseBody['token']);
-          return null; // Retorna null para indicar sucesso
-        }
+        return await _authService.login(
+          userData['email'],
+          userData['password'],
+        );
       } else {
-        return responseBody['detail'] ?? "Ocorreu um erro desconhecido.";
+        return responseBody['dados']['detail'] ??
+            "Ocorreu um erro desconhecido.";
       }
     } catch (e) {
       return 'Erro de conexão: verifique sua rede.';
     }
-    return 'Erro desconhecido.';
   }
 }

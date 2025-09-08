@@ -1,3 +1,4 @@
+import psycopg2
 from domain.entities.Usuario import Usuario
 from dotenv import load_dotenv
 from psycopg2.sql import SQL, Identifier
@@ -67,6 +68,9 @@ class RepositorioUsuario:
                     str(usuario.id_entidade_perfil),
                 ),
             )
+        except psycopg2.errors.UniqueViolation as e:
+            logger.error(f"Erro ao cadastrar usuario - email já existe: {e}")
+            raise ValueError("Email já cadastrado") from e
         except Exception as e:
             logger.error(f"Erro ao cadastrar usuario: {e}")
             raise e

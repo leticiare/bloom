@@ -1,13 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
+import 'package:app/src/features/dashboard_pregnant/presentation/screens/dashboard_shell.dart';
+import 'package:app/src/shared/services/registration_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 import 'package:app/src/core/utils/constants.dart';
 import 'package:app/src/features/auth/presentation/screens/login/login_screen.dart';
-import 'package:app/src/features/dashboard_pregnant/presentation/screens/home/homepage.dart';
 import 'package:app/src/shared/widgets/role_selector_switch.dart';
 import 'new_doctor_screen.dart';
 
@@ -44,6 +42,8 @@ class _NewPregnantScreenState extends State<NewPregnantScreen> {
   final _antecedentesFamiliaresController = TextEditingController();
   final _antecedentesGinecologicosController = TextEditingController();
   final _antecedentesObstetricosController = TextEditingController();
+
+  final _registrationService = RegistrationService();
 
   @override
   void dispose() {
@@ -114,40 +114,26 @@ class _NewPregnantScreenState extends State<NewPregnantScreen> {
         "antecedentes_obstetricos": _antecedentesObstetricosController.text,
       };
 
-      final response = await http
-          .post(
-            Uri.parse('http://localhost:8000/api/auth/registro/gestante'),
-            headers: {'Content-Type': 'application/json'},
-            body: jsonEncode(dadosCadastro),
-          )
-          .timeout(const Duration(seconds: 20));
+      final error = await _registrationService.register(
+        userData: dadosCadastro,
+      );
 
-      if (!mounted) return;
-      final responseBody = jsonDecode(response.body);
-
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        if (responseBody['token'] != null) {
-          final prefs = await SharedPreferences.getInstance();
-          await prefs.setString('token', responseBody['token']);
-        }
+      if (error != null) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(error), backgroundColor: AppColors.error),
+        );
+        return;
+      } else {
+        if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Cadastro realizado com sucesso! Bem-vinda!'),
             backgroundColor: AppColors.success,
           ),
         );
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomePage()),
-          (route) => false,
-        );
-      } else {
-        final errorMessage =
-            responseBody['detail'] ?? 'Ocorreu um erro no cadastro.';
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(errorMessage),
-            backgroundColor: AppColors.error,
-          ),
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const DashboardShell()),
         );
       }
     } on TimeoutException {
