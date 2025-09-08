@@ -7,18 +7,6 @@ import 'package:app/src/features/dashboard_pregnant/domain/entities/forum_messag
 import 'package:app/src/features/dashboard_pregnant/domain/entities/medical_record.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/weekly_update.dart';
 
-/// Perfil de exemplo da usuária.
-final mockUserProfile = const UserProfile(
-  name: 'Júlia Oliveira',
-  pregnancyInfo: 'Primeira vez gestante',
-  avatarUrl: 'https://i.pravatar.cc/150?img=1',
-  babySize: '17 cm',
-  babyWeight: '110 gr',
-  weeksLeft: 24,
-  daysLeft: 168,
-  currentWeek: 16,
-);
-
 /// Lista de médicos de exemplo.
 final List<Doctor> mockDoctors = const [
   Doctor(

@@ -1,3 +1,5 @@
+import 'package:app/src/features/dashboard_pregnant/domain/entities/user_profile.dart';
+import 'package:app/src/shared/services/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -29,6 +31,8 @@ class _HomePageState extends State<HomePage> {
   final List<DateTime> _weekDays = [];
   final Map<DateTime, List<Appointment>> _mockEvents = {};
 
+  UserProfile? _userProfile;
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +40,14 @@ class _HomePageState extends State<HomePage> {
     _selectedDate = DateTime.now();
     _generateWeekDays(_selectedDate);
     _populateMockEvents();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    final profile = await ProfileService().getUser();
+    setState(() {
+      _userProfile = profile;
+    });
   }
 
   /// Popula eventos de exemplo para o calendário.
@@ -121,9 +133,9 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Olá Júlia!',
-                style: TextStyle(color: AppColors.textGray, fontSize: 18),
+              Text(
+                'Olá ${_userProfile?.name ?? ""}!',
+                style: const TextStyle(color: AppColors.textGray, fontSize: 18),
               ),
               const SizedBox(height: 8),
               const Text(

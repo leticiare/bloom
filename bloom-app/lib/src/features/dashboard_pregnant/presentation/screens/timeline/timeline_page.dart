@@ -1,3 +1,5 @@
+import 'package:app/src/features/dashboard_pregnant/domain/entities/user_profile.dart';
+import 'package:app/src/shared/services/profile_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart';
@@ -16,16 +18,25 @@ class TimelinePage extends StatefulWidget {
 class _TimelinePageState extends State<TimelinePage> {
   late List<WeeklyUpdate> _displayedUpdates;
   late int _currentUserWeek;
+  UserProfile? _userProfile;
 
   @override
   void initState() {
     super.initState();
     _filterWeeklyUpdates();
+    _loadUserProfile();
+  }
+
+  Future<void> _loadUserProfile() async {
+    final user = await ProfileService().getUser();
+    setState(() {
+      _userProfile = user;
+    });
   }
 
   /// Filtra as atualizações para mostrar até a semana atual + 1.
   void _filterWeeklyUpdates() {
-    _currentUserWeek = mockUserProfile.currentWeek;
+    _currentUserWeek = _userProfile!.currentWeek;
 
     _displayedUpdates = mockWeeklyUpdates
         .where((update) => update.weekNumber <= _currentUserWeek + 1)

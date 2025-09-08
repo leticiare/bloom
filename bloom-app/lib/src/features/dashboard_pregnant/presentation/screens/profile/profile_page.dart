@@ -1,3 +1,4 @@
+import 'package:app/src/shared/services/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/user_profile.dart';
@@ -20,7 +21,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   // Dados gerenciados localmente pela tela
-  late UserProfile _userProfile;
+  UserProfile? _userProfile;
   late List<Doctor> _doctors;
   late List<Article> _allArticles;
   late List<ForumTopic> _myTopics;
@@ -28,11 +29,17 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    // Carrega os dados da fonte central quando a tela é iniciada.
-    _userProfile = mockUserProfile;
+    _loadUserProfile();
     _doctors = mockDoctors;
     _allArticles = mockArticles;
     _myTopics = mockTopics;
+  }
+
+  Future<void> _loadUserProfile() async {
+    final user = await ProfileService().getUser();
+    setState(() {
+      _userProfile = user;
+    });
   }
 
   /// Alterna o estado de "salvo" de um artigo localmente.
@@ -50,6 +57,10 @@ class _ProfilePageState extends State<ProfilePage> {
     final savedArticles = _allArticles.where((a) => a.isBookmarked).toList();
     final myQuestion = _myTopics.isNotEmpty ? _myTopics.first : null;
 
+    if (_userProfile == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -64,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
-            _buildProfileHeader(_userProfile),
+            _buildProfileHeader(_userProfile!),
             const SizedBox(height: 32),
             _buildSectionTitle('Meus Médicos Especialistas'),
             const SizedBox(height: 16),
