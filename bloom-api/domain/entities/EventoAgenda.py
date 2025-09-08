@@ -65,8 +65,9 @@ class EventoAgenda:
 
     def realizar(self, data_realizacao: datetime | None = None):
         self._validar_status([StatusEvento.REALIZADO, StatusEvento.CANCELADO])
+        print(self.data_agendamento, data_realizacao)
 
-        if data_realizacao is None and self.data_agendamento is not None:
+        if data_realizacao is None and self.data_agendamento is None:
             raise EventoSemDataAgendamentoError()
 
         self.status = StatusEvento.REALIZADO

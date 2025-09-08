@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, Path
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 from controllers.ControladorConsulta import ControladorConsulta
 from controllers.dto.ConsultaDto import ConsultaDto
@@ -33,8 +33,8 @@ class RequisicaoRealizarConsulta(BaseModel):
         description="UUID do consulta a ser realizada na versão 4",
         examples=["123e4567-e89b-12d3-a456-426614174000"],
     )
-    data_realizacao: datetime | None = Field(
-        ...,
+    data_realizacao: Optional[datetime] = Field(
+        None,
         description="Data e hora da realização no formato ISO 8601",
         examples=[datetime.now()],
     )
@@ -137,7 +137,7 @@ def realizar_consulta(
     requisicao: RequisicaoRealizarConsulta,
     usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
-    """Realizar uma consulta da gestante."""
+    """Realizar uma consulta da gestante. Se a data de realização não for informada, a data de agendamento será utilizada."""
     return JSONResponse(
         content=controlador.realizar_consulta(
             consulta_id=requisicao.id, data_realizacao=requisicao.data_realizacao

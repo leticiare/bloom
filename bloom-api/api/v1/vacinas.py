@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, Path
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 from api.middlewares.CurrentUser import perfil_autorizado
 from controllers.ControladorVacina import ControladorVacina
@@ -33,8 +33,8 @@ class RequisicaoAplicarVacina(BaseModel):
         description="UUID do vacina a ser aplicada na versão 4",
         examples=["123e4567-e89b-12d3-a456-426614174000"],
     )
-    data_realizacao: datetime | None = Field(
-        ...,
+    data_realizacao: Optional[datetime] = Field(
+        None,
         description="Data e hora da realização no formato ISO 8601",
         examples=[datetime.now()],
     )
@@ -120,7 +120,7 @@ def aplicar_vacina(
     requisicao: RequisicaoAplicarVacina,
     usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
-    """Aplicar uma vacina da gestante."""
+    """Aplicar uma vacina da gestante. Se a data de realização não for informada, a data do agendamento será utilizada."""
     return JSONResponse(
         content=controlador.aplicar_vacina(
             vacina_id=requisicao.id, data_realizacao=requisicao.data_realizacao

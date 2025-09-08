@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Query, Path, Depends
 from pydantic import BaseModel, Field
 
-from typing import List
+from typing import List, Optional
 
 from controllers.ControladorExame import ControladorExame
 from controllers.dto.ExameDto import ExameDto
@@ -35,8 +35,8 @@ class RequisicaoRealizarExame(BaseModel):
         description="UUID do exame a ser realizado na versão 4",
         examples=["123e4567-e89b-12d3-a456-426614174000"],
     )
-    data_realizacao: datetime | None = Field(
-        ...,
+    data_realizacao: Optional[datetime] = Field(
+        None,
         description="Data e hora da realização no formato ISO 8601",
         examples=[datetime.now()],
     )
@@ -74,7 +74,6 @@ def listar_exames(
     tags=["Exames"],
     response_model=RespostaPadrao[List[ExameDto]],
 )
-
 def listar_exames_agendados(
     usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
@@ -87,7 +86,6 @@ def listar_exames_agendados(
     )
 
 
-
 @router.get(
     "/pendentes/",
     tags=["Exames"],
@@ -96,14 +94,14 @@ def listar_exames_agendados(
 def listar_exames_pendentes(
     usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
-
     """Listar todos os exames pendentes da gestante."""
     return JSONResponse(
-       content=controlador.obter_exames_pendentes(
+        content=controlador.obter_exames_pendentes(
             gestante_id=usuario.get("id_entidade_perfil")
         ),
         status_code=200,
     )
+
 
 @router.put("/agendar", tags=["Exames"], response_model=RespostaPadrao[ExameDto])
 def agendar_exame(
@@ -125,7 +123,7 @@ def realizar_exame(
     requisicao: RequisicaoRealizarExame,
     usuario: dict = Depends(perfil_autorizado(["gestante"])),
 ):
-    """Realizar um exame da gestante."""
+    """Realizar um exame da gestante. Se a data de realização não for informada, a data de agendamento será utilizada."""
     return JSONResponse(
         content=controlador.realizar_exame(
             exame_id=requisicao.id, data_realizacao=requisicao.data_realizacao
@@ -146,7 +144,6 @@ def remarcar_exame(
         ),
         status_code=200,
     )
-
 
 
 @router.put("/cancelar", tags=["Exames"], response_model=RespostaPadrao[ExameDto])
