@@ -1,6 +1,16 @@
 # 🚀 Bloom API
 
 Este módulo é o backend da aplicação Bloom, desenvolvido com **FastAPI** e **Python**. Ele é responsável por fornecer a API RESTful que o frontend consome, além de gerenciar a lógica de negócios e a comunicação com o banco de dados PostgreSQL.
+## Sumário
+- [Estrutura de Diretórios](#estrutura-de-diretórios)
+- [Como Rodar o Projeto](#como-rodar-o-projeto-api)
+    - [1. Requisitos](#1-requisitos)
+    - [2. Iniciar servidor PostgreSQL](#2-iniciar-servidor-postgresql)
+    - [3. Inicializar o banco de dados](#3-inicializar-o-banco-de-dados) 
+    - [4. Instalar dependências](#4-instalar-dependências)  
+    - [5. Rodar a aplicação FastAPI](#5-rodar-a-aplicação-fastapi)
+    - [6. Acessar a API](#6-acessar-a-api)
+
 
 ## Estrutura de Diretórios
 

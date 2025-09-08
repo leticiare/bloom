@@ -3,6 +3,18 @@
 Este projeto é desenvolvido com **Flutter** e pronto para rodar em dispositivos Android e iOS. Aqui você encontrará todas as instruções para configurar, executar e entender a estrutura do projeto.
 
 ---
+## Sumário
+- [Pré-requisitos](#🛠️-pré-requisitos)
+- [Configuração do Projeto](#📥-configuração-do-projeto)
+- [Como Rodar o Projeto](#📱-como-rodar-o-projeto)
+    - [1. Conectando um dispositivo físico](#1-conectando-um-dispositivo-físico)
+    - [2. Verifique se o dispositivo foi reconhecido](#2-verifique-se-o-dispositivo-foi-reconhecido)
+    - [3. Execute o aplicativo](#3-execute-o-aplicativo)
+    - [4. Executando via IDE](#4-executando-via-ide)
+- [Estrutura de Pastas](#📂-estrutura-de-pastas)
+- [Comandos Úteis do Flutter](#🔧-comandos-úteis-do-flutter)
+- [Dicas Extras](#💡-dicas-extras)
+
 
 ## 🛠️ Pré-requisitos
 
