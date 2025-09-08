@@ -12,7 +12,7 @@ class GestanteDTO(UsuarioDTO):
     perfil: UsuarioPerfil = UsuarioPerfil.GESTANTE
     nome: str
     dum: date
-    dpp: date
+    dpp: Optional[date] = None
     antecedentes_familiares: Optional[str] = None
     antecedentes_ginecologicos: Optional[str] = None
     antecedentes_obstetricos: Optional[str] = None

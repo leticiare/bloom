@@ -30,6 +30,7 @@ class AuthService {
 
     // Verifica se a requisição foi bem-sucedida (código 200).
     if (response.statusCode == 200) {
+      await _storage.deleteAll();
       // Decodifica a resposta JSON.
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Map<String, dynamic> dados = responseData['dados'];

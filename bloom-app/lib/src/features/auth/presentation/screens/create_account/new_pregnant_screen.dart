@@ -157,14 +157,14 @@ class _NewPregnantScreenState extends State<NewPregnantScreen> {
     }
   }
 
-  String _formatarDataParaApi(String dataUI) {
-    if (dataUI.isEmpty) return '';
+  String? _formatarDataParaApi(String dataUI) {
+    if (dataUI.isEmpty) return null;
     try {
       return DateFormat(
         'yyyy-MM-dd',
       ).format(DateFormat('dd/MM/yyyy').parse(dataUI));
     } catch (_) {
-      return '';
+      return null;
     }
   }
 
@@ -340,8 +340,6 @@ class _NewPregnantScreenState extends State<NewPregnantScreen> {
             controller: _dppController,
             label: 'Data Provável do Parto (DPP)',
             hint: 'DD/MM/AAAA',
-            validator: (v) =>
-                (v == null || v.isEmpty) ? 'Campo obrigatório.' : null,
           ),
           const SizedBox(height: 24),
           Row(
