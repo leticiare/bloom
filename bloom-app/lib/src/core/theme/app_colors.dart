@@ -1,12 +1,28 @@
 import 'package:flutter/material.dart';
 
-// Centraliza todas as cores do aplicativo para fácil manutenção e consistência.
-class AppColors {
-  static const Color primaryPink = Color(0xFFF55A8A);
+/// Classe abstrata que centraliza todas as cores utilizadas no aplicativo.
+///
+/// Isso garante consistência visual e facilita a manutenção do tema.
+/// As cores são estáticas e constantes para serem acessadas de qualquer lugar
+/// de forma simples, ex: `AppColors.primaryPink`.
+abstract class AppColors {
+  // Cores Primárias e de Destaque
+  static const Color primaryPink = Color(0xFFE91E63);
+  static const Color white = Color(0xFEFEFEFE);
+
+  // Cores de Texto
   static const Color textDark = Color(0xFF333333);
-  static const Color textLight = Color(0xFF828282);
-  static const Color background = Color(0xFFF9F9F9);
-  static const Color lightPinkBackground = Color(0xFFFFF0F5);
-  static const Color white = Colors.white;
-  static const Color grey = Color(0xFFE0E0E0);
+  static const Color textGray = Color(0xFF616161);
+  static const Color textLight = Color(0xFFFFFFFF);
+
+  // Cores de Fundo
+  static const Color background = Color(0xFFFFFFFF);
+  static const Color fieldBackground = Color(0xFFF5F5F5);
+  static const Color lightGray = Color(0xFFF2F2F2);
+
+  // Cores de Feedback
+  static const Color success = Colors.green;
+  static const Color error = Colors.red;
+  static const Color warning = Colors.orange;
+  static const Color info = Colors.blue;
 }
