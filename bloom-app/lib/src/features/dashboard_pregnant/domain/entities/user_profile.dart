@@ -7,6 +7,7 @@ class UserProfile {
   final String babyWeight;
   final int weeksLeft;
   final int daysLeft;
+  final int currentWeek;
 
   const UserProfile({
     required this.name,
@@ -16,5 +17,6 @@ class UserProfile {
     required this.babyWeight,
     required this.weeksLeft,
     required this.daysLeft,
+    required this.currentWeek,
   });
 }

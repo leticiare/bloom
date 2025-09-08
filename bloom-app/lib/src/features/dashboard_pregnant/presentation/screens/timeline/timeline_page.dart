@@ -1,213 +1,200 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'weekly_update_detail_page.dart'; // Importa a nova página de detalhes
+import 'package:app/src/core/theme/app_colors.dart';
+import 'package:app/src/features/dashboard_pregnant/data/datasources/mock_dashboard_data.dart';
+import 'package:app/src/features/dashboard_pregnant/domain/entities/weekly_update.dart';
+import 'weekly_update_detail_page.dart';
 
-// --- CONSTANTES DE CORES ---
-const Color _kPrimaryPink = Color(0xFFF55A8A);
-const Color _kTextDark = Color(0xFF333333);
-const Color _kTextLight = Color(0xFF828282);
-const Color _kBackground = Color(0xFFF9F9F9);
+/// Tela que exibe a linha do tempo com as atualizações semanais da gravidez.
+class TimelinePage extends StatefulWidget {
+  const TimelinePage({super.key});
 
-// --------------------------------------------------------------------------
-// MUDANÇA 1: Modelo de dados e lista mockada
-// --------------------------------------------------------------------------
-
-/// Modelo para representar o conteúdo de uma semana.
-class WeeklyUpdate {
-  final int weekNumber;
-  final String title;
-  final String summary;
-  final String fullContent;
-
-  WeeklyUpdate({
-    required this.weekNumber,
-    required this.title,
-    required this.summary,
-    required this.fullContent,
-  });
+  @override
+  State<TimelinePage> createState() => _TimelinePageState();
 }
 
-/// Simula a semana atual da gestante.
-const int _currentWeek = 16;
+class _TimelinePageState extends State<TimelinePage> {
+  late List<WeeklyUpdate> _displayedUpdates;
+  late int _currentUserWeek;
 
-/// Lista com todos os artigos semanais (simulando um banco de dados).
-final List<WeeklyUpdate> _mockWeeklyUpdates = [
-  WeeklyUpdate(
-    weekNumber: 12,
-    title: 'O Feto Desenvolve Reflexos',
-    summary:
-        'Os riscos da gravidez reduzem, e os enjoos podem melhorar. O bebê mede cerca de 6 cm.',
-    fullContent:
-        'Na semana 12, o desenvolvimento fetal atinge um marco importante. O bebê começa a desenvolver reflexos, como o de sucção. As impressões digitais já estão formadas e os órgãos vitais estão totalmente desenvolvidos, continuando a amadurecer. Para a mãe, é um período de mais energia e menos enjoos matinais, ideal para iniciar atividades físicas leves, como caminhadas.',
-  ),
-  WeeklyUpdate(
-    weekNumber: 13,
-    title: 'Crescimento Acelerado',
-    summary:
-        'O bebê já está completamente formado e começa a crescer rapidamente. Você pode notar mudanças no humor.',
-    fullContent:
-        'A semana 13 marca o início do segundo trimestre. O bebê continua a crescer em um ritmo acelerado, e seus ossos estão começando a endurecer. O lanugo, uma fina camada de pelos, começa a cobrir o corpo do bebê para mantê-lo aquecido. A mãe pode sentir a barriga começando a aparecer mais claramente.',
-  ),
-  WeeklyUpdate(
-    weekNumber: 14,
-    title: 'Pelos Finos e Movimentos',
-    summary:
-        'Uma fina camada de pelos finos, chamada lanugo, cobre o bebê. Seu útero cresce.',
-    fullContent:
-        'Na semana 14, o bebê já pode fazer expressões faciais, como franzir a testa. O pescoço está mais definido, e a cabeça mais ereta. Para a mãe, é uma boa fase para focar em uma dieta rica em cálcio, essencial para a formação dos ossos do bebê.',
-  ),
-  WeeklyUpdate(
-    weekNumber: 15,
-    title: 'Audição em Desenvolvimento',
-    summary:
-        'O bebê já escuta sons abafados, como seus batimentos cardíacos. Seu apetite pode aumentar.',
-    fullContent:
-        'A audição do bebê está se desenvolvendo rapidamente na semana 15. Ele pode ouvir os sons do corpo da mãe, como o coração e a digestão. É um ótimo momento para começar a conversar e cantar para o bebê, fortalecendo o vínculo afetivo.',
-  ),
-  WeeklyUpdate(
-    weekNumber: 16,
-    title: 'Movimentos Mais Fortes',
-    summary:
-        'Os movimentos do bebê estão mais frequentes, mas ainda são sutis. Você pode notar a linha nigra.',
-    fullContent:
-        'Na semana 16, a gestante pode começar a sentir os primeiros movimentos do bebê, conhecidos como "fluttering". O sistema nervoso do bebê continua a se desenvolver, permitindo movimentos mais coordenados. A pele do bebê ainda é translúcida, e seus olhos já podem se mover lentamente.',
-  ),
-  WeeklyUpdate(
-    weekNumber: 17,
-    title: 'Gordura Corporal',
-    summary:
-        'O bebê começa a acumular gordura corporal. Sua pele fica menos translúcida.',
-    fullContent:
-        'A formação de gordura subcutânea começa na semana 17, o que ajudará a regular a temperatura corporal do bebê após o nascimento. O esqueleto, que era cartilaginoso, começa a se ossificar. Para a mãe, o aumento do útero pode causar dores nos ligamentos redondos, uma sensação de fisgada na parte inferior do abdômen.',
-  ),
-];
+  @override
+  void initState() {
+    super.initState();
+    _filterWeeklyUpdates();
+  }
 
-class TimelinePage extends StatelessWidget {
-  const TimelinePage({super.key});
+  /// Filtra as atualizações para mostrar até a semana atual + 1.
+  void _filterWeeklyUpdates() {
+    _currentUserWeek = mockUserProfile.currentWeek;
+
+    _displayedUpdates = mockWeeklyUpdates
+        .where((update) => update.weekNumber <= _currentUserWeek + 1)
+        .toList()
+        .reversed // Inverte para mostrar a mais recente primeiro
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: _kBackground,
       appBar: AppBar(
-        title: const Text(
-          'Artigos das Semanas',
-          style: TextStyle(color: _kTextDark),
-        ),
-        backgroundColor: _kBackground,
-        elevation: 0,
-        centerTitle: true,
+        automaticallyImplyLeading: false,
+        title: const Text('Artigos das Semanas'),
+        actions: [
+          IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
+        ],
       ),
-      // --------------------------------------------------------------------------
-      // MUDANÇA 2: A tela agora usa ListView.builder para ser dinâmica
-      // --------------------------------------------------------------------------
       body: ListView.builder(
-        padding: const EdgeInsets.all(20.0),
-        itemCount: _mockWeeklyUpdates.length,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+        itemCount: _displayedUpdates.length,
         itemBuilder: (context, index) {
-          final update = _mockWeeklyUpdates[index];
-          // Lógica para determinar se a semana já passou ou é a atual
-          final bool isCompleted = update.weekNumber <= _currentWeek;
-          // Lógica para saber se é o último item e não desenhar a linha
-          final bool isLastItem = index == _mockWeeklyUpdates.length - 1;
+          final update = _displayedUpdates[index];
+          final bool isCurrentWeek = update.weekNumber == _currentUserWeek;
+          // Nova variável para identificar a semana futura
+          final bool isFutureWeek = update.weekNumber > _currentUserWeek;
 
           return _buildTimelineItem(
             context: context,
             update: update,
-            isCompleted: isCompleted,
-            isLastItem: isLastItem,
+            isCurrentWeek: isCurrentWeek,
+            isFutureWeek: isFutureWeek, // Passa a informação para o widget
+            isFirstItem: index == 0,
+            isLastItem: index == _displayedUpdates.length - 1,
           );
         },
       ),
     );
   }
 
-  // --------------------------------------------------------------------------
-  // MUDANÇA 3: O item da timeline agora é clicável e navega para os detalhes
-  // --------------------------------------------------------------------------
+  /// Constrói um item completo da linha do tempo.
   Widget _buildTimelineItem({
     required BuildContext context,
     required WeeklyUpdate update,
-    required bool isCompleted,
+    required bool isCurrentWeek,
+    required bool isFutureWeek, // Recebe a informação
+    required bool isFirstItem,
     required bool isLastItem,
   }) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // A linha vertical e o círculo
-          Column(
-            children: [
-              // Linha superior (escondida para o primeiro item)
-              Container(
-                width: 2,
-                height: 20,
-                color: update.weekNumber == _mockWeeklyUpdates.first.weekNumber
-                    ? Colors.transparent
-                    : isCompleted
-                    ? _kPrimaryPink
-                    : Colors.grey.shade300,
-              ),
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isCompleted ? _kPrimaryPink : Colors.white,
-                  border: Border.all(
-                    color: isCompleted ? _kPrimaryPink : Colors.grey.shade300,
-                    width: 2,
-                  ),
-                ),
-                child: isCompleted
-                    ? const Icon(Icons.check, color: Colors.white, size: 14)
-                    : null,
-              ),
-              // Linha inferior (escondida para o último item)
-              Expanded(
-                child: Container(
-                  width: 2,
-                  color: isLastItem ? Colors.transparent : Colors.grey.shade300,
-                ),
-              ),
-            ],
+    // Aplica opacidade se for uma semana futura
+    return Opacity(
+      opacity: isFutureWeek ? 0.5 : 1.0,
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _buildTimelineGraphic(
+              isCurrentWeek: isCurrentWeek,
+              isFutureWeek: isFutureWeek, // Passa a informação para o gráfico
+              isFirstItem: isFirstItem,
+              isLastItem: isLastItem,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: _buildTimelineContent(context, update, isFutureWeek),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Constrói a parte gráfica da timeline.
+  Widget _buildTimelineGraphic({
+    required bool isCurrentWeek,
+    required bool isFutureWeek,
+    required bool isFirstItem,
+    required bool isLastItem,
+  }) {
+    return Column(
+      children: [
+        Expanded(
+          child: Container(
+            width: 2,
+            color: isFirstItem
+                ? Colors.transparent
+                : AppColors.primaryPink.withOpacity(0.2),
           ),
-          const SizedBox(width: 16),
-          // O conteúdo do card
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            // O círculo da semana futura é apenas um contorno cinza.
+            color: isCurrentWeek
+                ? AppColors.primaryPink
+                : (isFutureWeek
+                      ? AppColors.background
+                      : AppColors.primaryPink.withOpacity(0.2)),
+            border: isFutureWeek
+                ? Border.all(
+                    color: AppColors.textGray.withOpacity(0.5),
+                    width: 2,
+                  )
+                : null,
+          ),
+        ),
+        Expanded(
+          child: Container(
+            width: 2,
+            color: isLastItem
+                ? Colors.transparent
+                : AppColors.primaryPink.withOpacity(0.2),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// Constrói o conteúdo de texto da timeline.
+  Widget _buildTimelineContent(
+    BuildContext context,
+    WeeklyUpdate update,
+    bool isFutureWeek,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Semana ${update.weekNumber}',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textDark,
+            ),
+          ),
+          const SizedBox(height: 8),
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(
+                fontSize: 15,
+                color: AppColors.textGray,
+                height: 1.5,
+                fontFamily: 'Roboto',
+              ),
               children: [
-                // InkWell torna a área do texto clicável
-                InkWell(
-                  onTap: () {
-                    // Ação de navegação
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => WeeklyUpdateDetailPage(update: update),
-                      ),
-                    );
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Semana ${update.weekNumber}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: isCompleted ? _kPrimaryPink : _kTextDark,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        update.summary,
-                        style: const TextStyle(color: _kTextLight),
-                      ),
-                    ],
+                TextSpan(text: update.summary),
+                const TextSpan(text: ' '),
+                if (!isFutureWeek) // Mostra o link apenas se NÃO for uma semana futura
+                  TextSpan(
+                    text: 'Clique aqui para ler o artigo dessa semana',
+                    style: const TextStyle(
+                      color: AppColors.primaryPink,
+                      decoration: TextDecoration.underline,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) =>
+                                WeeklyUpdateDetailPage(update: update),
+                          ),
+                        );
+                      },
                   ),
-                ),
-                const SizedBox(height: 40), // Espaço até o próximo item
               ],
             ),
           ),

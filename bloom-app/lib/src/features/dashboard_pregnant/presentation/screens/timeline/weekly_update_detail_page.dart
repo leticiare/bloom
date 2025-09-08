@@ -1,37 +1,22 @@
 import 'package:flutter/material.dart';
-import 'timeline_page.dart'; // Importa o modelo 'WeeklyUpdate'
-import 'package:app/src/core/theme/app_colors.dart'; // Ajuste o import se necessário
+import 'package:app/src/core/theme/app_colors.dart';
+import 'package:app/src/features/dashboard_pregnant/domain/entities/weekly_update.dart';
 
-/// Tela para exibir o conteúdo completo de um único artigo da semana.
+/// Tela para exibir o conteúdo completo de uma atualização semanal.
 class WeeklyUpdateDetailPage extends StatelessWidget {
   final WeeklyUpdate update;
-
   const WeeklyUpdateDetailPage({super.key, required this.update});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textDark),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text(
-          update.title,
-          style: const TextStyle(color: AppColors.textDark, fontSize: 18),
-        ),
-        backgroundColor: AppColors.background,
-        elevation: 0,
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text('Semana ${update.weekNumber}')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Imagem genérica para o topo do artigo
             Image.network(
-              'https://images.pexels.com/photos/1796603/pexels-photo-1796603.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+              update.imageUrl,
               height: 220,
               width: double.infinity,
               fit: BoxFit.cover,
@@ -41,32 +26,95 @@ class WeeklyUpdateDetailPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Título
                   Text(
-                    'Semana ${update.weekNumber}: ${update.title}',
+                    'SEMANA ${update.weekNumber}',
                     style: const TextStyle(
-                      fontSize: 22,
+                      color: AppColors.primaryPink,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    update.title,
+                    style: const TextStyle(
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: AppColors.textDark,
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Seu bebê tem o tamanho aproximado de ${update.babySizeFruit}!',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textGray,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                  const Divider(height: 40),
 
-                  // Conteúdo completo do artigo
+                  _buildSectionTitle('O que está acontecendo com o bebê?'),
+                  const SizedBox(height: 8),
                   Text(
                     update.fullContent,
                     style: const TextStyle(
                       fontSize: 16,
-                      color: AppColors.textLight,
-                      height:
-                          1.7, // Espaçamento entre linhas para melhor leitura
+                      color: AppColors.textGray,
+                      height: 1.6,
                     ),
                   ),
+                  const SizedBox(height: 24),
+
+                  _buildSectionTitle('Dicas para a mamãe'),
+                  ...update.momTips.map((tip) => _buildListItem(tip)).toList(),
+                  const SizedBox(height: 24),
+
+                  _buildSectionTitle('Sintomas comuns nesta fase'),
+                  ...update.symptoms
+                      .map((symptom) => _buildListItem(symptom))
+                      .toList(),
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: AppColors.textDark,
+      ),
+    );
+  }
+
+  Widget _buildListItem(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 6.0, right: 8.0),
+            child: Icon(
+              Icons.check_circle,
+              size: 16,
+              color: AppColors.primaryPink,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 16, color: AppColors.textGray),
+            ),
+          ),
+        ],
       ),
     );
   }
