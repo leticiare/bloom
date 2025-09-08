@@ -43,6 +43,11 @@ class RepositorioGestante:
             return None
         resultado = resultado[0]
 
+
+        tipo_documento = TiposDocumento(resultado[7])
+
+        documento = FabricaDocumento.criar_documento(tipo_documento, resultado[7])
+
         gestante = Gestante(
             id=resultado[0],
             nome=resultado[1],
@@ -50,8 +55,8 @@ class RepositorioGestante:
             senha=resultado[3],
             perfil=resultado[4],
             data_nascimento=resultado[5],
-            documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
-            tipo_documento=TiposDocumento(resultado[7]),
+            documento=documento,
+            tipo_documento=tipo_documento,
             dum=resultado[8],
             dpp=resultado[9],
             antecedentes_familiares=resultado[10],

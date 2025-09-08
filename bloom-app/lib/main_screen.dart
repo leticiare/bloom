@@ -3,6 +3,7 @@ import 'package:app/src/modules/dashboard-pregnant/homepage.dart';
 import 'package:app/src/modules/dashboard-pregnant/forum_page.dart';
 import 'package:app/src/modules/dashboard-pregnant/timeline_page.dart';
 import 'package:app/src/modules/dashboard-pregnant/profile_page.dart';
+import 'package:app/src/modules/dashboard-pregnant/calendar_page.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomePage(),
     const ForumPage(),
     const TimelinePage(),
+    const CalendarPage(), // Adiciona o calendário como aba
     const ProfilePage(),
   ];
 
@@ -42,24 +44,26 @@ class _MainScreenState extends State<MainScreen> {
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        // <<< ALTERAÇÃO: Os ícones e a ordem foram atualizados.
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.apps_outlined),
             activeIcon: Icon(Icons.apps),
             label: 'Home',
           ),
-          // Ícone para o Fórum
           BottomNavigationBarItem(
             icon: Icon(Icons.chat_bubble_outline),
             activeIcon: Icon(Icons.chat_bubble),
             label: 'Fórum',
           ),
-          // Ícone para a Timeline/Semanas
           BottomNavigationBarItem(
             icon: Icon(Icons.timeline_outlined),
             activeIcon: Icon(Icons.timeline),
             label: 'Semanas',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today_outlined),
+            activeIcon: Icon(Icons.calendar_today),
+            label: 'Calendário',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),

@@ -26,7 +26,7 @@ class ControladorUsuario:
 
         async with db.transacao():
             usuario.perfil = usuario.perfil.value.lower()
-            usuario.tipo_documento = usuario.tipo_documento.value
+            
 
             if isinstance(usuario, Profissional):
                 usuario.id_entidade_perfil = usuario.codigo or uuid.uuid4()
