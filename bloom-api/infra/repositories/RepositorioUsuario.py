@@ -26,10 +26,13 @@ class RepositorioUsuario:
                 """).format(tabela=Identifier(self._tabela))
             resultado = conexao.executar_sql(
                 sql=sql, parametros=(email,), possui_resultado=True
-            )[0]
+            )
 
             if not resultado:
                 return None
+
+            resultado = resultado[0]
+
             tipo_documento = TiposDocumento(resultado[4])
             documento = FabricaDocumento.criar_documento(tipo_documento, resultado[5])
             usuario = Usuario(

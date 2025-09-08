@@ -43,7 +43,8 @@ class AuthService {
       // Em caso de erro na requisição, tenta extrair a mensagem de erro da resposta.
       try {
         final Map<String, dynamic> errorData = json.decode(response.body);
-        return errorData['mensagem'] ?? 'Erro desconhecido ao fazer login.';
+        return errorData['dados']['detail'] ??
+            'Erro desconhecido ao fazer login.';
       } catch (e) {
         // Retorna uma mensagem genérica se a resposta do servidor não puder ser processada.
         return 'Erro ao processar a resposta do servidor.';
