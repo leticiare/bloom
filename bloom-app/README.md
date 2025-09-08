@@ -1,54 +1,34 @@
-# 🚀 Bloom App
+# 🌸 Bloom App 🤰✨
 
 Este projeto é desenvolvido com **Flutter** e pronto para rodar em dispositivos Android e iOS. Aqui você encontrará todas as instruções para configurar, executar e entender a estrutura do projeto.
 
 ---
 
-## 🛠 Pré-requisitos
+## 🛠️ Pré-requisitos
 
-Antes de começar, certifique-se de que você possui as seguintes ferramentas instaladas:
+Antes de começar, certifique-se de que possui as seguintes ferramentas instaladas:
 
-1.  **Flutter SDK**
-
-    - Versão recomendada: 3.x.x ou superior
-    - [Guia de instalação](https://flutter.dev/docs/get-started/install)
-
-2.  **Editor de código**
-
-    - Recomendado: [VS Code](https://code.visualstudio.com/) ou [Android Studio](https://developer.android.com/studio)
-
-3.  **Git**
-
-    - Necessário para clonar o repositório
-    - [Guia de instalação](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-
-4.  **Dispositivo físico ou emulador**
-    - Para testar o aplicativo em Android ou iOS
+- **Flutter SDK**: Versão 3.x.x ou superior. ([Guia de instalação](https://docs.flutter.dev/get-started/install))
+- **Editor de Código**: VS Code (recomendado) ou Android Studio.
+- **Git**: Para clonar o repositório. ([Guia de instalação](https://git-scm.com/book/pt-br/v2/Começando-Instalando-o-Git))
+- **Dispositivo ou Emulador**: Android ou iOS para testar a aplicação.
 
 ---
 
 ## 📥 Configuração do Projeto
 
-Siga os passos abaixo para configurar o projeto no seu ambiente de desenvolvimento:
+Siga os passos abaixo para rodar o projeto localmente:
 
-1.  **Clone o repositório**
-    Abra o terminal e execute:
+```bash
+# Clone o repositório
+git clone https://github.com/leticiare/bloom.git
 
-    ```bash
-    git clone https://github.com/leticiare/bloom.git
-    ```
+# Navegue até a pasta do projeto
+cd bloom-app
 
-2.  **Entre na pasta do projeto**
-
-    ```bash
-    cd bloom-app
-    ```
-
-3.  **Instale as dependências do projeto**
-    ```bash
-    flutter pub get
-    ```
-    _💡 Dica: Esse comando baixa todos os pacotes que o projeto precisa para funcionar corretamente._
+# Instale as dependências
+flutter pub get
+```
 
 ---
 
@@ -95,9 +75,50 @@ _⚠️ Se houver mais de um dispositivo conectado, o Flutter perguntará qual u
 - VS CODE: pressione F5 ou clique em Run and Debug
 - Android Studio: clique no botão Run (ícone de play)
 
-## 📂 Estrutura do Projeto
+---
 
-TODO: adicionar estrutura do projeto
+## 📂 Estrutura de Pastas
+
+O projeto segue uma arquitetura limpa, organizada por features, garantindo escalabilidade e manutenibilidade.
+
+```bash
+
+lib/
+└── src/
+    ├── core/                  # Lógica e configurações globais do app
+    │   ├── theme/             # Cores, temas (AppColors, AppTheme)
+    │   ├── navigation/        # Configuração de rotas (AppRoutes)
+    │   └── utils/             # Utilitários globais (constantes, etc.)
+    │
+    ├── features/              # Pasta principal, contendo cada funcionalidade do app
+    │   ├── auth/              # Autenticação (login, cadastro, etc.)
+    │   ├── onboarding/        # Onboarding (telas de boas-vindas)
+    │   │   ├── data/          # Fontes de dados (API, mocks, serviços)
+    │   │   ├── domain/        # Regras de negócio e entidades (modelos)
+    │   │   └── presentation/  # UI (telas, widgets, controllers)
+    │   └── dashboard_pregnant/# Dashboard da gestante
+    │       ├── data/          # Fontes de dados (API, mocks, serviços)
+    │       ├── domain/        # Regras de negócio e entidades (modelos)
+    │       └── presentation/  # UI (telas, widgets, controllers)
+    │
+    └── shared/                # Widgets e serviços compartilhados
+        ├── services/          # Serviços (AuthService, etc.)
+        └── widgets/           # Widgets reutilizáveis (CustomTextField, etc.)
+```
+
+---
+
+## 💻 Tecnologias e Pacotes Utilizados
+
+- **Flutter**: Framework principal para o desenvolvimento da UI.
+- **Dart**: Linguagem de programação.
+- **http**: Chamadas a APIs REST.
+- **shared_preferences / flutter_secure_storage**: Armazenamento local de dados e tokens.
+- **intl**: Formatação de datas.
+- **table_calendar**: Construção do calendário de eventos.
+- E outros.
+
+---
 
 ## 🔧 Comandos Úteis do Flutter
 
@@ -109,6 +130,8 @@ TODO: adicionar estrutura do projeto
 | `flutter clean`     | Limpa arquivos temporários e rebuilda o projeto                    |
 | `flutter build apk` | Gera o APK para Android                                            |
 | `flutter build ios` | Gera o aplicativo para iOS                                         |
+
+---
 
 ## 💡 Dicas Extras
 
