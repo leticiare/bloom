@@ -1,0 +1,2028 @@
+INFO:      2025-09-07 00:49:09 - Iniciando API Bloom...
+ERROR:      2025-09-07 00:54:46 - Erro ao executar query: column "id_entidade_perfil" does not exist
+LINE 2: ...rfil, data_nascimento, tipo_documento, documento, id_entidad...
+                                                             ^
+
+ERROR:      2025-09-07 00:54:46 - Erro ao recuperar usuario: column "id_entidade_perfil" does not exist
+LINE 2: ...rfil, data_nascimento, tipo_documento, documento, id_entidad...
+                                                             ^
+
+INFO:      2025-09-07 00:57:56 - Encerrando API Bloom...
+ERROR:      2025-09-07 01:10:25 - Erro ao executar query: null value in column "documento" of relation "usuario" violates not-null constraint
+DETAIL:  Failing row contains (ana.silva@email.com, 55a5e9e78207b4df8699d60886fa070079463547b095d1a05bc719bb4e6cd251, null, null, null, 2025-09-07 04:10:25.781654+00, 2025-09-07 04:10:25.781654+00, gestante, null).
+
+ERROR:      2025-09-07 01:11:40 - Erro ao executar query: null value in column "tipo_documento" of relation "usuario" violates not-null constraint
+DETAIL:  Failing row contains (ana.silva@email.com, 55a5e9e78207b4df8699d60886fa070079463547b095d1a05bc719bb4e6cd251, 111.111.111-11, null, null, 2025-09-07 04:11:40.032003+00, 2025-09-07 04:11:40.032003+00, gestante, null).
+
+ERROR:      2025-09-07 01:12:30 - Erro ao executar query: invalid input value for enum documento: "CPF"
+LINE 3: ...63547b095d1a05bc719bb4e6cd251', '111.111.111-11', 'CPF', 'ge...
+                                                             ^
+
+ERROR:      2025-09-07 01:16:11 - Erro ao executar query: null value in column "data_nascimento" of relation "usuario" violates not-null constraint
+DETAIL:  Failing row contains (ana.silva@email.com, 55a5e9e78207b4df8699d60886fa070079463547b095d1a05bc719bb4e6cd251, 111.111.111-11, cpf, null, 2025-09-07 04:16:11.711422+00, 2025-09-07 04:16:11.711422+00, gestante, null).
+
+ERROR:      2025-09-07 01:16:55 - Erro ao executar query: null value in column "id_entidade_perfil" of relation "usuario" violates not-null constraint
+DETAIL:  Failing row contains (ana.silva@email.com, 55a5e9e78207b4df8699d60886fa070079463547b095d1a05bc719bb4e6cd251, 111.111.111-11, cpf, 1990-01-01, 2025-09-07 04:16:55.290786+00, 2025-09-07 04:16:55.290786+00, gestante, null).
+
+INFO:      2025-09-07 01:18:58 - Iniciando API Bloom...
+INFO:      2025-09-07 01:24:19 - Encerrando API Bloom...
+INFO:      2025-09-07 01:25:07 - Iniciando API Bloom...
+INFO:      2025-09-07 01:25:54 - Encerrando API Bloom...
+INFO:      2025-09-07 01:28:29 - Iniciando API Bloom...
+ERROR:      2025-09-07 01:29:13 - Erro interno não tratado na requisição POST /api/auth/login:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 35, in login
+    resultado = await autenticacao.login(usuario)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/auth/AuthService.py", line 76, in login
+    token = cls._gerar_token_acesso(dados_usuario)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/auth/AuthService.py", line 43, in _gerar_token_acesso
+    return jwt.encode(to_encode, cls.SECRET_KEY, algorithm=cls.ALGORITHM)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/jose/jwt.py", line 63, in encode
+    return jws.sign(claims, key, headers=headers, algorithm=algorithm)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/jose/jws.py", line 43, in sign
+    raise JWSError("Algorithm %s not supported." % algorithm)
+jose.exceptions.JWSError: Algorithm SHA256 not supported.
+
+INFO:      2025-09-07 01:29:24 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:30:21 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:30:21 - Iniciando API Bloom...
+INFO:      2025-09-07 01:31:00 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:34:24 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:34:25 - Iniciando API Bloom...
+INFO:      2025-09-07 01:37:54 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:37:56 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:37:56 - Iniciando API Bloom...
+INFO:      2025-09-07 01:38:31 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:45:36 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:45:37 - Iniciando API Bloom...
+INFO:      2025-09-07 01:45:53 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:46:06 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:46:06 - Iniciando API Bloom...
+INFO:      2025-09-07 01:46:25 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:46:25 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:46:26 - Iniciando API Bloom...
+WARNING:      2025-09-07 01:46:52 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:46:52 - Iniciando API Bloom...
+INFO:      2025-09-07 01:46:52 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:47:50 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:47:51 - Iniciando API Bloom...
+INFO:      2025-09-07 01:47:51 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:48:20 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:48:20 - Iniciando API Bloom...
+INFO:      2025-09-07 01:48:20 - Encerrando API Bloom...
+INFO:      2025-09-07 01:48:48 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:48:51 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:48:51 - Iniciando API Bloom...
+ERROR:      2025-09-07 01:51:41 - Erro ao executar query: invalid input syntax for type uuid: "string"
+LINE 8:         WHERE g.id = 'string'
+                             ^
+
+INFO:      2025-09-07 01:55:14 - Encerrando API Bloom...
+WARNING:      2025-09-07 01:57:10 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 01:57:10 - Iniciando API Bloom...
+WARNING:      2025-09-07 10:22:27 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 10:22:28 - Iniciando API Bloom...
+ERROR:      2025-09-07 10:53:06 - Erro interno não tratado na requisição PUT /api/gestante/vacinas/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/vacinas.py", line 111, in agendar_vacina
+    content=controlador.agendar_vacina(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorVacina.py", line 83, in agendar_vacina
+    dum = self._repositorio_gestante.obter_dum_gestante(vacina.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 11:01:29 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+WARNING:      2025-09-07 11:36:19 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 11:36:19 - Iniciando API Bloom...
+ERROR:      2025-09-07 11:39:19 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 11:41:47 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 11:41:48 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 11:46:43 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 11:47:30 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 11:49:31 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+INFO:      2025-09-07 12:11:32 - Encerrando API Bloom...
+WARNING:      2025-09-07 12:36:53 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 12:36:53 - Iniciando API Bloom...
+ERROR:      2025-09-07 12:37:43 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+INFO:      2025-09-07 12:37:52 - Encerrando API Bloom...
+WARNING:      2025-09-07 12:38:14 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 12:38:14 - Iniciando API Bloom...
+ERROR:      2025-09-07 12:38:18 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+INFO:      2025-09-07 12:42:13 - Encerrando API Bloom...
+WARNING:      2025-09-07 12:44:20 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 12:44:21 - Iniciando API Bloom...
+ERROR:      2025-09-07 12:46:44 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 10, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+ERROR:      2025-09-07 12:46:54 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 10, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+ERROR:      2025-09-07 12:47:16 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 10, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+ERROR:      2025-09-07 12:47:26 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 10, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+INFO:      2025-09-07 13:01:15 - Encerrando API Bloom...
+WARNING:      2025-09-07 13:01:17 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 13:01:18 - Iniciando API Bloom...
+ERROR:      2025-09-07 13:02:56 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+ERROR:      2025-09-07 13:04:34 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 84, in agendar_exame
+    dum = self._repositorio_gestante.obter_dum_gestante(exame.gestante_id)
+                                                        ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'gestante_id'
+
+INFO:      2025-09-07 13:06:47 - Encerrando API Bloom...
+WARNING:      2025-09-07 13:06:51 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 13:06:51 - Iniciando API Bloom...
+ERROR:      2025-09-07 13:06:53 - Erro interno não tratado na requisição PUT /api/gestante/exames/agendar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 115, in agendar_exame
+    content=controlador.agendar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 83, in agendar_exame
+    exame = self._repositorio.obter_por_id(exame_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioEventoAgenda.py", line 137, in obter_por_id
+    raise e
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioEventoAgenda.py", line 133, in obter_por_id
+    raise ValueError("Evento não encontrado")
+ValueError: Evento não encontrado
+
+ERROR:      2025-09-07 13:08:14 - Erro interno não tratado na requisição PUT /api/gestante/exames/realizar:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 215, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/concurrency.py", line 38, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2476, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/exames.py", line 130, in realizar_exame
+    content=controlador.realizar_exame(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorExame.py", line 105, in realizar_exame
+    exame = self._repositorio.obter_por_id(exame_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioEventoAgenda.py", line 137, in obter_por_id
+    raise e
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioEventoAgenda.py", line 133, in obter_por_id
+    raise ValueError("Evento não encontrado")
+ValueError: Evento não encontrado
+
+ERROR:      2025-09-07 13:39:06 - Erro interno não tratado na requisição GET /api/auth/perfil:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 111, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 104, in receive_nowait
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 45, in perfil
+    usuario = await service_perfil.obter_por_perfil(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/services/PerfilService.py", line 18, in obter_por_perfil
+    return await self._controlador_gestante.obter_gestante_por_email(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorGestante.py", line 12, in obter_gestante_por_email
+    return await self._repositorio.buscar_gestante_por_email(email=email)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioGestante.py", line 53, in buscar_gestante_por_email
+    documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.value)
+                                    ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'value'
+
+ERROR:      2025-09-07 13:40:24 - Erro interno não tratado na requisição GET /api/auth/perfil:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 111, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 104, in receive_nowait
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 45, in perfil
+    usuario = await service_perfil.obter_por_perfil(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/services/PerfilService.py", line 18, in obter_por_perfil
+    return await self._controlador_gestante.obter_gestante_por_email(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorGestante.py", line 12, in obter_gestante_por_email
+    return await self._repositorio.buscar_gestante_por_email(email=email)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioGestante.py", line 53, in buscar_gestante_por_email
+    documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.value)
+                                    ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'value'
+
+INFO:      2025-09-07 13:43:15 - Encerrando API Bloom...
+WARNING:      2025-09-07 13:43:18 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 13:43:19 - Iniciando API Bloom...
+ERROR:      2025-09-07 13:44:49 - Erro interno não tratado na requisição GET /api/auth/perfil:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 111, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 104, in receive_nowait
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 45, in perfil
+    usuario = await service_perfil.obter_por_perfil(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/services/PerfilService.py", line 18, in obter_por_perfil
+    return await self._controlador_gestante.obter_gestante_por_email(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorGestante.py", line 12, in obter_gestante_por_email
+    return await self._repositorio.buscar_gestante_por_email(email=email)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioGestante.py", line 53, in buscar_gestante_por_email
+    documento=FabricaDocumento.criar_documento(resultado[7], resultado[6]),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.value)
+                                    ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'value'
+
+INFO:      2025-09-07 13:51:05 - Encerrando API Bloom...
+WARNING:      2025-09-07 13:51:07 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 13:51:08 - Iniciando API Bloom...
+ERROR:      2025-09-07 13:59:28 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+INFO:      2025-09-07 14:02:15 - Encerrando API Bloom...
+WARNING:      2025-09-07 14:02:21 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 14:02:21 - Iniciando API Bloom...
+ERROR:      2025-09-07 14:03:34 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+ERROR:      2025-09-07 14:12:26 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+ERROR:      2025-09-07 14:12:43 - Erro interno não tratado na requisição POST /api/auth/registro/gestante:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 22, in registrar_gestante
+    gestante = gestante_dto.para_entidade()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/dto/GestanteDto.py", line 24, in para_entidade
+    documento=FabricaDocumento.criar_documento(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+INFO:      2025-09-07 23:28:07 - Encerrando API Bloom...
+WARNING:      2025-09-07 23:31:34 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 23:31:34 - Iniciando API Bloom...
+ERROR:      2025-09-07 23:32:49 - Erro ao recuperar usuario: 'TiposDocumento' object has no attribute 'lower'
+ERROR:      2025-09-07 23:32:49 - Erro interno não tratado na requisição POST /api/auth/login:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 126, in receive
+    raise EndOfStream from None
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 37, in login
+    resultado = await autenticacao.login(usuario)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/auth/AuthService.py", line 89, in login
+    await RepositorioUsuario().buscar_usuario_por_email(usuario.email)
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioUsuario.py", line 47, in buscar_usuario_por_email
+    raise e
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioUsuario.py", line 34, in buscar_usuario_por_email
+    documento = FabricaDocumento.criar_documento(tipo_documento, resultado[5])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 11, in criar_documento
+    classe_documento = tipo_map.get(tipo.lower())
+                                    ^^^^^^^^^^
+AttributeError: 'TiposDocumento' object has no attribute 'lower'
+
+INFO:      2025-09-07 23:35:00 - Encerrando API Bloom...
+WARNING:      2025-09-07 23:35:03 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 23:35:03 - Iniciando API Bloom...
+ERROR:      2025-09-07 23:36:51 - Erro interno não tratado na requisição GET /api/auth/perfil:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 111, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 104, in receive_nowait
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 45, in perfil
+    usuario = await service_perfil.obter_por_perfil(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/services/PerfilService.py", line 18, in obter_por_perfil
+    return await self._controlador_gestante.obter_gestante_por_email(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorGestante.py", line 12, in obter_gestante_por_email
+    return await self._repositorio.buscar_gestante_por_email(email=email)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioGestante.py", line 49, in buscar_gestante_por_email
+    documento = FabricaDocumento.criar_documento(tipo_documento, resultado[7])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 19, in criar_documento
+    raise ValueError(f"Número de {tipo.value.upper()} inválido.")
+ValueError: Número de CPF inválido.
+
+WARNING:      2025-09-07 23:52:14 - Variável ALGORITHM contém 'SHA256' — mapeando para 'HS256'
+INFO:      2025-09-07 23:52:14 - Iniciando API Bloom...
+ERROR:      2025-09-07 23:53:02 - Erro interno não tratado na requisição GET /api/auth/perfil:
+Traceback (most recent call last):
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 151, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 111, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/anyio/streams/memory.py", line 104, in receive_nowait
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/middlewares.py", line 19, in dispatch
+    resposta_http = await call_next(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 159, in call_next
+    raise app_exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 78, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/starlette/routing.py", line 75, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 302, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/.cache/pypoetry/virtualenvs/bloom-api-ilNUZsIm-py3.12/lib/python3.12/site-packages/fastapi/routing.py", line 213, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/api/v1/auth.py", line 45, in perfil
+    usuario = await service_perfil.obter_por_perfil(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/services/PerfilService.py", line 18, in obter_por_perfil
+    return await self._controlador_gestante.obter_gestante_por_email(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/controllers/ControladorGestante.py", line 12, in obter_gestante_por_email
+    return await self._repositorio.buscar_gestante_por_email(email=email)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/infra/repositories/RepositorioGestante.py", line 49, in buscar_gestante_por_email
+    documento = FabricaDocumento.criar_documento(tipo_documento, resultado[7])
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/daniel/programacoes/bloom/bloom-api/domain/factories/FabricaDocumento.py", line 19, in criar_documento
+    raise ValueError(f"Número de {tipo.value.upper()} inválido.")
+ValueError: Número de CPF inválido.
+

@@ -4,6 +4,9 @@ import 'package:app/src/shared/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
 
 // Importando as telas para navegação interna da HomePage
 import 'medical_record_page.dart';
@@ -17,12 +20,6 @@ const Color _kTextLight = Color(0xFF828282);
 const Color _kBackground = Color(0xFFF9F9F9);
 const Color _kLightPinkBackground = Color(0xFFFFF0F5);
 
-class Appointment {
-  final String title;
-  final String type;
-  Appointment({required this.title, required this.type});
-}
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -31,42 +28,69 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _storage = const FlutterSecureStorage();
+  final AuthService _authService = AuthService();
+
   late DateTime _selectedDate;
   final List<DateTime> _weekDays = [];
-  final Map<DateTime, List<Appointment>> _mockEvents = {};
-  final AuthService _authService = AuthService();
+
+  // Variáveis para dados da API
+  bool _isLoading = true;
+  String? _errorMessage;
+  Map<String, dynamic>? _gestantePerfil;
+  List<dynamic> _scheduledExams = [];
 
   @override
   void initState() {
     super.initState();
     initializeDateFormatting('pt_BR', null);
-
     _selectedDate = DateTime.now();
     _generateWeekDays(_selectedDate);
-    _populateMockEvents();
+    _fetchData();
   }
 
-  void _populateMockEvents() {
-    // ... (código dos dados mockados continua o mesmo)
-    final today = DateTime.now();
-    final todayKey = DateTime.utc(today.year, today.month, today.day);
-    final tomorrowKey = DateTime.utc(today.year, today.month, today.day + 1);
-    final twoDaysFromNowKey = DateTime.utc(
-      today.year,
-      today.month,
-      today.day + 2,
-    );
+  Future<void> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
 
-    _mockEvents[todayKey] = [
-      Appointment(title: 'Yoga pré-natal', type: 'Atividade'),
-      Appointment(title: 'Comprar vitaminas', type: 'Tarefa'),
-    ];
-    _mockEvents[tomorrowKey] = [
-      Appointment(title: 'Nutricionista', type: 'Consulta'),
-    ];
-    _mockEvents[twoDaysFromNowKey] = [
-      Appointment(title: 'Ultrassom', type: 'Exame'),
-    ];
+    try {
+      final String? token = await _storage.read(key: 'access_token');
+      if (token == null) {
+        throw Exception('Token de autenticação não encontrado.');
+      }
+
+      final headers = {'Authorization': 'Bearer $token'};
+
+      // 1. Buscando dados do perfil da gestante
+      final urlPerfil = Uri.parse('http://127.0.0.1:8000/api/auth/perfil');
+      final responsePerfil = await http.get(urlPerfil, headers: headers);
+      if (responsePerfil.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(responsePerfil.body);
+        _gestantePerfil = data['dados']['Response'];
+      } else {
+        throw Exception('Erro ao carregar o perfil.');
+      }
+
+      // 2. Buscando exames agendados
+      final urlExames = Uri.parse(
+        'http://127.0.0.1:8000/api/gestante/exames/agendados',
+      );
+      final responseExames = await http.get(urlExames, headers: headers);
+      if (responseExames.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(responseExames.body);
+        _scheduledExams = data['dados'];
+      } else {
+        throw Exception('Erro ao carregar exames agendados.');
+      }
+    } catch (e) {
+      _errorMessage = 'Erro ao carregar dados: ${e.toString()}';
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   void _generateWeekDays(DateTime date) {
@@ -77,34 +101,48 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  // --------------------------------------------------------------------------
-  // MUDANÇA 1: FUNÇÕES PARA NAVEGAR ENTRE AS SEMANAS
-  // --------------------------------------------------------------------------
-
-  /// Navega para a semana anterior.
   void _goToPreviousWeek() {
     setState(() {
-      // Pega a data selecionada atual e subtrai 7 dias
       _selectedDate = _selectedDate.subtract(const Duration(days: 7));
-      // Gera a lista de dias para a nova semana
       _generateWeekDays(_selectedDate);
     });
   }
 
-  /// Navega para a próxima semana.
   void _goToNextWeek() {
     setState(() {
-      // Pega a data selecionada atual e adiciona 7 dias
       _selectedDate = _selectedDate.add(const Duration(days: 7));
-      // Gera a lista de dias para a nova semana
       _generateWeekDays(_selectedDate);
     });
   }
 
-  // Funções de ajuda (continuam as mesmas)
-  List<Appointment> _getEventsForDay(DateTime day) {
-    final dayKey = DateTime.utc(day.year, day.month, day.day);
-    return _mockEvents[dayKey] ?? [];
+  // Novo método para encontrar o próximo exame agendado
+  Map<String, dynamic>? _getNextScheduledExam() {
+    if (_scheduledExams.isEmpty) return null;
+
+    final sortedExams = List.from(_scheduledExams)
+      ..sort(
+        (a, b) => DateTime.parse(
+          a['data_agendamento'],
+        ).compareTo(DateTime.parse(b['data_agendamento'])),
+      );
+
+    for (var exam in sortedExams) {
+      final examDate = DateTime.parse(exam['data_agendamento']);
+      if (examDate.isAfter(DateTime.now())) {
+        return exam;
+      }
+    }
+    return null;
+  }
+
+  // Lógica para obter exames agendados de um dia específico
+  List<dynamic> _getExamsForDay(DateTime day) {
+    return _scheduledExams.where((exam) {
+      final examDate = DateTime.parse(exam['data_agendamento']).toLocal();
+      return examDate.year == day.year &&
+          examDate.month == day.month &&
+          examDate.day == day.day;
+    }).toList();
   }
 
   String _formatRelativeDate(DateTime date) {
@@ -122,10 +160,43 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(
+        backgroundColor: _kBackground,
+        body: Center(child: CircularProgressIndicator(color: _kPrimaryPink)),
+      );
+    }
+
+    if (_errorMessage != null) {
+      return Scaffold(
+        backgroundColor: _kBackground,
+        body: Center(child: Text(_errorMessage!)),
+      );
+    }
+
+    final String nome = _gestantePerfil?['nome']?.split(' ').first ?? 'Usuária';
+    final String dumString = _gestantePerfil?['dum'] ?? '';
+    final String dppString = _gestantePerfil?['dpp'] ?? '';
+
+    // Cálculo da semana de gravidez
+    int weekOfPregnancy = 0;
+    if (dumString.isNotEmpty) {
+      final dum = DateTime.parse(dumString);
+      final today = DateTime.now();
+      weekOfPregnancy = (today.difference(dum).inDays / 7).floor();
+    }
+
+    // Cálculo dos dias até o parto
+    int daysUntilDelivery = 0;
+    if (dppString.isNotEmpty) {
+      final dpp = DateTime.parse(dppString);
+      final today = DateTime.now();
+      daysUntilDelivery = dpp.difference(today).inDays;
+    }
+
     return Scaffold(
       backgroundColor: _kBackground,
       appBar: AppBar(
-        // ... (AppBar continua o mesmo)
         backgroundColor: _kBackground,
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -151,15 +222,14 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ... (Saudação continua a mesma)
-              const Text(
-                'Olá Júlia!',
-                style: TextStyle(color: _kTextLight, fontSize: 18),
+              Text(
+                'Olá $nome!',
+                style: const TextStyle(color: _kTextLight, fontSize: 18),
               ),
               const SizedBox(height: 8),
-              const Text(
-                '16ª Semana de Gravidez',
-                style: TextStyle(
+              Text(
+                '${weekOfPregnancy}ª Semana de Gravidez',
+                style: const TextStyle(
                   color: _kTextDark,
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -167,11 +237,10 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 24),
 
-              // O widget do calendário foi atualizado
               _buildWeekCalendar(context),
 
               const SizedBox(height: 24),
-              _buildAppointmentAndBabyInfoCard(),
+              _buildAppointmentAndBabyInfoCard(daysUntilDelivery),
               const SizedBox(height: 24),
               _buildNavigationButtons(context),
             ],
@@ -181,18 +250,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // --------------------------------------------------------------------------
-  // MUDANÇA 2: O WIDGET DO CALENDÁRIO AGORA TEM UM CABEÇALHO E SETAS
-  // --------------------------------------------------------------------------
   Widget _buildWeekCalendar(BuildContext context) {
-    // Formata o texto do cabeçalho (ex: "Setembro 2025")
     String headerText = DateFormat('MMMM yyyy', 'pt_BR').format(_selectedDate);
-    // Capitaliza a primeira letra do mês
     headerText = '${headerText[0].toUpperCase()}${headerText.substring(1)}';
 
     return Column(
       children: [
-        // CABEÇALHO CLICÁVEL
         InkWell(
           onTap: () {
             Navigator.push(
@@ -225,11 +288,9 @@ class _HomePageState extends State<HomePage> {
         ),
         const SizedBox(height: 12),
 
-        // LINHA DO CALENDÁRIO COM SETAS
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Seta para a Esquerda
             IconButton(
               icon: const Icon(
                 Icons.arrow_back_ios_new,
@@ -239,8 +300,6 @@ class _HomePageState extends State<HomePage> {
               onPressed: _goToPreviousWeek,
             ),
 
-            // Dias da Semana
-            // Usamos Expanded para garantir que os dias ocupem o espaço disponível
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -261,7 +320,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
-            // Seta para a Direita
             IconButton(
               icon: const Icon(
                 Icons.arrow_forward_ios,
@@ -276,11 +334,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // O restante do código (_buildDayWidget, _buildAppointmentAndBabyInfoCard, etc.)
-  // permanece exatamente o mesmo de antes.
   Widget _buildDayWidget(String day, String date, bool isSelected) {
     return Container(
-      width: 40, // Diminuí um pouco para caber com as setas
+      width: 40,
       height: 65,
       decoration: BoxDecoration(
         color: isSelected ? _kPrimaryPink : Colors.white,
@@ -312,11 +368,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAppointmentAndBabyInfoCard() {
-    final eventsForSelectedDay = _getEventsForDay(_selectedDate);
-    final mainAppointment = eventsForSelectedDay.isNotEmpty
-        ? eventsForSelectedDay.first
-        : null;
+  // Agora recebe os dias até o parto
+  Widget _buildAppointmentAndBabyInfoCard(int daysUntilDelivery) {
+    final eventsForSelectedDay = _getExamsForDay(_selectedDate);
+    final nextScheduledExam = _getNextScheduledExam();
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -342,7 +397,7 @@ class _HomePageState extends State<HomePage> {
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  mainAppointment != null
+                  nextScheduledExam != null
                       ? Icons.calendar_month_outlined
                       : Icons.child_friendly_outlined,
                   color: _kPrimaryPink,
@@ -355,7 +410,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      mainAppointment != null
+                      nextScheduledExam != null
                           ? 'Próximo compromisso:'
                           : 'Informações do bebê',
                       style: const TextStyle(color: _kTextLight, fontSize: 14),
@@ -369,9 +424,9 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if (mainAppointment != null)
+                    if (nextScheduledExam != null)
                       Text(
-                        mainAppointment.title,
+                        nextScheduledExam['nome'],
                         style: const TextStyle(
                           color: _kTextLight,
                           fontSize: 14,
@@ -379,7 +434,7 @@ class _HomePageState extends State<HomePage> {
                       )
                     else
                       const Text(
-                        'Nenhum evento para este dia.',
+                        'Nenhum exame agendado para este dia.',
                         style: TextStyle(color: _kTextLight, fontSize: 14),
                       ),
                   ],
@@ -391,12 +446,14 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(vertical: 20.0),
             child: Divider(height: 1),
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _InfoColumn(label: 'Altura do bebê', value: '17 cm'),
-              _InfoColumn(label: 'Peso do bebê', value: '110 gr'),
-              _InfoColumn(label: 'Dias até o parto', value: '168 days'),
+              // Removido peso e altura, pois não temos dados da API para eles
+              _InfoColumn(
+                label: 'Dias até o parto',
+                value: '$daysUntilDelivery dias',
+              ),
             ],
           ),
         ],

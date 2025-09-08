@@ -23,6 +23,7 @@ class RepositorioGestante:
         self._tabela_usuario: str = "usuario"
 
     async def buscar_gestante_por_email(self, email: str) -> Gestante:
+        from fastapi import HTTPException
         sql = SQL("""
         SELECT
             g.id, g.nome, u.email, u.senha, u.perfil, u.data_nascimento,
@@ -43,10 +44,12 @@ class RepositorioGestante:
             return None
         resultado = resultado[0]
 
-
         tipo_documento = TiposDocumento(resultado[7])
-
-        documento = FabricaDocumento.criar_documento(tipo_documento, resultado[7])
+        numero_documento = resultado[6]
+        try:
+            documento = FabricaDocumento.criar_documento(tipo_documento, numero_documento)
+        except ValueError as e:
+            raise HTTPException(status_code=400, detail=str(e))
 
         gestante = Gestante(
             id=resultado[0],
