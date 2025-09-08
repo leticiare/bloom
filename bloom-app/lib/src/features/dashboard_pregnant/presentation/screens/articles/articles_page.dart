@@ -1,7 +1,4 @@
-// lib/src/features/dashboard_pregnant/presentation/screens/articles/articles_page.dart
-
 import 'package:flutter/material.dart';
-import 'package:app/src/core/theme/app_colors.dart';
 import 'package:app/src/features/dashboard_pregnant/data/datasources/mock_dashboard_data.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/article.dart';
 import 'package:app/src/features/dashboard_pregnant/presentation/widgets/article_card.dart';

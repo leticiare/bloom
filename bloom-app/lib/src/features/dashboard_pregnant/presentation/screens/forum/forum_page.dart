@@ -4,7 +4,6 @@ import 'package:app/src/features/dashboard_pregnant/domain/entities/forum_topic.
 import 'package:app/src/features/dashboard_pregnant/domain/entities/forum_message.dart';
 import 'package:app/src/features/dashboard_pregnant/data/datasources/mock_dashboard_data.dart';
 import 'package:app/src/features/dashboard_pregnant/presentation/widgets/forum_message_bubble.dart';
-import 'forum_topic_detail_page.dart';
 import 'add_topic_page.dart';
 
 /// Tela principal do Fórum, exibindo uma lista de tópicos.
