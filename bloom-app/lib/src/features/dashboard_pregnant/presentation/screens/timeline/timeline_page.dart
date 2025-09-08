@@ -24,25 +24,15 @@ class _TimelinePageState extends State<TimelinePage> {
   @override
   void initState() {
     super.initState();
-    // O filtro não é mais chamado aqui.
-    _loadUserProfile();
+    // Chame apenas uma função que orquestra o carregamento de todos os dados
     _loadData();
   }
 
-  Future<void> _loadUserProfile() async {
-    final user = await ProfileService().getUser();
-    setState(() {
-      _userProfile = user;
-      // Agora, o filtro é chamado AQUI, APÓS o _userProfile ter um valor.
-      if (_userProfile != null) {
-        _filterWeeklyUpdates();
-      }
-    });
   /// Função central que carrega os dados do perfil e depois filtra as atualizações.
   Future<void> _loadData() async {
     try {
       final user = await ProfileService().getUser();
-      final filteredUpdates = _filterWeeklyUpdates(user.currentWeek);
+      final filteredUpdates = _filterWeeklyUpdates(user!.currentWeek);
 
       if (mounted) {
         setState(() {
