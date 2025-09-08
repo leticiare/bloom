@@ -9,6 +9,7 @@ from infra.db.conexao import ConexaoBancoDados
 from infra.repositories.RepositorioGestante import RepositorioGestante
 from infra.repositories.RepositorioProfissional import RepositorioProfissional
 from infra.repositories.RepositorioUsuario import RepositorioUsuario
+from domain.factories.FabricaDocumento import FabricaDocumento
 
 
 def run_async_in_thread(coro):
@@ -26,7 +27,6 @@ class ControladorUsuario:
 
         async with db.transacao():
             usuario.perfil = usuario.perfil.value.lower()
-            
 
             if isinstance(usuario, Profissional):
                 usuario.id_entidade_perfil = usuario.codigo or uuid.uuid4()

@@ -16,7 +16,7 @@ class ProfissionalDTO(UsuarioDTO):
             email=self.email,
             senha=self.senha,
             documento=FabricaDocumento.criar_documento(
-                self.tipo_documento.value, self.documento
+                self.tipo_documento, self.documento
             ).obter_numero(),
             tipo_documento=self.tipo_documento,
             data_nascimento=self.data_nascimento,

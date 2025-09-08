@@ -8,6 +8,8 @@ from domain.factories import FabricaDocumento
 from infra.db.conexao import ConexaoBancoDados
 from infra.db.iniciar_db import conexao
 from infra.logger.logger import logger
+from domain.factories.FabricaDocumento import FabricaDocumento
+from domain.enums.TiposDocumento import TiposDocumento
 
 load_dotenv()
 
@@ -28,7 +30,6 @@ class RepositorioUsuario:
 
             if not resultado:
                 return None
-
             tipo_documento = TiposDocumento(resultado[4])
             documento = FabricaDocumento.criar_documento(tipo_documento, resultado[5])
             usuario = Usuario(
