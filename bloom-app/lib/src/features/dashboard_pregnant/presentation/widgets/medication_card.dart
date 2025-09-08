@@ -1,12 +1,13 @@
+// lib/src/features/dashboard_pregnant/presentation/widgets/medication_card.dart
+
 import 'package:flutter/material.dart';
 import 'package:app/src/core/theme/app_colors.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/medical_record.dart';
-import 'info_tag.dart';
 
 /// Card para exibir um registro médico do tipo "Medicação".
 class MedicationCard extends StatelessWidget {
   final MedicalRecord record;
-  final VoidCallback onStatusChange;
+  final void Function(RecordStatus) onStatusChange;
   final VoidCallback onDelete;
 
   const MedicationCard({
@@ -19,7 +20,6 @@ class MedicationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isCompleted = record.status == RecordStatus.completed;
-    final bool isOverdue = record.status == RecordStatus.overdue;
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -37,17 +37,17 @@ class MedicationCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      record.name,
+                      record.title,
                       style: const TextStyle(
                         color: AppColors.textDark,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    if (record.recommendedDate != null) ...[
+                    if (record.date != null) ...[
                       const SizedBox(height: 4),
                       Text(
-                        'Recomendado: ${record.recommendedDate}',
+                        'Agendado para: ${record.date}',
                         style: const TextStyle(
                           color: AppColors.textGray,
                           fontSize: 12,
@@ -57,14 +57,11 @@ class MedicationCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if (isOverdue)
-                const Icon(
-                  Icons.warning_amber_rounded,
-                  color: AppColors.warning,
-                ),
               PopupMenuButton<String>(
                 onSelected: (value) {
-                  if (value == 'delete') onDelete();
+                  if (value == 'delete') {
+                    onDelete();
+                  }
                 },
                 itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                   const PopupMenuItem<String>(
@@ -77,38 +74,29 @@ class MedicationCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  if (record.time != null)
-                    InfoTag(
-                      icon: Icons.access_time_filled_outlined,
-                      text: record.time!,
-                    ),
-                  if (record.time != null && record.frequency != null)
-                    const SizedBox(width: 8),
-                  if (record.frequency != null)
-                    InfoTag(
-                      icon: Icons.refresh_outlined,
-                      text: record.frequency!,
-                    ),
-                ],
+          ElevatedButton.icon(
+            onPressed: () {
+              final newStatus = isCompleted
+                  ? RecordStatus.scheduled
+                  : RecordStatus.completed;
+              onStatusChange(newStatus);
+            },
+            icon: Icon(
+              isCompleted ? Icons.undo : Icons.check,
+              size: 18,
+              color: isCompleted ? AppColors.textGray : AppColors.primaryPink,
+            ),
+            label: Text(
+              isCompleted ? 'Marcar como pendente' : 'Marcar como realizado',
+              style: TextStyle(
+                color: isCompleted ? AppColors.textGray : AppColors.primaryPink,
+                fontWeight: FontWeight.bold,
               ),
-              InkWell(
-                onTap: onStatusChange,
-                borderRadius: BorderRadius.circular(20),
-                child: Icon(
-                  isCompleted
-                      ? Icons.check_box_outlined
-                      : Icons.check_box_outline_blank,
-                  color: isCompleted
-                      ? AppColors.primaryPink
-                      : AppColors.textGray,
-                ),
-              ),
-            ],
+            ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.background,
+              elevation: 0,
+            ),
           ),
         ],
       ),

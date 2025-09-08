@@ -94,7 +94,7 @@ def listar_consultas_agendados(
 ):
     """Listar todas as consultas agendadas da gestante."""
     return JSONResponse(
-        content=controlador.obter_consultas_agendados(
+        content=controlador.obter_consultas_agendadas(
             gestante_id=usuario.get("id_entidade_perfil")
         ),
         status_code=200,

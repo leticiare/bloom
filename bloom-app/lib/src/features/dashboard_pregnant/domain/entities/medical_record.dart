@@ -1,26 +1,21 @@
-enum RecordType { exam, vaccine, medication }
+enum RecordType { exam, vaccine, medication, consultation }
 
-enum RecordStatus { pending, completed, overdue }
+enum RecordStatus { scheduled, completed, canceled }
 
-/// Modelo de dados para um item do histórico médico.
 class MedicalRecord {
   final String id;
   final RecordType type;
-  final String name;
+  final String title;
+  final String description;
   RecordStatus status;
-  final String? time;
   final String? date;
-  final String? frequency;
-  final String? recommendedDate;
 
   MedicalRecord({
     required this.id,
     required this.type,
-    required this.name,
+    required this.title,
+    required this.description,
     required this.status,
-    this.time,
-    this.date,
-    this.frequency,
-    this.recommendedDate,
+    required this.date,
   });
 }

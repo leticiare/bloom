@@ -5,7 +5,7 @@ import 'package:app/src/features/dashboard_pregnant/domain/entities/medical_reco
 /// Card para exibir um registro médico do tipo "Exame".
 class ExamCard extends StatelessWidget {
   final MedicalRecord record;
-  final VoidCallback onStatusChange;
+  final void Function(RecordStatus) onStatusChange;
   final VoidCallback onDelete;
 
   const ExamCard({
@@ -35,17 +35,17 @@ class ExamCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      record.name,
+                      record.title,
                       style: const TextStyle(
                         color: AppColors.textDark,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    if (record.recommendedDate != null) ...[
+                    if (record.date != null) ...[
                       const SizedBox(height: 4),
                       Text(
-                        'Recomendado: ${record.recommendedDate}',
+                        'Recomendado: ${record.date}',
                         style: const TextStyle(
                           color: AppColors.textGray,
                           fontSize: 12,
@@ -75,7 +75,12 @@ class ExamCard extends StatelessWidget {
           const SizedBox(height: 12),
           // Botão para alterar o status
           ElevatedButton.icon(
-            onPressed: onStatusChange,
+            onPressed: () {
+              final newStatus = isCompleted
+                  ? RecordStatus.scheduled
+                  : RecordStatus.completed;
+              onStatusChange(newStatus);
+            },
             icon: Icon(
               isCompleted ? Icons.undo : Icons.check,
               size: 18,

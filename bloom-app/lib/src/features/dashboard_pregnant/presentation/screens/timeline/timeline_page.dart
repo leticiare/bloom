@@ -24,6 +24,7 @@ class _TimelinePageState extends State<TimelinePage> {
   @override
   void initState() {
     super.initState();
+    // Chame apenas uma função que orquestra o carregamento de todos os dados
     _loadData();
   }
 
@@ -31,7 +32,7 @@ class _TimelinePageState extends State<TimelinePage> {
   Future<void> _loadData() async {
     try {
       final user = await ProfileService().getUser();
-      final filteredUpdates = _filterWeeklyUpdates(user.currentWeek);
+      final filteredUpdates = _filterWeeklyUpdates(user!.currentWeek);
 
       if (mounted) {
         setState(() {
