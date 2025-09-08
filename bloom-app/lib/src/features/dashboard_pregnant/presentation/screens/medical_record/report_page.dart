@@ -146,7 +146,8 @@ class _ReportPageState extends State<ReportPage> {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    item.name,
+                    // AQUI, o .name é alterado para .title
+                    item.title,
                     style: const TextStyle(
                       color: AppColors.textDark,
                       fontSize: 16,
