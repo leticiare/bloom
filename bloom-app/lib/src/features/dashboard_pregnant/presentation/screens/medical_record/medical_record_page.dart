@@ -7,19 +7,47 @@ import 'package:app/src/features/dashboard_pregnant/presentation/widgets/vaccine
 import 'package:app/src/features/dashboard_pregnant/presentation/widgets/medication_card.dart';
 import 'report_page.dart';
 
-/// Exibe o histórico médico completo da gestante.
-class MedicalRecordPage extends StatelessWidget {
+/// Exibe e gerencia o histórico médico completo da gestante.
+class MedicalRecordPage extends StatefulWidget {
   const MedicalRecordPage({super.key});
+
+  @override
+  State<MedicalRecordPage> createState() => _MedicalRecordPageState();
+}
+
+class _MedicalRecordPageState extends State<MedicalRecordPage> {
+  // A lista de registros agora é uma variável de estado.
+  late List<MedicalRecord> _records;
+
+  @override
+  void initState() {
+    super.initState();
+    // Carregamos uma cópia da lista mock para poder modificá-la.
+    _records = List.from(mockHistory);
+  }
+
+  /// Altera o status de um registro (feito/pendente).
+  void _toggleRecordStatus(MedicalRecord record) {
+    setState(() {
+      if (record.status == RecordStatus.completed) {
+        record.status = RecordStatus.pending;
+      } else {
+        record.status = RecordStatus.completed;
+      }
+    });
+  }
+
+  /// Remove um registro da lista.
+  void _deleteRecord(MedicalRecord record) {
+    setState(() {
+      _records.removeWhere((item) => item.id == record.id);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Meu Histórico'),
-        actions: [
-          IconButton(icon: const Icon(Icons.more_vert), onPressed: () {}),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Meu Histórico')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
@@ -38,16 +66,31 @@ class MedicalRecordPage extends StatelessWidget {
             Expanded(
               child: ListView.separated(
                 padding: const EdgeInsets.only(bottom: 16),
-                itemCount: mockHistory.length,
+                itemCount: _records.length,
                 itemBuilder: (context, index) {
-                  final record = mockHistory[index];
+                  final record = _records[index];
+                  // Passamos as funções de callback para os cards
                   switch (record.type) {
                     case RecordType.exam:
-                      return ExamCard(record: record);
+                      return ExamCard(
+                        record: record,
+                        onStatusChange: () => _toggleRecordStatus(record),
+                        onDelete: () => _deleteRecord(record),
+                      );
                     case RecordType.vaccine:
-                      return VaccineCard(record: record);
+                      // Crie o VaccineCard com os mesmos callbacks
+                      return VaccineCard(
+                        record: record,
+                        onStatusChange: () => _toggleRecordStatus(record),
+                        onDelete: () => _deleteRecord(record),
+                      );
                     case RecordType.medication:
-                      return MedicationCard(record: record);
+                      // Crie o MedicationCard com os mesmos callbacks
+                      return MedicationCard(
+                        record: record,
+                        onStatusChange: () => _toggleRecordStatus(record),
+                        onDelete: () => _deleteRecord(record),
+                      );
                   }
                 },
                 separatorBuilder: (context, index) =>
@@ -59,25 +102,11 @@ class MedicalRecordPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => ReportPage(records: mockHistory),
+                    builder: (_) => ReportPage(records: _records),
                   ),
                 );
               },
               child: const Text('Gerar Relatório Clínico'),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () {
-                /* Lógica de download pode ser adicionada aqui se necessário */
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.primaryPink,
-                side: const BorderSide(
-                  color: AppColors.primaryPink,
-                  width: 1.5,
-                ),
-              ),
-              child: const Text('Baixar Histórico (PDF)'),
             ),
             const SizedBox(height: 20),
           ],

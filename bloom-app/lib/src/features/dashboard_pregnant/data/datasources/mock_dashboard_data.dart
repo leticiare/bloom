@@ -687,34 +687,44 @@ final List<WeeklyUpdate> mockWeeklyUpdates = [
 
 final List<MedicalRecord> mockHistory = [
   MedicalRecord(
+    id: '1',
     type: RecordType.exam,
     name: 'Ultrassom Morfológico',
     status: RecordStatus.completed,
+    recommendedDate: 'Semana 20-24',
   ),
   MedicalRecord(
+    id: '2',
     type: RecordType.exam,
     name: 'Exame de Glicemia',
     status: RecordStatus.pending,
+    recommendedDate: 'Semana 24-28',
   ),
   MedicalRecord(
+    id: '3',
     type: RecordType.vaccine,
     name: 'Vacina dTpa',
     status: RecordStatus.pending,
     time: '14:00',
     date: '24 de Fevereiro',
+    recommendedDate: 'A partir da Semana 20',
   ),
   MedicalRecord(
+    id: '4',
     type: RecordType.medication,
     name: 'Ácido Fólico',
     status: RecordStatus.completed,
     time: '08:00',
     frequency: 'A cada 12 horas',
+    recommendedDate: '1º Trimestre',
   ),
   MedicalRecord(
+    id: '5',
     type: RecordType.medication,
     name: 'Ferritina',
     status: RecordStatus.overdue,
     time: '20:00',
     frequency: 'A cada 24 horas',
+    recommendedDate: 'Conforme orientação',
   ),
 ];

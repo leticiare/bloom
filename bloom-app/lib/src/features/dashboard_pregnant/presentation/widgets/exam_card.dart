@@ -5,7 +5,15 @@ import 'package:app/src/features/dashboard_pregnant/domain/entities/medical_reco
 /// Card para exibir um registro médico do tipo "Exame".
 class ExamCard extends StatelessWidget {
   final MedicalRecord record;
-  const ExamCard({super.key, required this.record});
+  final VoidCallback onStatusChange;
+  final VoidCallback onDelete;
+
+  const ExamCard({
+    super.key,
+    required this.record,
+    required this.onStatusChange,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,47 +29,68 @@ class ExamCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                record.name,
-                style: const TextStyle(
-                  color: AppColors.textDark,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      record.name,
+                      style: const TextStyle(
+                        color: AppColors.textDark,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    if (record.recommendedDate != null) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        'Recomendado: ${record.recommendedDate}',
+                        style: const TextStyle(
+                          color: AppColors.textGray,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ],
                 ),
               ),
-              Icon(
-                isCompleted
-                    ? Icons.check_box_outlined
-                    : Icons.check_box_outline_blank,
-                color: isCompleted ? AppColors.primaryPink : AppColors.textGray,
+              // Popup para mais opções (excluir)
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'delete') {
+                    onDelete();
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: 'delete',
+                    child: Text('Excluir'),
+                  ),
+                ],
+                icon: const Icon(Icons.more_vert, color: AppColors.textGray),
               ),
             ],
           ),
           const SizedBox(height: 12),
+          // Botão para alterar o status
           ElevatedButton.icon(
-            onPressed: () {
-              // TODO: Implementar lógica para anexar arquivo
-            },
-            icon: const Icon(
-              Icons.add_circle_outline,
+            onPressed: onStatusChange,
+            icon: Icon(
+              isCompleted ? Icons.undo : Icons.check,
               size: 18,
-              color: AppColors.primaryPink,
+              color: isCompleted ? AppColors.textGray : AppColors.primaryPink,
             ),
-            label: const Text(
-              'Anexar Resultado',
+            label: Text(
+              isCompleted ? 'Marcar como pendente' : 'Marcar como realizado',
               style: TextStyle(
-                color: AppColors.primaryPink,
+                color: isCompleted ? AppColors.textGray : AppColors.primaryPink,
                 fontWeight: FontWeight.bold,
               ),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.background,
               elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
             ),
           ),
         ],
