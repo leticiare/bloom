@@ -75,24 +75,60 @@ List<Article> mockArticles = [
 ];
 
 /// Lista de tópicos do fórum de exemplo.
-List<ForumTopic> mockTopics = [
+final List<ForumTopic> mockTopics = [
   ForumTopic(
     question: ForumMessage(
       authorName: 'Júlia',
       authorTitle: 'primeira vez grávida',
       avatarUrl: 'https://i.pravatar.cc/150?img=1',
       message:
-          'Oi! Estou de 16 semanas na minha primeira gravidez e tenho sentido umas cólicas leves de vez em quando. Isso é normal?',
+          'Oi! Estou de 16 semanas na minha primeira gravidez e tenho sentido umas cólicas leves de vez em quando. Não são fortes, mas fico preocupada. Isso é normal ou devo falar com meu médico?',
       isFromUser: true,
     ),
     answer: ForumMessage(
-      authorName: 'Carlos Eduardo',
+      authorName: 'Dr. Carlos Eduardo',
       authorTitle: 'Obstetra',
       avatarUrl: 'https://i.pravatar.cc/150?img=3',
       message:
-          'Olá! Cólicas leves podem ser normais nesta fase da gravidez, pois seu útero está crescendo...',
+          'Olá Júlia! Cólicas leves podem ser normais nesta fase, pois seu útero está crescendo. No entanto, se a dor for intensa, constante ou vier acompanhada de sangramento, procure seu médico imediatamente. Para aliviar, tente descansar e beber bastante água.',
     ),
     tags: ['Cólicas', '16 semanas'],
+  ),
+  ForumTopic(
+    question: ForumMessage(
+      authorName: 'Mariana',
+      authorTitle: 'segunda gravidez',
+      avatarUrl: 'https://i.pravatar.cc/150?img=5',
+      message:
+          'É seguro continuar a fazer exercícios de baixo impacto durante o segundo trimestre? Gosto de caminhar e nadar, mas tenho receio de exagerar.',
+      isFromUser: true,
+    ),
+    answer: ForumMessage(
+      authorName: 'Dra. Sofia Pereira',
+      authorTitle: 'Fisioterapeuta',
+      avatarUrl: 'https://i.pravatar.cc/150?img=35',
+      message:
+          'Sim, Mariana! Exercícios de baixo impacto como caminhada e natação são altamente recomendados, desde que não haja contraindicações do seu médico. Eles ajudam na circulação e no controle do peso. O importante é sempre ouvir seu corpo e evitar a exaustão.',
+    ),
+    tags: ['Exercícios', '2º Trimestre'],
+  ),
+  ForumTopic(
+    question: ForumMessage(
+      authorName: 'Beatriz',
+      authorTitle: '28 semanas',
+      avatarUrl: 'https://i.pravatar.cc/150?img=7',
+      message:
+          'Estou com muita azia e dificuldade para dormir. Alguma dica de alimentação ou posição para dormir que possa ajudar a aliviar esses sintomas?',
+      isFromUser: true,
+    ),
+    answer: ForumMessage(
+      authorName: 'Dr. Lucas Martins',
+      authorTitle: 'Nutricionista',
+      avatarUrl: 'https://i.pravatar.cc/150?img=8',
+      message:
+          'Olá Beatriz. Azia é comum nessa fase. Evite alimentos gordurosos e picantes, principalmente à noite. Tente fazer refeições menores e mais frequentes. Para dormir, elevar a cabeceira da cama com travesseiros extras pode ajudar bastante. Evite deitar logo após comer.',
+    ),
+    tags: ['Azia', 'Sono', 'Alimentação'],
   ),
 ];
 

@@ -22,21 +22,25 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final alignment = message.isFromUser
+    // Lógica de estilo baseada em quem enviou a mensagem
+    final bool isUserMessage = message.isFromUser;
+    final alignment = isUserMessage
         ? CrossAxisAlignment.start
         : CrossAxisAlignment.end;
-    final bubbleColor = message.isFromUser
+
+    final bubbleColor = isUserMessage
         ? AppColors.primaryPink
         : AppColors.background;
-    final textColor = message.isFromUser ? AppColors.white : AppColors.textDark;
-    final titleColor = message.isFromUser
-        ? AppColors.white
+
+    final textColor = isUserMessage ? AppColors.white : AppColors.textDark;
+    final authorNameColor = isUserMessage
+        ? AppColors.textGray
         : AppColors.textDark;
-    final subtitleColor = message.isFromUser
-        ? AppColors.white.withOpacity(0.9)
+    final authorTitleColor = isUserMessage
+        ? AppColors.textGray.withOpacity(0.8)
         : AppColors.textGray;
 
-    final borderRadius = message.isFromUser
+    final borderRadius = isUserMessage
         ? const BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
@@ -54,16 +58,16 @@ class MessageBubble extends StatelessWidget {
       crossAxisAlignment: alignment,
       children: [
         Row(
-          mainAxisAlignment: message.isFromUser
+          mainAxisAlignment: isUserMessage
               ? MainAxisAlignment.start
               : MainAxisAlignment.end,
           children: [
-            if (message.isFromUser)
+            if (isUserMessage)
               CircleAvatar(
                 radius: 16,
                 backgroundImage: NetworkImage(message.avatarUrl),
               ),
-            if (message.isFromUser) const SizedBox(width: 8),
+            if (isUserMessage) const SizedBox(width: 8),
             Column(
               crossAxisAlignment: alignment,
               children: [
@@ -71,17 +75,17 @@ class MessageBubble extends StatelessWidget {
                   message.authorName,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: titleColor,
+                    color: authorNameColor,
                   ),
                 ),
                 Text(
                   message.authorTitle,
-                  style: TextStyle(fontSize: 12, color: subtitleColor),
+                  style: TextStyle(fontSize: 12, color: authorTitleColor),
                 ),
               ],
             ),
-            if (!message.isFromUser) const SizedBox(width: 8),
-            if (!message.isFromUser)
+            if (!isUserMessage) const SizedBox(width: 8),
+            if (!isUserMessage)
               CircleAvatar(
                 radius: 16,
                 backgroundImage: NetworkImage(message.avatarUrl),
@@ -109,43 +113,44 @@ class MessageBubble extends StatelessWidget {
     );
   }
 
-  /// Constrói o conteúdo do texto, com a lógica de cortar o texto.
+  /// Constrói o conteúdo do texto, com a lógica de "continuar lendo".
   Widget _buildMessageContent(BuildContext context, Color textColor) {
     String textToShow = message.message;
     bool needsReadMoreLink = false;
 
+    // A lógica de cortar o texto e mostrar o link "continuar lendo"
     if (showContinueReading && message.message.length > 120) {
-      textToShow = message.message.substring(0, 120);
+      textToShow = '${message.message.substring(0, 120)}';
       needsReadMoreLink = true;
     }
 
-    final textSpan = TextSpan(
-      style: TextStyle(color: textColor, fontSize: 14, height: 1.5),
-      children: [
-        TextSpan(text: textToShow),
-        if (needsReadMoreLink)
-          TextSpan(
-            text: '... continuar lendo',
-            style: const TextStyle(
-              color: AppColors.primaryPink,
-              fontWeight: FontWeight.bold,
+    return RichText(
+      text: TextSpan(
+        style: TextStyle(color: textColor, fontSize: 14, height: 1.5),
+        children: [
+          TextSpan(text: textToShow),
+          if (needsReadMoreLink)
+            TextSpan(
+              text: '... continuar lendo',
+              style: const TextStyle(
+                color: AppColors.primaryPink,
+                fontWeight: FontWeight.bold,
+              ),
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  if (topic != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ForumTopicDetailPage(topic: topic!),
+                      ),
+                    );
+                  }
+                },
             ),
-            recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                if (topic != null) {
-                  // TODO: Substituir por navegação de rota nomeada.
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ForumTopicDetailPage(topic: topic!),
-                    ),
-                  );
-                }
-              },
-          ),
-      ],
+        ],
+      ),
     );
-    return RichText(text: textSpan);
   }
 }
 
