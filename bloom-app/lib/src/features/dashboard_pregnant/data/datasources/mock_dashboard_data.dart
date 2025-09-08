@@ -1,5 +1,4 @@
 // Importa todos os modelos de dados que serão usados aqui
-import 'package:app/src/features/dashboard_pregnant/domain/entities/user_profile.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/doctor.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/article.dart';
 import 'package:app/src/features/dashboard_pregnant/domain/entities/forum_topic.dart';
