@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:app/src/features/onboarding/presentation/screens/onboarding_screen.dart';
 
-/// Classe central para gerenciar as rotas nomeadas da aplicação.
+/// TODO: Implementar a navegação por rotas nomeadas.
+///
+/// Este arquivo será o mapa central de todas as telas do aplicativo,
+/// permitindo uma navegação limpa e desacoplada.
 class AppRoutes {
-  // Nomes das rotas (constantes para evitar erros de digitação).
-  static const String onboarding =
-      '/'; // A rota '/' é a rota inicial por padrão.
-  static const String login = '/login';
-  // Adicione outras rotas aqui conforme seu app cresce
-  // static const String home = '/home';
+  // --- Nomes das Rotas (Exemplos) ---
+  // static const String onboarding = '/';
+  // static const String login = '/login';
+  // static const String dashboard = '/dashboard';
 
-  /// Mapeamento estático que associa os nomes das rotas aos widgets (telas) correspondentes.
-  static Map<String, WidgetBuilder> get routes {
-    return {
-      onboarding: (context) => const OnboardingScreen(),
-      // login: (context) => const LoginScreen(), // Exemplo: descomente quando tiver a tela
-      // home: (context) => const HomeScreen(),
-    };
+  /// TODO: Criar a função generateRoute para construir as telas
+  /// com base nos nomes das rotas.
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    // A lógica do switch-case para cada rota virá aqui.
+
+    // Rota de erro padrão
+    return MaterialPageRoute(
+      builder: (_) {
+        return Scaffold(
+          appBar: AppBar(title: const Text('Erro')),
+          body: const Center(child: Text('Sistema de rotas não implementado.')),
+        );
+      },
+    );
   }
 }
